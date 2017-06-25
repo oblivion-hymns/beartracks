@@ -10,6 +10,10 @@ import { MessageService } from './messages/message.service';
 			padding: 50px;
 		}
 
+		md-tab-group {
+			background-color: rgb(40, 40, 40);
+		}
+
 		md-sidenav-container {
 			background-color: rgb(27, 27, 27);
 			height: 100%;

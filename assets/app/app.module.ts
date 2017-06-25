@@ -9,7 +9,8 @@ import { routing } from './app.routing';
 import 'hammerjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
-import { MdButtonModule, MdCheckboxModule, MdGridListModule, MdIconModule, MdMenuModule, MdSidenavModule } from '@angular/material';
+import { MdButtonModule, MdCheckboxModule, MdGridListModule, MdIconModule,
+		MdMenuModule, MdSidenavModule, MdTabsModule } from '@angular/material';
 
 //App-specific
 import { ArtistsComponent } from './artists/artists.component';
@@ -33,7 +34,8 @@ import { ArtistsComponent } from './artists/artists.component';
 		MdGridListModule,
 		MdIconModule,
 		MdMenuModule,
-		MdSidenavModule
+		MdSidenavModule,
+		MdTabsModule
 	],
 	bootstrap: [
 		AppComponent
