@@ -1,42 +1,23 @@
 <md-toolbar>
-	<!-- <button md-icon-button type="button" (click)="sidenav.open()">
-		<md-icon>menu</md-icon>
-	</button> -->
-	<button md-button routerLink="/artists" routerlinkActive="active">
+	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active"
+		style="width: 5%;">
+		<md-icon>pets</md-icon>
+	</button>
+	<button md-button [routerLink]="['/artists']" routerLinkActive="active">
 		<h3>Artists</h3>
 	</button>
-	<button md-button><h3>Albums</h3></button>
-	<button md-button><h3>Genres</h3></button>
-
-
+	<button md-button>
+		<h3>Albums</h3>
+	</button>
+	<button md-button>
+		<h3>Genres</h3>
+	</button>
+	<button md-button>
+		<h3>Discover</h3>
+	</button>
+	<button md-button>
+		<h3>Socialize</h3>
+	</button>
 </md-toolbar>
 
-<md-sidenav-container>
-	<md-sidenav #sidenav mode="over">
-		<h3>Browse Music</h3>
-		<button md-button>
-			<md-icon>recent_actors</md-icon> Artists
-		</button>
-		<button md-button>
-			<md-icon>album</md-icon> Albums
-		</button>
-		<button md-button>
-			<md-icon>label</md-icon> Genres
-		</button>
-
-		<h3>Journey</h3>
-		<button md-button>
-			<md-icon>radio</md-icon> Better Than Genius&trade;
-		</button>
-		<button md-button>
-			<md-icon>map</md-icon> Discover
-		</button>
-		<button md-button>
-			<md-icon>screen_share</md-icon> Jukebox
-		</button>
-	</md-sidenav>
-
-	<div id="PageContent">
-		<router-outlet></router-outlet>
-	</div>
-</md-sidenav-container>
+<router-outlet></router-outlet>
