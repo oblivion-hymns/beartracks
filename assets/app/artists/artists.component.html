@@ -1,4 +1,13 @@
-<md-grid-list cols="5" rowHeight="192px">
+<div id="ArtistsToolbar">
+	<button md-icon-button (click)="zoomIn()">
+		<md-icon>zoom_in</md-icon>
+	</button>
+	<button md-icon-button (click)="zoomOut()">
+		<md-icon>zoom_out</md-icon>
+	</button>
+</div>
+
+<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}" rowHeight="{{zoomLevels[zoomIndex].height}}">
 		<md-grid-tile *ngFor="let artist of artists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
 			<md-grid-tile-footer>
 				<strong>{{artist.name}}</strong>
