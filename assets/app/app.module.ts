@@ -9,7 +9,7 @@ import { routing } from './app.routing';
 import { MaterialModule } from '@angular/material';
 import 'hammerjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCheckboxModule } from '@angular/material';
+import { MdButtonModule, MdCheckboxModule, MdIconModule, MdMenuModule, MdSidenavModule } from '@angular/material';
 
 import { AuthenticationComponent } from './auth/authentication.component';
 
@@ -40,6 +40,9 @@ import { MessageInputComponent } from './messages/message-input.component';
 		BrowserAnimationsModule,
 		MdButtonModule,
 		MdCheckboxModule,
+		MdIconModule,
+		MdMenuModule,
+		MdSidenavModule
 	],
 	bootstrap: [
 		AppComponent
