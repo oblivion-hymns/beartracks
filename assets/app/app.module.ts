@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { routing } from './app.routing';
+import { HttpModule } from '@angular/http';
 
 //Material
 import 'hammerjs';
@@ -38,6 +39,7 @@ import { JukeboxComponent } from './jukebox/jukebox.component';
 		FlexLayoutModule,
 		FormsModule,
 		routing,
+		HttpModule,
 
 		MaterialModule,
 		BrowserAnimationsModule,

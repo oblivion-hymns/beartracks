@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { Artist } from './artist';
+import { ArtistService } from './artist.service';
 
 @Component({
+	providers: [ArtistService],
 	selector: 'bt-artists',
 	styles: [`
 		md-grid-tile {
@@ -18,13 +22,16 @@ import { Component } from '@angular/core';
 	`],
 	templateUrl: './artists.component.html'
 })
-export class ArtistsComponent {
-	artists = [
-		{name: 'A Winged Victory for the Sullen', imageUrl: 'http://www.sagegateshead.com/files/images/applicationfiles/3919.5168.AWVFTSatDDRstudios_print/590x372.fitandcrop.jpg'},
-		{name: 'Stars of the Lid', imageUrl: 'http://www.kranky.net/images/photos/sotl.jpg'},
-		{name: 'Blackbear', imageUrl: 'http://isthmus.com/downloads/44056/download/calendar-Black-Bear.jpeg?cb=d9c0bd2ee9b616b8aa142c14d132ed50'},
-		{name: 'Purity Ring', imageUrl: 'https://ichef.bbci.co.uk/images/ic/976x549/p02cll7s.jpg'},
-		{name: 'Eden', imageUrl: 'https://i.ytimg.com/vi/0pVABElms84/maxresdefault.jpg'},
-		{name: 'Ólafur Arnalds', imageUrl: 'https://pbs.twimg.com/profile_images/742683628321181696/DOnkICFh.jpg'},
-	];
+export class ArtistsComponent implements OnInit {
+	artists: Artist[] = [];
+
+	constructor(private artistService: ArtistService) {}
+
+	ngOnInit() {
+		this.artistService.loadAll().subscribe(
+			(artists: Artist[]) => {
+				this.artists = artists;
+			}
+		)
+	}
 }

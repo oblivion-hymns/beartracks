@@ -1,5 +1,5 @@
 <md-grid-list cols="5" rowHeight="192px">
-		<md-grid-tile *ngFor="let artist of artists" [ngStyle]="{'background-image': 'url(' + artist.imageUrl + ')'}">
+		<md-grid-tile *ngFor="let artist of artists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
 			<md-grid-tile-footer>
 				<strong>{{artist.name}}</strong>
 			</md-grid-tile-footer>
