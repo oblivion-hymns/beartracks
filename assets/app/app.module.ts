@@ -9,29 +9,40 @@ import { routing } from './app.routing';
 import 'hammerjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
-import { MdButtonModule, MdCheckboxModule, MdGridListModule, MdIconModule,
+import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIconModule,
 		MdMenuModule, MdSidenavModule, MdTabsModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 //App-specific
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { ArtistsComponent } from './artists/artists.component';
 import { AlbumsComponent } from './albums/albums.component';
+import { RadioComponent } from './radio/radio.component';
+import { DiscoveryComponent } from './discovery/discovery.component';
+import { JukeboxComponent } from './jukebox/jukebox.component';
 
 //decorator
 @NgModule({
 	declarations: [
 		AppComponent,
 
+		DashboardComponent,
 		ArtistsComponent,
-		AlbumsComponent
+		AlbumsComponent,
+		RadioComponent,
+		DiscoveryComponent,
+		JukeboxComponent
 	],
 	imports: [
 		BrowserModule,
+		FlexLayoutModule,
 		FormsModule,
 		routing,
 
 		MaterialModule,
 		BrowserAnimationsModule,
 		MdButtonModule,
+		MdCardModule,
 		MdCheckboxModule,
 		MdGridListModule,
 		MdIconModule,
