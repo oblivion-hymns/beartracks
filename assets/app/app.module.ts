@@ -6,6 +6,11 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
 import { routing } from './app.routing';
 
+import { MaterialModule } from '@angular/material';
+import 'hammerjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdButtonModule, MdCheckboxModule } from '@angular/material';
+
 import { AuthenticationComponent } from './auth/authentication.component';
 
 import { MessagesComponent } from './messages/messages.component';
@@ -29,7 +34,12 @@ import { MessageInputComponent } from './messages/message-input.component';
 	imports: [
 		BrowserModule,
 		FormsModule,
-		routing
+		routing,
+
+		MaterialModule,
+		BrowserAnimationsModule,
+		MdButtonModule,
+		MdCheckboxModule,
 	],
 	bootstrap: [
 		AppComponent
