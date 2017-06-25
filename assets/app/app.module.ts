@@ -14,13 +14,15 @@ import { MdButtonModule, MdCheckboxModule, MdGridListModule, MdIconModule,
 
 //App-specific
 import { ArtistsComponent } from './artists/artists.component';
+import { AlbumsComponent } from './albums/albums.component';
 
 //decorator
 @NgModule({
 	declarations: [
 		AppComponent,
 
-		ArtistsComponent
+		ArtistsComponent,
+		AlbumsComponent
 	],
 	imports: [
 		BrowserModule,

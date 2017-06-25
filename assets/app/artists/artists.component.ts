@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
 			background-repeat: no-repeat;
 			background-position: center center;
 			background-size: cover;
-			opacity: 0.65;
-			transition:.25s;
+			opacity: 0.70;
+			transition: .15s;
 		}
 
 		md-grid-tile:hover {

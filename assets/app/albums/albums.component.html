@@ -1,0 +1,9 @@
+<md-grid-list cols="5" rowHeight="192px">
+		<md-grid-tile *ngFor="let album of albums" [ngStyle]="{'background-image': 'url(' + album.imageUrl + ')'}">
+			<md-grid-tile-footer>
+				<span class="mat-tile-block-display">
+					{{album.artist.name}} &ndash; <em>{{album.name}}</em>
+				</span>
+			</md-grid-tile-footer>
+		</md-grid-tile>
+</md-grid-list>
