@@ -1,35 +1,25 @@
-import { NgModule } from '@angular/core';
+//Basic
+import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header.component';
+import { NgModule } from '@angular/core';
 import { routing } from './app.routing';
 
-import { MaterialModule } from '@angular/material';
+//Material
 import 'hammerjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCheckboxModule, MdIconModule, MdMenuModule, MdSidenavModule } from '@angular/material';
+import { MaterialModule } from '@angular/material';
+import { MdButtonModule, MdCheckboxModule, MdGridListModule, MdIconModule, MdMenuModule, MdSidenavModule } from '@angular/material';
 
-import { AuthenticationComponent } from './auth/authentication.component';
-
-import { MessagesComponent } from './messages/messages.component';
-import { MessageComponent } from './messages/message.component';
-import { MessageListComponent } from './messages/message-list.component';
-import { MessageInputComponent } from './messages/message-input.component';
+//App-specific
+import { ArtistsComponent } from './artists/artists.component';
 
 //decorator
 @NgModule({
 	declarations: [
 		AppComponent,
-		HeaderComponent,
 
-		AuthenticationComponent,
-
-		MessageComponent,
-		MessageListComponent,
-		MessageInputComponent,
-		MessagesComponent
+		ArtistsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -40,6 +30,7 @@ import { MessageInputComponent } from './messages/message-input.component';
 		BrowserAnimationsModule,
 		MdButtonModule,
 		MdCheckboxModule,
+		MdGridListModule,
 		MdIconModule,
 		MdMenuModule,
 		MdSidenavModule

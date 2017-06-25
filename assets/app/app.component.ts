@@ -11,6 +11,7 @@ import { MessageService } from './messages/message.service';
 		}
 
 		md-sidenav-container {
+			background-color: rgb(27, 27, 27);
 			height: 100%;
 		}
 

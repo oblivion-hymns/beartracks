@@ -1,12 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
-
-import { AuthenticationComponent } from './auth/authentication.component';
-import { MessagesComponent } from './messages/messages.component';
+import { ArtistsComponent } from './artists/artists.component';
 
 const APP_ROUTES: Routes = [
-	{ path: '', redirectTo: '/messages', pathMatch: 'full' },
-	{ path: 'messages', component: MessagesComponent },
-	{ path: 'auth', component: AuthenticationComponent },
+	{ path: '', redirectTo: '/artists', pathMatch: 'full' },
+	{ path: 'artists', component: ArtistsComponent },
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);
