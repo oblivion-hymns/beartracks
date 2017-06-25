@@ -10,8 +10,19 @@ import { MessageService } from './messages/message.service';
 			padding: 50px;
 		}
 
-		md-tab-group {
+		md-toolbar {
 			background-color: rgb(40, 40, 40);
+		}
+
+		[md-button] {
+			text-transform: lowercase;
+		}
+
+		md-toolbar [md-button] {
+			color: rgba(255, 255, 255, 0.54);
+			height: 100%;
+			padding: 16px 32px;
+			width: 16%;
 		}
 
 		md-sidenav-container {
