@@ -14,7 +14,7 @@ export class ArtistService {
 	constructor(private http: Http) {}
 
 	loadAll() {
-		return this.http.get('http://localhost:3000/artists/all')
+		return this.http.get('http://bwilbur.com/artists/all')
 			.map((response: Response) => {
 				const data = response.json().obj;
 

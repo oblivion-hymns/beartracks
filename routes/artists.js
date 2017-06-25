@@ -6,9 +6,9 @@ var Artist = require('../models/artist');
 var router = express.Router();
 
 router.get('/', function(req, res, next){
-	/*var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 
-	fs.readdir(musicRoot, (err, files) => {
+	/*fs.readdir(musicRoot, (err, files) => {
 		files.forEach(file => {
 			var dirName = file;
 			var fullPath = musicRoot + '/' + dirName;
@@ -37,7 +37,7 @@ router.get('/', function(req, res, next){
 
 router.get('/all', function(req, res, next){
 	Artist.find({})
-		.sort('+nameKey')
+		.sort('nameKey')
 		.exec(function(err, artists){
 			if (err)
 			{
