@@ -5,7 +5,7 @@
 	</button>
 
 	<md-input-container id="FilterArtists">
-		<input mdInput maxlength="32" />
+		<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
 	</md-input-container>
 
 	<!-- Controls -->
@@ -18,7 +18,7 @@
 </div>
 
 <md-grid-list cols="{{zoomLevels[zoomIndex].scale}}" rowHeight="{{zoomLevels[zoomIndex].height}}">
-		<md-grid-tile *ngFor="let artist of artists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
+		<md-grid-tile *ngFor="let artist of displayArtists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
 			<md-grid-tile-footer>
 				<strong>{{artist.name}}</strong>
 			</md-grid-tile-footer>

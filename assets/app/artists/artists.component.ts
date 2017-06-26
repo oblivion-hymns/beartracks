@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { Artist } from './artist';
 import { ArtistService } from './artist.service';
@@ -46,14 +46,20 @@ import { ArtistService } from './artist.service';
 })
 export class ArtistsComponent implements OnInit {
 	artists: Artist[] = [];
+	displayArtists: Artist[] = [];
+
+	@Input() filterQuery = '';
 
 	zoomLevels = [
 		{scale: 2, height: 512},
+		{scale: 3, height: 384},
 		{scale: 4, height: 256},
-		{scale: 8, height: 128},
-		{scale: 16, height: 64}
+		{scale: 5, height: 224},
+		{scale: 6, height: 192},
+		{scale: 7, height: 160},
+		{scale: 8, height: 128}
 	];
-	zoomIndex = 1;
+	zoomIndex = 2;
 
 	constructor(private artistService: ArtistService) {}
 
@@ -61,8 +67,32 @@ export class ArtistsComponent implements OnInit {
 		this.artistService.loadAll().subscribe(
 			(artists: Artist[]) => {
 				this.artists = artists;
+				this.displayArtists = artists.slice();
 			}
 		)
+	}
+
+	set filterString(value) {
+		//Reset list
+		this.displayArtists = this.artists.slice();
+
+		if (value)
+		{
+			value = value.toLowerCase().trim();
+
+			if (value.length > 0)
+			{
+				this.displayArtists = this.displayArtists.filter(
+					artist => artist.name.toLowerCase().trim().includes(value));
+			}
+
+			console.log(this.displayArtists, this.artists);
+		}
+	}
+
+	filterArtists(query) {
+		this.filterQuery = query;
+		console.log(query);
 	}
 
 	zoomOut() {
