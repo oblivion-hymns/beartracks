@@ -11,7 +11,7 @@ import { ArtistService } from './artist.service';
 			background-color: rgba(0, 0, 0, 0.54);
 			border-radius: 3px;
 			padding: 12px;
-			position: absolute;
+			position: fixed;
 			right: 0px;
 			top: 96px;
 			z-index: 5;
