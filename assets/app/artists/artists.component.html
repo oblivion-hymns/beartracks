@@ -1,4 +1,14 @@
 <div id="ArtistsToolbar">
+	<!--Search -->
+	<button md-icon-button>
+		<md-icon>search</md-icon>
+	</button>
+
+	<md-input-container id="FilterArtists">
+		<input mdInput maxlength="32" />
+	</md-input-container>
+
+	<!-- Controls -->
 	<button md-icon-button (click)="zoomIn()">
 		<md-icon>zoom_in</md-icon>
 	</button>

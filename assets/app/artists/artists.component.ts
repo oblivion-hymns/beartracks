@@ -17,6 +17,18 @@ import { ArtistService } from './artist.service';
 			z-index: 5;
 		}
 
+		#FilterArtists {
+
+		}
+
+		#FilterArtists input {
+			color: rgba(255, 255, 255, 0.54);
+		}
+
+		.mat-input-ripple {
+			background-color: rgba(255, 255, 255, 0.87);
+		}
+
 		md-grid-tile {
 			background-repeat: no-repeat;
 			background-position: center center;
