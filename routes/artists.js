@@ -5,11 +5,22 @@ var Artist = require('../models/artist');
 
 var router = express.Router();
 
-router.get('/', function(req, res, next){
-	res.render('index');
-});
+router.get('/', baseRoute);
+router.get('/all', loadAll);
 
-router.get('/all', function(req, res, next){
+/**
+ * Renders index
+ */
+function baseRoute(req, res)
+{
+	res.render('index');
+}
+
+/**
+ * Returns a list of all artists
+ */
+function loadAll(req, res)
+{
 	Artist.find({})
 		.sort('nameKey')
 		.exec(function(err, artists){
@@ -26,40 +37,6 @@ router.get('/all', function(req, res, next){
 				obj: artists
 			});
 		});
-});
-
-router.get('/sync', function(req, res, next){
-	Artist.remove({}, function(){});
-
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-
-	fs.readdir(musicRoot, (err, files) => {
-		files.forEach(file => {
-			var dirName = file;
-			var fullPath = musicRoot + '/' + dirName;
-			var imgPath = fullPath + '/artist.png';
-
-			fs.stat(imgPath, function(err, stat){
-				var artist = new Artist();
-				artist.name = dirName;
-				artist.nameKey = dirName.toLowerCase();
-
-				if (err == null)
-				{
-					var newPath = __dirname + '/../public/img/artists/' + artist.name + '.png';
-					fs.createReadStream(imgPath).pipe(fs.createWriteStream(newPath));
-
-					nameEscaped = artist.name.replace(new RegExp(' ', 'g'), '%20');
-					artist.imagePath = '/img/artists/' + nameEscaped + '.png';
-				}
-
-				console.log("Found " + artist.name);
-				artist.save();
-			});
-		});
-	});
-
-	res.render('index');
-});
+}
 
 module.exports = router;
