@@ -5,6 +5,7 @@ var recursiveReaddir = require('recursive-readdir');
 var path = require ('path');
 
 var Artist = require('../models/artist');
+var Album = require('../models/album');
 
 var router = express.Router();
 router.get('/', baseRoute);
@@ -33,6 +34,7 @@ function sync(req, res)
 	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 
 	recursiveReaddir(musicRoot, [ignoreFunction], function(err, files){
+		var errors = [];
 		for (var i in files)
 		{
 			var file = files[i];
@@ -49,7 +51,7 @@ function sync(req, res)
 					var trackNum = tags.trackNumber;
 					var trackTitle = tags.title;
 
-					console.log('' + artist + ' - "' + trackTitle + '"');
+
 
 					break;
 				case '.png':
