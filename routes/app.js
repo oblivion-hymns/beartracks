@@ -1,11 +1,12 @@
 var express = require('express');
 var fs = require('fs');
 var id3 = require('node-id3');
-var recursiveReaddir = require('recursive-readdir');
+var recursiveReaddirSync = require('recursive-readdir-sync');
 var path = require ('path');
 
 var Artist = require('../models/artist');
 var Album = require('../models/album');
+var Song = require ('../models/song');
 
 var router = express.Router();
 router.get('/', baseRoute);
@@ -19,22 +20,51 @@ function baseRoute(req, res)
 	res.render('index');
 }
 
-function ignoreFunction(file, stats)
-{
-	return false;
-}
-
 /**
  * Syncs all music data
  */
 function sync(req, res)
 {
-	Artist.remove({}, function(){});
+	Artist.deleteMany({});
+	Album.deleteMany({});
+	Song.deleteMany({});
 
 	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var files = recursiveReaddirSync(musicRoot);
+	var data = [];
 
-	recursiveReaddir(musicRoot, [ignoreFunction], function(err, files){
-		var errors = [];
+	//Prune for artists
+	for (var i in files)
+	{
+		var file = files[i];
+		var fileType = path.extname(file);
+
+		var path = file;
+		var tags = null;
+		var isSong = false;
+		var isAlbumArt = false;
+		var isArtistArt = false;
+
+		if (fileType == '.mp3')
+		{
+			tags = id3.read(file);
+			isSong = true;
+			isAlbumArt = false;
+			isArtistArt = false;
+		}
+
+		data.push({
+			path: file,
+			tags: tags,
+			isSong: isSong,
+			isAlbumArt: isAlbumArt,
+			isArtistArt: isArtistArt
+		});
+	}
+
+	/*recursiveReaddir(musicRoot, function(err, fileList){
+
+
 		for (var i in files)
 		{
 			var file = files[i];
@@ -51,7 +81,31 @@ function sync(req, res)
 					var trackNum = tags.trackNumber;
 					var trackTitle = tags.title;
 
+					if (!trackNum || trackNum == '')
+					{
+						console.error('Error loading ' + artist + '- "' + trackTitle + '": No track num found');
+					}
 
+					//Determine disc number
+					var discNum = 1;
+					var dirName = path.dirname(file).split('/').pop();
+					if (dirName.match(/^Disc d+$/))
+					{
+						var matches = str.match(/\d+$/);
+						if (matches)
+						{
+							discNum = matches[0];
+							console.log("Disc number " + discNum);
+						}
+					}
+
+					//Manage artist
+					var artistKey = tags.artist.toLowerCase().replace(' ', '');
+					var albumKey = artistKey + album.toLowerCase().replace(' ', '') + year;
+					var songKey = artistKey + albumKey + trackTitle.toLowerCase().replace(' ', '') + trackNum;
+
+					lastArtistObj = artistObj;
+					lastAlbumObj = albumObj;
 
 					break;
 				case '.png':
@@ -60,7 +114,9 @@ function sync(req, res)
 					break;
 			}
 		}
-	});
+	});*/
+
+
 
 	//Iterate through all of the lowest level files
 	//	Get artist image and save on the way down
