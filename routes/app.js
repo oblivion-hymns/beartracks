@@ -1,6 +1,12 @@
 var express = require('express');
-var router = express.Router();
+var fs = require('fs');
+var id3 = require('node-id3');
+var recursiveReaddir = require('recursive-readdir');
+var path = require ('path');
 
+var Artist = require('../models/artist');
+
+var router = express.Router();
 router.get('/', baseRoute);
 router.post('/sync', sync);
 
@@ -12,6 +18,11 @@ function baseRoute(req, res)
 	res.render('index');
 }
 
+function ignoreFunction(file, stats)
+{
+	return false;
+}
+
 /**
  * Syncs all music data
  */
@@ -21,7 +32,43 @@ function sync(req, res)
 
 	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 
-	fs.readdir(musicRoot, (err, files) => {
+	recursiveReaddir(musicRoot, [ignoreFunction], function(err, files){
+		for (var i in files)
+		{
+			var file = files[i];
+			var fileType = path.extname(file);
+
+			switch (fileType)
+			{
+				case '.mp3':
+					var tags = id3.read(file);
+					var artist = tags.artist;
+					var album = tags.album;
+					var year = tags.year;
+					var genre = tags.genre;
+					var trackNum = tags.trackNumber;
+					var trackTitle = tags.title;
+
+					console.log('' + artist + ' - "' + trackTitle + '"');
+
+					break;
+				case '.png':
+					break;
+				default:
+					break;
+			}
+		}
+	});
+
+	//Iterate through all of the lowest level files
+	//	Get artist image and save on the way down
+	//	Get all metadata and organize appropriately
+	//		Check if artist exists (name key)
+	//		Check if albums exist (by name + year)
+	//		Check if tracks exist (by name)
+
+
+	/*fs.readdir(musicRoot, (err, files) => {
 		files.forEach(file => {
 			var dirName = file;
 			var fullPath = musicRoot + '/' + dirName;
@@ -45,7 +92,7 @@ function sync(req, res)
 				artist.save();
 			});
 		});
-	});
+	});*/
 
 	res.render('index');
 }

@@ -1,10 +1,8 @@
 var express = require('express');
-var fs = require('fs');
 
 var Artist = require('../models/artist');
 
 var router = express.Router();
-
 router.get('/', baseRoute);
 router.get('/all', loadAll);
 
@@ -34,7 +32,7 @@ function loadAll(req, res)
 
 			res.status(200).json({
 				message: 'Success',
-				obj: artists
+				artists: artists
 			});
 		});
 }
