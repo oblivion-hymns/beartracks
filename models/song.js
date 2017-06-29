@@ -4,7 +4,6 @@ var Schema = mongoose.Schema;
 var schema = new Schema({
 	name: {type: String, required: true},
 	nameKey: {type: String, required: true, unique: true},
-	year: {type: Number, required: true},
 	length: {type: String},
 	genre: {type: String, required: true},
 	artist: {type: Schema.Types.ObjectId, ref: 'Artist', required: true},

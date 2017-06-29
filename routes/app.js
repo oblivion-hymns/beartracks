@@ -2,7 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var id3 = require('node-id3');
 var recursiveReaddirSync = require('recursive-readdir-sync');
-var path = require ('path');
+var path = require('path');
 
 var Artist = require('../models/artist');
 var Album = require('../models/album');
@@ -29,9 +29,12 @@ function sync(req, res)
 	Album.deleteMany({});
 	Song.deleteMany({});
 
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
 	var files = recursiveReaddirSync(musicRoot);
-	var data = [];
+	var allData = [];
+
+	console.log('Scanning files for data...');
 
 	//Prune for artists
 	for (var i in files)
@@ -39,119 +42,108 @@ function sync(req, res)
 		var file = files[i];
 		var fileType = path.extname(file);
 
-		var path = file;
-		var tags = null;
-		var isSong = false;
 		var isAlbumArt = false;
 		var isArtistArt = false;
+		var isSong = false;
+		var filePath = file;
+		var tags = null;
 
 		if (fileType == '.mp3')
 		{
 			tags = id3.read(file);
 			isSong = true;
-			isAlbumArt = false;
-			isArtistArt = false;
+		}
+		else if (file.indexOf('folder.png') > -1)
+		{
+			isAlbumArt = true;
+		}
+		else if (file.indexOf('artist.png') > -1)
+		{
+			isArtistArt = true;
 		}
 
-		data.push({
-			path: file,
-			tags: tags,
-			isSong: isSong,
+		console.log('Adding ' + filePath);
+
+		allData.push({
 			isAlbumArt: isAlbumArt,
-			isArtistArt: isArtistArt
+			isArtistArt: isArtistArt,
+			isSong: isSong,
+			path: filePath,
+			tags: tags
 		});
 	}
 
-	/*recursiveReaddir(musicRoot, function(err, fileList){
+	var dataByArtist = {};
+	for (var i in allData)
+	{
+		var data = allData[i];
+		var tags = data.tags;
 
-
-		for (var i in files)
+		if (data.isSong)
 		{
-			var file = files[i];
-			var fileType = path.extname(file);
+			//Artist
+			var artistName = tags.artist;
+			var artistNameKey = tags.artist.toLowerCase().replace(' ', '');
 
-			switch (fileType)
+			if (!dataByArtist[artistNameKey])
 			{
-				case '.mp3':
-					var tags = id3.read(file);
-					var artist = tags.artist;
-					var album = tags.album;
-					var year = tags.year;
-					var genre = tags.genre;
-					var trackNum = tags.trackNumber;
-					var trackTitle = tags.title;
+				dataByArtist[artistNameKey] = {
+					name: artistName,
+					nameKey: artistNameKey,
+					albums: []
+				};
+			}
 
-					if (!trackNum || trackNum == '')
-					{
-						console.error('Error loading ' + artist + '- "' + trackTitle + '": No track num found');
-					}
+			var albumName = tags.album;
+			var year = tags.year;
+			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(' ', '') + year;
+			if (!dataByArtist[artistNameKey][albumNameKey])
+			{
+				dataByArtist[artistNameKey][albumNameKey] = {
+					name: albumName,
+					nameKey: albumNameKey,
+					year: year,
+					songs: []
+				}
+			}
 
-					//Determine disc number
-					var discNum = 1;
-					var dirName = path.dirname(file).split('/').pop();
-					if (dirName.match(/^Disc d+$/))
-					{
-						var matches = str.match(/\d+$/);
-						if (matches)
-						{
-							discNum = matches[0];
-							console.log("Disc number " + discNum);
-						}
-					}
+			//Determine disc number
+			var discNum = 1;
+			var dirName = path.dirname(data.path).split('/').pop();
+			if (dirName.match(/^Disc d+$/))
+			{
+				var matches = str.match(/\d+$/);
+				if (matches)
+				{
+					discNum = matches[0];
+					console.log("Disc number " + discNum);
+				}
+			}
 
-					//Manage artist
-					var artistKey = tags.artist.toLowerCase().replace(' ', '');
-					var albumKey = artistKey + album.toLowerCase().replace(' ', '') + year;
-					var songKey = artistKey + albumKey + trackTitle.toLowerCase().replace(' ', '') + trackNum;
+			var trackName = tags.title;
+			var trackNum = tags.trackNumber;
+			var genre = tags.genre;
+			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + trackNum;
+			if (!dataByArtist[artistNameKey][albumNameKey][discNum])
+			{
+				dataByArtist[artistNameKey][albumNameKey][discNum] = [];
+			}
 
-					lastArtistObj = artistObj;
-					lastAlbumObj = albumObj;
-
-					break;
-				case '.png':
-					break;
-				default:
-					break;
+			if (!dataByArtist[artistNameKey][albumNameKey][discNum][trackNum])
+			{
+				dataByArtist[artistNameKey][albumNameKey][discNum][trackNum] = {
+					name: trackName,
+					nameKey: trackNameKey,
+					length: null,
+					genre: genre,
+					discNum: discNum,
+					trackNum: trackNum
+				};
 			}
 		}
-	});*/
+	}
 
-
-
-	//Iterate through all of the lowest level files
-	//	Get artist image and save on the way down
-	//	Get all metadata and organize appropriately
-	//		Check if artist exists (name key)
-	//		Check if albums exist (by name + year)
-	//		Check if tracks exist (by name)
-
-
-	/*fs.readdir(musicRoot, (err, files) => {
-		files.forEach(file => {
-			var dirName = file;
-			var fullPath = musicRoot + '/' + dirName;
-			var imgPath = fullPath + '/artist.png';
-
-			fs.stat(imgPath, function(err, stat){
-				var artist = new Artist();
-				artist.name = dirName;
-				artist.nameKey = dirName.toLowerCase();
-
-				if (err == null)
-				{
-					var newPath = __dirname + '/../public/img/artists/' + artist.name + '.png';
-					fs.createReadStream(imgPath).pipe(fs.createWriteStream(newPath));
-
-					nameEscaped = artist.name.replace(new RegExp(' ', 'g'), '%20');
-					artist.imagePath = '/img/artists/' + nameEscaped + '.png';
-				}
-
-				console.log("Found " + artist.name);
-				artist.save();
-			});
-		});
-	});*/
-
+	console.log(dataByArtist);
 	res.render('index');
 }
 
