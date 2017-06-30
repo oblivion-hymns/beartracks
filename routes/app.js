@@ -42,6 +42,11 @@ function sync(req, res)
 		var file = files[i];
 		var fileType = path.extname(file);
 
+		if (file.indexOf('.cache.json') > -1)
+		{
+			console.log('Found cache');
+		}
+
 		var isAlbumArt = false;
 		var isArtistArt = false;
 		var isSong = false;
@@ -116,7 +121,6 @@ function sync(req, res)
 				if (matches)
 				{
 					discNum = matches[0];
-					console.log("Disc number " + discNum);
 				}
 			}
 
@@ -143,7 +147,6 @@ function sync(req, res)
 		}
 	}
 
-	console.log(dataByArtist);
 	res.render('index');
 }
 
