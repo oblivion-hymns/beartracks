@@ -78,15 +78,9 @@ export class ArtistsComponent implements OnInit {
 
 		if (value)
 		{
-			value = value.toLowerCase().trim();
-
-			if (value.length > 0)
-			{
-				this.displayArtists = this.displayArtists.filter(
-					artist => artist.name.toLowerCase().trim().includes(value));
-			}
-
-			console.log(this.displayArtists, this.artists);
+			value = value.toLowerCase();
+			this.displayArtists = this.displayArtists.filter(
+				artist => artist.nameKey.includes(value));
 		}
 	}
 

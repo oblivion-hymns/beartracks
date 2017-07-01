@@ -54,7 +54,7 @@ function sync(req, res)
 		var fileType = path.extname(file);
 
 		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
-		if (!cached && fileType == '.mp3')
+		if (!cached)
 		{
 			var isAlbumArt = false;
 			var isArtistArt = false;
@@ -67,7 +67,7 @@ function sync(req, res)
 				tags = id3.read(file);
 				isSong = true;
 			}
-			else if (file.indexOf('folder.png') > -1)
+			else if (file.indexOf('folder.png') > -1 || file.indexOf('folder.jpg') > -1)
 			{
 				isAlbumArt = true;
 			}
@@ -100,10 +100,11 @@ function sync(req, res)
 	for (var i in allData)
 	{
 		var data = allData[i];
-		var tags = data.tags;
 
 		if (data.isSong)
 		{
+			var tags = data.tags;
+
 			//Artist
 			var artistName = tags.artist.replace(/\0/g, '');
 			var artistNameKey = artistName.toLowerCase().replace(' ', '');
@@ -122,25 +123,25 @@ function sync(req, res)
 			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(' ', '') + year;
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
+				//Album art
+				var imagePath = null;
+				if (data.tags.image.imageBuffer)
+				{
+					var imageBuffer = data.tags.image.imageBuffer;
+					imagePath = 'public/img/albums/' + albumNameKey + '.png';
+					fs.writeFile(imagePath, imageBuffer, 'base64', function(err) {
+						console.log(err);
+					});
+				}
+
 				music[artistNameKey].albums[albumNameKey] = {
+					imagePath: imagePath,
 					name: albumName,
 					nameKey: albumNameKey,
 					year: year,
 					tracks: []
 				}
 			}
-
-			//Determine disc number
-			/*var discNum = 1;
-			var dirName = path.dirname(data.path).split('/').pop();
-			if (dirName.match(/^Disc d+$/))
-			{
-				var matches = str.match(/\d+$/);
-				if (matches)
-				{
-					discNum = matches[0];
-				}
-			}*/
 
 			var trackName = tags.title.replace(/\0/g, '');
 			var discNum = tags.partOfSet.replace(/\0/g, '');

@@ -16,12 +16,12 @@ export class ArtistService {
 	loadAll() {
 		return this.http.get('http://bwilbur.com/artists/all')
 			.map((response: Response) => {
-				const data = response.json().obj;
+				const data = response.json().artists;
 
 				let artists: Artist[] = [];
 				for (let artistData of data)
 				{
-					var artist = new Artist(artistData.name, artistData.imagePath);
+					var artist = new Artist(artistData.name, artistData.nameKey, artistData.imagePath);
 					artists.push(artist);
 				}
 				this.artists = artists;

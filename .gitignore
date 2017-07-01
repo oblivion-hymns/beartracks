@@ -3,5 +3,5 @@
 /typings
 /public/js/
 npm-debug.log
-/public/img/artists
 public/img/artists
+public/img/albums
