@@ -158,7 +158,6 @@ function sync(req, res)
 		}
 	}
 
-	console.log(music);
 
 	//Artists
 	for (var artistKey in music)
@@ -178,15 +177,15 @@ function sync(req, res)
 		for (var albumKey in albums)
 		{
 			var albumData = music[artistKey].albums[albumKey];
-			console.log(albumData);
-
 			var album = new Album();
 			album.name = albumData.name;
 			album.nameKey = albumData.nameKey;
 			album.year = albumData.year;
 			album.artist = artist._id;
 
-			Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true});
+			Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
+				console.log(error);
+			});
 
 			//Tracks
 			for (var trackKey in artist.tracks)
