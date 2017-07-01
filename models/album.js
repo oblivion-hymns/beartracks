@@ -6,7 +6,6 @@ var schema = new Schema({
 	nameKey: {type: String, required: true, unique: true},
 	year: {type: Number, required: true},
 	artist: {type: Schema.Types.ObjectId, ref: 'Artist', required: true},
-	songs: {type: Schema.Types.ObjectId, ref: 'Song', required: true},
 	imagePath: {type: String}
 });
 

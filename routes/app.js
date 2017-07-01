@@ -3,6 +3,8 @@ var extend = require('util')._extend;
 var fs = require('fs');
 var id3 = require('node-id3');
 var jsonFile = require('jsonfile');
+jsonFile.spaces = 2;
+
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
 
@@ -39,15 +41,11 @@ function sync(req, res)
 	var cachePath = musicRoot + '/.bearcache.json';
 	if (!fs.existsSync(cachePath))
 	{
-		jsonFile.writeFileSync(cachePath, {"files": []}, {spaces: 2});
+		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
-	var cache = require(cachePath);
-	console.log(cache);
-
-	console.log('Scanning library for data...');
-
-	//Prune for artists
+	//Manage artists
+	var cache = jsonFile.readFileSync(cachePath);
 	for (var i in files)
 	{
 		var file = files[i];
@@ -76,8 +74,6 @@ function sync(req, res)
 				isArtistArt = true;
 			}
 
-			console.log('Adding ' + filePath);
-
 			allData.push({
 				isAlbumArt: isAlbumArt,
 				isArtistArt: isArtistArt,
@@ -87,19 +83,18 @@ function sync(req, res)
 			});
 
 			cache.files.push(encodeURIComponent(file));
-			var json = JSON.stringify(cache);
-			fs.writeFile(cacheFilePath, json, 'utf8', function(){});
+			jsonFile.writeFileSync(cachePath, cache);
+
+			console.log('Added ' + filePath);
 		}
 		else
 		{
-			if (!isCache)
-			{
-				console.log('Skipping ' + file);
-			}
+			console.log('Skipped ' + file);
 		}
 	}
 
-	var dataByArtist = {};
+	//Now organize everything to be saved
+	var music = [];
 	for (var i in allData)
 	{
 		var data = allData[i];
@@ -149,24 +144,18 @@ function sync(req, res)
 			var trackNum = tags.trackNumber;
 			var genre = tags.genre;
 			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + trackNum;
-			if (!dataByArtist[artistNameKey][albumNameKey][discNum])
-			{
-				dataByArtist[artistNameKey][albumNameKey][discNum] = [];
-			}
-
-			if (!dataByArtist[artistNameKey][albumNameKey][discNum][trackNum])
-			{
-				dataByArtist[artistNameKey][albumNameKey][discNum][trackNum] = {
-					name: trackName,
-					nameKey: trackNameKey,
-					length: null,
-					genre: genre,
-					discNum: discNum,
-					trackNum: trackNum
-				};
-			}
+			dataByArtist[artistNameKey][albumNameKey].append({
+				name: trackName,
+				nameKey: trackNameKey,
+				length: null,
+				genre: genre,
+				discNum: discNum,
+				trackNum: trackNum
+			});
 		}
 	}
+
+	console.log(music);
 
 	res.render('index');
 }
