@@ -1,9 +1,26 @@
-<md-grid-list cols="5" rowHeight="192px">
-		<md-grid-tile *ngFor="let album of albums" [ngStyle]="{'background-image': 'url(' + album.imageUrl + ')'}">
-			<md-grid-tile-footer>
-				<span class="mat-tile-block-display">
-					{{album.artist.name}} &ndash; <em>{{album.name}}</em>
-				</span>
-			</md-grid-tile-footer>
-		</md-grid-tile>
+<div id="AlbumsToolbar">
+	<!--Search -->
+	<button md-icon-button>
+		<md-icon>search</md-icon>
+	</button>
+
+	<md-input-container id="FilterAlbums">
+		<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
+	</md-input-container>
+
+	<!-- Controls -->
+	<button md-icon-button (click)="zoomIn()">
+		<md-icon>zoom_in</md-icon>
+	</button>
+	<button md-icon-button (click)="zoomOut()">
+		<md-icon>zoom_out</md-icon>
+	</button>
+</div>
+
+<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}" rowHeight="{{zoomLevels[zoomIndex].height}}">
+	<md-grid-tile *ngFor="let album of displayAlbums" [ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}">
+		<md-grid-tile-footer>
+			<strong>{{album.name}}</strong>
+		</md-grid-tile-footer>
+	</md-grid-tile>
 </md-grid-list>

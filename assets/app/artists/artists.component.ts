@@ -17,29 +17,8 @@ import { ArtistService } from './artist.service';
 			z-index: 5;
 		}
 
-		#FilterArtists {
-
-		}
-
 		#FilterArtists input {
 			color: rgba(255, 255, 255, 0.54);
-		}
-
-		.mat-input-ripple {
-			background-color: rgba(255, 255, 255, 0.87);
-		}
-
-		md-grid-tile {
-			background-repeat: no-repeat;
-			background-position: center center;
-			background-size: cover;
-			opacity: 0.70;
-			transition: .15s;
-		}
-
-		md-grid-tile:hover {
-			cursor: pointer;
-			opacity: 1.0;
 		}
 	`],
 	templateUrl: './artists.component.html'

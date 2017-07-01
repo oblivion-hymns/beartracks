@@ -1,4 +1,7 @@
 export class Album {
-	constructor(public title: string,
-				public artist: string) {}
+	constructor(public name: string,
+				public nameKey: string,
+				public year: string,
+				public artistId: string,
+				public imagePath?: string) {}
 }
