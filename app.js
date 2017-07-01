@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 
 var appRoutes = require('./routes/app');
 var artistRoutes = require('./routes/artists');
+var albumRoutes = require('./routes/albums');
 
 var app = express();
 mongoose.connect('localhost:27017/beartracks');
@@ -32,6 +33,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/artists', artistRoutes);
+app.use('/albums', albumRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler

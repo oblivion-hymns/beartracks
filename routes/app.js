@@ -29,8 +29,20 @@ function baseRoute(req, res)
  */
 function sync(req, res)
 {
-	Artist.remove({}, function(error){});
-	Album.remove({}, function(error){});
+	Artist.remove({}, function(error){
+		if (error)
+		{
+			console.error('Error removing Artists: ');
+			console.error(error);
+		}
+	});
+	Album.remove({}, function(error){
+		if (error)
+		{
+			console.error('Error removing Albums: ');
+			console.error(error);
+		}
+	});
 	Track.remove({}, function(error){});
 
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
