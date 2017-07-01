@@ -2,6 +2,7 @@ var express = require('express');
 var extend = require('util')._extend;
 var fs = require('fs');
 var id3 = require('node-id3');
+var jsonFile = require('jsonfile');
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
 
@@ -35,24 +36,22 @@ function sync(req, res)
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
-	console.log('Scanning files for data...');
+	var cachePath = musicRoot + '/.bearcache.json';
+	if (!fs.existsSync(cachePath))
+	{
+		jsonFile.writeFileSync(cachePath, {"files": []}, {spaces: 2});
+	}
 
-	var cache = {};
-	var cacheFilePath = null;
+	var cache = require(cachePath);
+	console.log(cache);
+
+	console.log('Scanning library for data...');
 
 	//Prune for artists
 	for (var i in files)
 	{
 		var file = files[i];
 		var fileType = path.extname(file);
-
-		var isCache = (file.indexOf('.cache.json') > -1);
-		if (isCache)
-		{
-			cacheFilePath = file;
-			var cacheFile = require(cacheFilePath);
-			cache = extend(cache, cacheFile);
-		}
 
 		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
 		if (!cached)
