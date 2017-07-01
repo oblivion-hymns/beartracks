@@ -65,7 +65,8 @@ export class ArtistsComponent implements OnInit {
 		}
 	}
 
-	filterArtists(query) {
+	filterArtists(query)
+	{
 		this.filterQuery = query;
 	}
 
