@@ -42,7 +42,8 @@ export class ArtistsComponent implements OnInit {
 
 	constructor(private artistService: ArtistService) {}
 
-	ngOnInit() {
+	ngOnInit()
+	{
 		this.artistService.loadAll().subscribe(
 			(artists: Artist[]) => {
 				this.artists = artists;
@@ -51,7 +52,8 @@ export class ArtistsComponent implements OnInit {
 		)
 	}
 
-	set filterString(value) {
+	set filterString(value)
+	{
 		//Reset list
 		this.displayArtists = this.artists.slice();
 
@@ -65,17 +67,18 @@ export class ArtistsComponent implements OnInit {
 
 	filterArtists(query) {
 		this.filterQuery = query;
-		console.log(query);
 	}
 
-	zoomOut() {
+	zoomOut()
+	{
 		if (this.zoomIndex < this.zoomLevels.length-1)
 		{
 			this.zoomIndex += 1;
 		}
 	}
 
-	zoomIn() {
+	zoomIn()
+	{
 		if (this.zoomIndex > 0)
 		{
 			this.zoomIndex -= 1;
