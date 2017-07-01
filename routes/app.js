@@ -10,7 +10,7 @@ var recursiveReaddirSync = require('recursive-readdir-sync');
 
 var Artist = require('../models/artist');
 var Album = require('../models/album');
-var Song = require ('../models/song');
+var Track = require ('../models/track');
 
 var router = express.Router();
 router.get('/', baseRoute);

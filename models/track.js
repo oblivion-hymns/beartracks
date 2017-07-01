@@ -11,4 +11,4 @@ var schema = new Schema({
 	length: {type: String}
 });
 
-module.exports = mongoose.model('Song', schema);
+module.exports = mongoose.model('Track', schema);
