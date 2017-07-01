@@ -29,9 +29,9 @@ function baseRoute(req, res)
  */
 function sync(req, res)
 {
-	Artist.deleteMany({});
-	Album.deleteMany({});
-	Song.deleteMany({});
+	Artist.remove({});
+	Album.remove({});
+	Track.remove({});
 
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
@@ -44,6 +44,8 @@ function sync(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
+	jsonFile.writeFileSync(cachePath, {"files": []});
+
 	//Manage artists
 	var cache = jsonFile.readFileSync(cachePath);
 	for (var i in files)
@@ -52,7 +54,7 @@ function sync(req, res)
 		var fileType = path.extname(file);
 
 		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
-		if (!cached)
+		if (!cached && fileType == '.mp3')
 		{
 			var isAlbumArt = false;
 			var isArtistArt = false;
@@ -103,33 +105,33 @@ function sync(req, res)
 		if (data.isSong)
 		{
 			//Artist
-			var artistName = tags.artist;
-			var artistNameKey = tags.artist.toLowerCase().replace(' ', '');
+			var artistName = tags.artist.replace(/\0/g, '');
+			var artistNameKey = artistName.toLowerCase().replace(' ', '');
 
-			if (!dataByArtist[artistNameKey])
+			if (!music[artistNameKey])
 			{
-				dataByArtist[artistNameKey] = {
+				music[artistNameKey] = {
 					name: artistName,
 					nameKey: artistNameKey,
 					albums: []
 				};
 			}
 
-			var albumName = tags.album;
-			var year = tags.year;
+			var albumName = tags.album.replace(/\0/g, '');
+			var year = tags.year.replace(/\0/g, '');
 			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(' ', '') + year;
-			if (!dataByArtist[artistNameKey][albumNameKey])
+			if (!music[artistNameKey].albums[albumNameKey])
 			{
-				dataByArtist[artistNameKey][albumNameKey] = {
+				music[artistNameKey].albums[albumNameKey] = {
 					name: albumName,
 					nameKey: albumNameKey,
 					year: year,
-					songs: []
+					tracks: []
 				}
 			}
 
 			//Determine disc number
-			var discNum = 1;
+			/*var discNum = 1;
 			var dirName = path.dirname(data.path).split('/').pop();
 			if (dirName.match(/^Disc d+$/))
 			{
@@ -138,13 +140,14 @@ function sync(req, res)
 				{
 					discNum = matches[0];
 				}
-			}
+			}*/
 
-			var trackName = tags.title;
-			var trackNum = tags.trackNumber;
-			var genre = tags.genre;
+			var trackName = tags.title.replace(/\0/g, '');
+			var discNum = tags.partOfSet.replace(/\0/g, '');
+			var trackNum = tags.trackNumber.replace(/\0/g, '');
+			var genre = tags.genre.replace(/\0/g, '');
 			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + trackNum;
-			dataByArtist[artistNameKey][albumNameKey].append({
+			music[artistNameKey].albums[albumNameKey].tracks.push({
 				name: trackName,
 				nameKey: trackNameKey,
 				length: null,
@@ -156,6 +159,42 @@ function sync(req, res)
 	}
 
 	console.log(music);
+
+	//Artists
+	for (var artistKey in music)
+	{
+		var artistData = music[artistKey];
+		var artistId = null;
+
+		var artist = new Artist();
+		artist.name = artistData.name;
+		artist.nameKey = artistData.nameKey;
+
+		Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true});
+
+		var albums = artistData.albums;
+
+		//Albums
+		for (var albumKey in albums)
+		{
+			var albumData = music[artistKey].albums[albumKey];
+			console.log(albumData);
+
+			var album = new Album();
+			album.name = albumData.name;
+			album.nameKey = albumData.nameKey;
+			album.year = albumData.year;
+			album.artist = artist._id;
+
+			Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true});
+
+			//Tracks
+			for (var trackKey in artist.tracks)
+			{
+
+			}
+		}
+	}
 
 	res.render('index');
 }
