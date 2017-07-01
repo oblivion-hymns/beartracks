@@ -29,9 +29,9 @@ function baseRoute(req, res)
  */
 function sync(req, res)
 {
-	Artist.remove({});
-	Album.remove({});
-	Track.remove({});
+	Artist.remove({}, function(error){});
+	Album.remove({}, function(error){});
+	Track.remove({}, function(error){});
 
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
@@ -111,9 +111,29 @@ function sync(req, res)
 
 			if (!music[artistNameKey])
 			{
+				//Find artist image, if one exists
+				var imagePath = null;
+				var checkPath = path.dirname(data.path);
+
+				//Attempt to find artist image
+				for (var i = 0; i < 3; i++)
+				{
+					var potentialImagePath = checkPath + '/artist.png';
+					if (fs.existsSync(potentialImagePath))
+					{
+						var writePath = 'public/img/artists/' + artistNameKey + '.png';
+						imagePath = '/img/artists/' + artistNameKey + '.png';
+						fs.createReadStream(potentialImagePath).pipe(fs.createWriteStream(writePath));
+						break;
+					}
+
+					checkPath = path.dirname(checkPath);
+				}
+
 				music[artistNameKey] = {
 					name: artistName,
 					nameKey: artistNameKey,
+					imagePath: imagePath,
 					albums: []
 				};
 			}
@@ -128,9 +148,13 @@ function sync(req, res)
 				if (data.tags.image.imageBuffer)
 				{
 					var imageBuffer = data.tags.image.imageBuffer;
-					imagePath = 'public/img/albums/' + albumNameKey + '.png';
-					fs.writeFile(imagePath, imageBuffer, 'base64', function(err) {
-						console.log(err);
+					var writePath = 'public/img/albums/' + albumNameKey + '.png';
+					imagePath = '/img/albums/' + albumNameKey + '.png';
+					fs.writeFile(writePath, imageBuffer, 'base64', function(error) {
+						if (error)
+						{
+							console.log(error);
+						}
 					});
 				}
 
@@ -159,7 +183,6 @@ function sync(req, res)
 		}
 	}
 
-
 	//Artists
 	for (var artistKey in music)
 	{
@@ -169,8 +192,15 @@ function sync(req, res)
 		var artist = new Artist();
 		artist.name = artistData.name;
 		artist.nameKey = artistData.nameKey;
+		artist.imagePath = artistData.imagePath;
+		artist._id = null;
 
-		Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true});
+		Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
+			if (error)
+			{
+				console.log(error);
+			}
+		});
 
 		var albums = artistData.albums;
 
@@ -179,13 +209,18 @@ function sync(req, res)
 		{
 			var albumData = music[artistKey].albums[albumKey];
 			var album = new Album();
+			album._id = null;
 			album.name = albumData.name;
 			album.nameKey = albumData.nameKey;
 			album.year = albumData.year;
+			album.imagePath = albumData.imagePath;
 			album.artist = artist._id;
 
 			Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
-				console.log(error);
+				if (error)
+				{
+					console.log(error);
+				}
 			});
 
 			//Tracks
