@@ -24,6 +24,9 @@ function baseRoute(req, res)
 	res.render('index');
 }
 
+/**
+ * Parse ID3 tags for a given file
+ */
 function parseTags(filePath, allData, cache, cachePath)
 {
 	var fileObj = fs.readFileSync(filePath);
@@ -39,9 +42,12 @@ function parseTags(filePath, allData, cache, cachePath)
 		console.log('Added ' + filePath);
 	}).catch(function(reason){
 		console.error(reason);
-	});;
+	});
 }
 
+/**
+ * Saves an artist's data, including albums
+ */
 function saveArtist(artist, artistKey, artistData, music)
 {
 	Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
@@ -49,39 +55,71 @@ function saveArtist(artist, artistKey, artistData, music)
 		{
 			console.error(error);
 		}
-		saveAlbum(artist, artistKey, artistData, music);
+
+		var albums = artistData.albums;
+
+		//Albums
+		for (var albumKey in albums)
+		{
+			var albumData = music[artistKey].albums[albumKey];
+			var album = {
+				name: albumData.name,
+				nameKey: albumData.nameKey,
+				year: albumData.year,
+				imagePath: albumData.imagePath,
+				artist: artist._id
+			};
+
+			saveAlbums(artist, artistKey, album, albumKey, music);
+		}
 	});
 }
 
-function saveAlbum(artist, artistKey, artistData, music)
+/**
+ * Saves an artist's albums, including tracks
+ */
+function saveAlbums(artist, artistKey, album, albumKey, music)
 {
-	var albums = artistData.albums;
+	Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
+		if (error)
+		{
+			console.error(error);
+		}
 
-	//Albums
-	for (var albumKey in albums)
-	{
-		var albumData = music[artistKey].albums[albumKey];
-		var album = {
-			name: albumData.name,
-			nameKey: albumData.nameKey,
-			year: albumData.year,
-			imagePath: albumData.imagePath,
-			artist: artist._id
-		};
-
-		Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
-			if (error)
-			{
-				console.error(error);
-			}
-		});
+		var allTracks = music[artistKey].albums[albumKey].tracks;
 
 		//Tracks
-		for (var trackKey in artist.tracks)
+		for (var trackKey in allTracks)
 		{
+			var trackData = allTracks[trackKey];
+			var track = {
+				name: trackData.name,
+				nameKey: trackData.nameKey,
+				album: album._id,
+				discNum: trackData.discNum,
+				trackNum: trackData.trackNum,
+				genre: trackData.genre,
+				length: null
+			};
 
+			saveTracks(artist, track);
 		}
-	}
+	});
+}
+
+/**
+ * Saves an artist & album's tracks
+ */
+function saveTracks(artist, track)
+{
+	Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
+		if (error)
+		{
+			console.error(error);
+		}
+
+		console.log('Saved ' + artist.name + ' - "' + track.name + '"');
+	});
 }
 
 /**
@@ -105,7 +143,8 @@ function sync(req, res)
 	});
 	Track.remove({}, function(error){});
 
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
 	//var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
