@@ -20,7 +20,14 @@
 <md-grid-list cols="{{zoomLevels[zoomIndex].scale}}" rowHeight="{{zoomLevels[zoomIndex].height}}">
 	<md-grid-tile *ngFor="let album of displayAlbums" [ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}">
 		<md-grid-tile-footer>
-			<strong>{{album.name}}</strong>
+			<span>
+				<em style="display: inline-block; margin-bottom: 2px; font-weight: bold;">
+					{{album.name}}
+				</em><br />
+				<span style="font-size: 12px;">
+					{{album.artist.name}}
+				</span>
+			</span>
 		</md-grid-tile-footer>
 	</md-grid-tile>
 </md-grid-list>

@@ -232,8 +232,6 @@ function sync(req, res)
 						artist: artist._id
 					};
 
-					//console.log(albumData);
-
 					Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
 						if (error)
 						{

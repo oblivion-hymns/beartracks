@@ -14,7 +14,7 @@ function baseRoute(req, res)
 
 function loadAll(req, res)
 {
-	Album.find({}).sort('nameKey').exec(function(error, albums){
+	Album.find({}).sort('nameKey').populate('artist').exec(function(error, albums){
 		if (error)
 		{
 			console.log(error);
