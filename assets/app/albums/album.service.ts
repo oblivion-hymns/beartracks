@@ -28,6 +28,9 @@ export class AlbumService
 					var year = albumData.year;
 					var artist = albumData.artist;
 					var imagePath = albumData.imagePath;
+					imagePath = encodeURI(imagePath);
+
+					console.log(imagePath);
 
 					var album = new Album(name, nameKey, year, artist, imagePath);
 					albums.push(album);

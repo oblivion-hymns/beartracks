@@ -45,6 +45,10 @@ function parseTags(filePath, allData, cache, cachePath)
 function saveArtist(artist, artistKey, artistData, music)
 {
 	Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
+		if (error)
+		{
+			console.error(error);
+		}
 		saveAlbum(artist, artistKey, artistData, music);
 	});
 }
@@ -68,7 +72,7 @@ function saveAlbum(artist, artistKey, artistData, music)
 		Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
 			if (error)
 			{
-				console.log(error);
+				console.error(error);
 			}
 		});
 
@@ -148,26 +152,34 @@ function sync(req, res)
 
 		testIterations++;
 
-		if (testIterations >= 1000)
+		if (testIterations >= 2500)
 		{
-			return;
+			break;
 		}
 	}
 
 	Promise.all(promises).then(values => {
-		//Now organize everything to be saved
+		console.log('Organizing data to be saved...');
+
 		var music = [];
 		for (var i in allData)
 		{
 			var data = allData[i];
 			var tags = data.tags;
 
-		//	console.log(data, tags);
-
 			//Artist
-			var artistName = tags.artist.replace(/\0/g, '');
-			console.log('Organizing ' + artistName);
-			var artistNameKey = artistName.toLowerCase().replace(/ /g, '');
+			var artistName = null;
+			try
+			{
+				artistName = tags.artist.replace(/\0/g, '');
+			}
+			catch (e)
+			{
+				console.error('Error retrieving artist name for ', data.path, ': ');
+				throw e;
+			}
+
+			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}/g, '');
 
 			if (!music[artistNameKey])
 			{
@@ -198,9 +210,22 @@ function sync(req, res)
 				};
 			}
 
+
+
 			var albumName = tags.album.replace(/\0/g, '');
-			var year = tags.year.replace(/\0/g, '');
-			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(/ /g, '').replace('/', '') + year;
+
+			var year = null;
+			try
+			{
+				year = tags.year.replace(/\0/g, '');
+			}
+			catch (e)
+			{
+				console.error('Could not find year tag: ');
+				throw e;
+			}
+
+			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}/g, '') + year;
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
 				var albumImagePath = null;
