@@ -15,18 +15,64 @@ function baseRoute(req, res)
 
 function loadAll(req, res)
 {
-	Track.find({}).sort('discNum, trackNum').populate('album, album.artist').exec(function(error, albums){
-		if (error)
-		{
-			console.log(error);
-			return res.status(500).json({
-				message: 'An error occurred'
-			});
-		}
+	Track.find({}).sort('discNum, trackNum')
+		.populate('album')
+		.populate({
+			path: 'album',
+			populate: {
+				path: 'artist',
+				model: 'Artist'
+			}
+		})
+		.exec(function(error, tracks){
+			if (error)
+			{
+				console.log(error);
+				return res.status(500).json({
+					message: 'An error occurred'
+				});
+			}
 
-		res.status(200).json({
-			albums: albums
-		});
+			tracks = tracks.sort(
+				function(t1, t2)
+				{
+					//Is it a different album?
+					if (t1.album.nameKey > t2.album.nameKey)
+					{
+						return 1;
+					}
+					else if (t1.album.nameKey < t2.album.nameKey)
+					{
+						return -1;
+					}
+
+					//Is it a different disc?
+					if (t1.discNum > t2.discNum)
+					{
+						return 1;
+					}
+					else if (t1.discNum < t2.discNum)
+					{
+						return -1
+					}
+
+					//Must be a different track
+					if (t1.trackNum > t2.trackNum)
+					{
+						return 1;
+					}
+					else if (t1.trackNum < t2.trackNum)
+					{
+						return -1
+					}
+
+					return 0;
+				}
+			);
+
+			res.status(200).json({
+				tracks: tracks
+			});
 	});
 }
 

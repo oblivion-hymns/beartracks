@@ -23,7 +23,8 @@ import { AlbumService } from './album.service';
 	`],
 	templateUrl: './albums.component.html'
 })
-export class AlbumsComponent {
+export class AlbumsComponent implements OnInit
+{
 	albums: Album[] = [];
 	displayAlbums: Album[] = [];
 

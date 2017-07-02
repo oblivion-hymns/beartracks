@@ -18,7 +18,6 @@ export class AlbumService
 		return this.http.get('http://bwilbur.com/albums/all')
 			.map((response: Response) => {
 				const data = response.json().albums;
-				console.log(response.json());
 
 				let albums: Album[] = [];
 				for (let albumData of data)
@@ -29,8 +28,6 @@ export class AlbumService
 					var artist = albumData.artist;
 					var imagePath = albumData.imagePath;
 					imagePath = encodeURI(imagePath);
-
-					console.log(imagePath);
 
 					var album = new Album(name, nameKey, year, artist, imagePath);
 					albums.push(album);

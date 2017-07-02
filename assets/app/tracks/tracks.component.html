@@ -1,39 +1,33 @@
-<div id="TracksToolbar">
-	<!--Search -->
-	<button md-icon-button>
-		<md-icon>search</md-icon>
-	</button>
+<div fxLayout='row'>
+	<div fxFlex="70" fxFlexOffset="15">
+		<button md-icon-button style="width: 7%;">
+			<md-icon>search</md-icon>
+		</button>
 
-	<md-input-container id="FilterTracks">
-		<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
-	</md-input-container>
+		<md-input-container id="FilterTracks" style="width: 92%;">
+			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
+		</md-input-container>
+
+		<md-list>
+			<md-list-item class="track-list-item" *ngFor="let track of displayTracks">
+				<md-icon md-list-icon class="play-button">
+					play_arrow
+				</md-icon>
+
+				<img src="{{track.album.imagePath}}" />
+
+				<div style="float: right;">
+					<strong md-line>
+						{{track.name}}
+					</strong>
+					<div md-line>
+						{{track.album.artist.name}}
+					</div>
+					<div md-line>
+						<em>{{track.album.name}}</em>
+					</div>
+				</div>
+			</md-list-item>
+		</md-list>
+	</div>
 </div>
-
-<md-list>
-	<md-list-item *ngFor="let track of displayTracks">
-		<strong md-line>
-			{{track.name}}
-		</strong>
-		<div md-line>
-			{{track.album.artist.name}}
-		</div>
-		<div md-line>
-			<em>{{track.album.name}}</em>
-		</div>
-	</md-list-item>
-</md-list>
-
-<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}">
-	<md-grid-tile *ngFor="let album of displayAlbums" [ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}">
-		<md-grid-tile-footer>
-			<span>
-				<em style="display: inline-block; margin-bottom: 2px; font-weight: bold;">
-					{{album.name}}
-				</em><br />
-				<span style="font-size: 12px;">
-					{{album.artist.name}}
-				</span>
-			</span>
-		</md-grid-tile-footer>
-	</md-grid-tile>
-</md-grid-list>

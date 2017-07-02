@@ -5,16 +5,38 @@ import { TrackService } from './track.service';
 
 @Component({
 	providers: [TrackService],
-	selector: 'bt-albums',
+	selector: 'bt-tracks',
 	styles: [`
-		#TracksToolbar {
-			background-color: rgba(0, 0, 0, 0.54);
-			border-radius: 3px;
-			padding: 12px;
-			position: fixed;
-			right: 0px;
-			top: 96px;
-			z-index: 5;
+		.track-list-item
+		{
+			cursor: default;
+		}
+
+		.track-list-item img
+		{
+			border: 1px solid rgba(0, 0, 0, 0.54);
+			float: left;
+			margin-right: 16px;
+			width: 64px;
+		}
+
+		.track-list-item:hover
+		{
+			background-color: #222;
+		}
+
+		.track-list-item .play-button
+		{
+			color: rgba(255, 255, 255, 0.54);
+			font-size: 32px;
+			width: 32px;
+			height: 32px;
+		}
+
+		.track-list-item .play-button:hover
+		{
+			color: rgba(255, 255, 255, 0.87);
+			cursor: pointer;
 		}
 
 		#FilterTracks input {
@@ -23,7 +45,7 @@ import { TrackService } from './track.service';
 	=`],
 	templateUrl: './tracks.component.html'
 })
-export class TracksComponent
+export class TracksComponent implements OnInit
 {
 	tracks: Track[] = [];
 	displayTracks: Track[] = [];
@@ -38,7 +60,7 @@ export class TracksComponent
 			(tracks: Track[]) => {
 				this.tracks = tracks;
 				console.log(tracks);
-				this.displayTracks = tracks.slice();
+				this.displayTracks = this.tracks.slice();
 			}
 		)
 	}

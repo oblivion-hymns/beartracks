@@ -17,8 +17,7 @@ export class TrackService
 	{
 		return this.http.get('http://bwilbur.com/tracks/all')
 			.map((response: Response) => {
-				const data = response.json().albums;
-				console.log(response.json());
+				const data = response.json().tracks;
 
 				let tracks: Track[] = [];
 				for (let trackData of data)
