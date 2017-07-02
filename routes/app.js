@@ -37,7 +37,9 @@ function parseTags(filePath, allData, cache, cachePath)
 		jsonFile.writeFileSync(cachePath, cache);
 
 		console.log('Added ' + filePath);
-	});
+	}).catch(function(reason){
+		console.error(reason);
+	});;
 }
 
 function saveArtist(artist, artistKey, artistData, music)
@@ -99,8 +101,8 @@ function sync(req, res)
 	});
 	Track.remove({}, function(error){});
 
-	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
@@ -116,6 +118,9 @@ function sync(req, res)
 	var pathLookup = {};
 	var promises = [];
 	var cache = jsonFile.readFileSync(cachePath);
+
+	var testIterations = 0;
+
 	for (var i in files)
 	{
 		var file = files[i];
@@ -140,6 +145,13 @@ function sync(req, res)
 		{
 			console.log('Skipped ' + file);
 		}
+
+		testIterations++;
+
+		if (testIterations >= 1000)
+		{
+			return;
+		}
 	}
 
 	Promise.all(promises).then(values => {
@@ -154,6 +166,7 @@ function sync(req, res)
 
 			//Artist
 			var artistName = tags.artist.replace(/\0/g, '');
+			console.log('Organizing ' + artistName);
 			var artistNameKey = artistName.toLowerCase().replace(/ /g, '');
 
 			if (!music[artistNameKey])
@@ -263,6 +276,7 @@ function sync(req, res)
 				imagePath: artistData.imagePath
 			};
 
+			console.log('Saving ' + artistData.name);
 			saveArtist(artist, artistKey, artistData, music);
 		}
 

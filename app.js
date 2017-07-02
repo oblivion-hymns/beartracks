@@ -1,10 +1,11 @@
 var express = require('express');
-var path = require('path');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var path = require('path');
+var timeout = require('connect-timeout');
 
 var appRoutes = require('./routes/app');
 var artistRoutes = require('./routes/artists');
@@ -13,12 +14,18 @@ var albumRoutes = require('./routes/albums');
 var app = express();
 mongoose.connect('localhost:27017/beartracks');
 
+var server = app.listen(app.get('port'), function(){
+	console.log('listening');
+});
+server.timeout = 60000;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(timeout('57600s'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
