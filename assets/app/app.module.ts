@@ -18,6 +18,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ArtistsComponent } from './artists/artists.component';
 import { AlbumsComponent } from './albums/albums.component';
+import { TracksComponent } from './tracks/tracks.component';
 import { RadioComponent } from './radio/radio.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
@@ -30,6 +31,7 @@ import { JukeboxComponent } from './jukebox/jukebox.component';
 		DashboardComponent,
 		ArtistsComponent,
 		AlbumsComponent,
+		TracksComponent,
 		RadioComponent,
 		DiscoveryComponent,
 		JukeboxComponent
