@@ -59,6 +59,8 @@ function sync(req, res)
 	jsonFile.writeFileSync(cachePath, {"files": []});
 
 	//Manage artists
+	var pathLookup = {};
+	var promises = [];
 	var cache = jsonFile.readFileSync(cachePath);
 	for (var i in files)
 	{
@@ -78,9 +80,10 @@ function sync(req, res)
 			if (fileType == '.mp3')
 			{
 				var fileObj = fs.readFileSync(file);
+				pathLookup.fileObj = file;
 				//tags = id3.read(file);
 
-				id3.parse(fileObj).then(tags => {
+				id3.parseSync(fileObj).then(tags => {
 					allData.push({
 						path: filePath,
 						tags: tags.version
