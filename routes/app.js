@@ -62,7 +62,7 @@ function sync(req, res)
 	Track.remove({}, function(error){});
 
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test/Andrew Bird';
+	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
@@ -94,6 +94,7 @@ function sync(req, res)
 
 			if (fileType == '.mp3')
 			{
+				console.log('Adding ' + filePath);
 				promises.push(parseTags(filePath, allData, cache, cachePath));
 			}
 		}
@@ -111,9 +112,11 @@ function sync(req, res)
 			var data = allData[i];
 			var tags = data.tags;
 
+		//	console.log(data, tags);
+
 			//Artist
 			var artistName = tags.artist.replace(/\0/g, '');
-			var artistNameKey = artistName.toLowerCase().replace(' ', '');
+			var artistNameKey = artistName.toLowerCase().replace(/ /g, '');
 
 			if (!music[artistNameKey])
 			{
@@ -146,7 +149,7 @@ function sync(req, res)
 
 			var albumName = tags.album.replace(/\0/g, '');
 			var year = tags.year.replace(/\0/g, '');
-			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(' ', '') + year;
+			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(/ /g, '').replace('/', '') + year;
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
 				var albumImagePath = null;
@@ -185,10 +188,21 @@ function sync(req, res)
 			}
 
 			var trackName = tags.title.replace(/\0/g, '');
-			var discNum = tags['set-part'].replace(/\0/g, '');
-			var trackNum = tags.track.replace(/\0/g, '');
+			var trackNum = '' + tags.track;
+			trackNum = trackNum.replace(/\0/g, '');
 			var genre = tags.genre.replace(/\0/g, '');
 			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + trackNum;
+
+			var discNum = 0;
+			if (tags['set-part'])
+			{
+				discNum = tags['set-part'].replace(/\0/g, '');
+			}
+			else
+			{
+				console.log('Could not find disc num for ' + trackNameKey);
+			}
+
 			music[artistNameKey].albums[albumNameKey].tracks.push({
 				name: trackName,
 				nameKey: trackNameKey,
@@ -197,7 +211,6 @@ function sync(req, res)
 				discNum: discNum,
 				trackNum: trackNum
 			});
-
 		}
 
 		//Artists
@@ -250,6 +263,8 @@ function sync(req, res)
 		}
 
 		res.render('index');
+	}).catch(function(reason){
+		console.error(reason);
 	});
 
 }
