@@ -40,6 +40,44 @@ function parseTags(filePath, allData, cache, cachePath)
 	});
 }
 
+function saveArtist(artist, artistKey, artistData, music)
+{
+	Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
+		saveAlbum(artist, artistKey, artistData, music);
+	});
+}
+
+function saveAlbum(artist, artistKey, artistData, music)
+{
+	var albums = artistData.albums;
+
+	//Albums
+	for (var albumKey in albums)
+	{
+		var albumData = music[artistKey].albums[albumKey];
+		var album = {
+			name: albumData.name,
+			nameKey: albumData.nameKey,
+			year: albumData.year,
+			imagePath: albumData.imagePath,
+			artist: artist._id
+		};
+
+		Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
+			if (error)
+			{
+				console.log(error);
+			}
+		});
+
+		//Tracks
+		for (var trackKey in artist.tracks)
+		{
+
+		}
+	}
+}
+
 /**
  * Syncs all music data
  */
@@ -225,41 +263,7 @@ function sync(req, res)
 				imagePath: artistData.imagePath
 			};
 
-			Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
-				if (error)
-				{
-					console.log(error);
-				}
-
-				var albums = artistData.albums;
-
-				//Albums
-				for (var albumKey in albums)
-				{
-					var albumData = music[artistKey].albums[albumKey];
-					var album = {
-						name: albumData.name,
-						nameKey: albumData.nameKey,
-						year: albumData.year,
-						imagePath: albumData.imagePath,
-						artist: artist._id
-					};
-
-					Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
-						if (error)
-						{
-							console.log(error);
-						}
-					});
-
-					//Tracks
-					for (var trackKey in artist.tracks)
-					{
-
-					}
-				}
-
-			});
+			saveArtist(artist, artistKey, artistData, music);
 		}
 
 		res.render('index');

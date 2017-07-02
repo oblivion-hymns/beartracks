@@ -30,13 +30,12 @@ export class AlbumsComponent {
 	@Input() filterQuery = '';
 
 	zoomLevels = [
-		{scale: 2, height: 512},
-		{scale: 3, height: 384},
-		{scale: 4, height: 256},
-		{scale: 5, height: 224},
-		{scale: 6, height: 192},
-		{scale: 7, height: 160},
-		{scale: 8, height: 128}
+		{scale: 4},
+		{scale: 6},
+		{scale: 8},
+		{scale: 10},
+		{scale: 12},
+		{scale: 14}
 	];
 	zoomIndex = 2;
 
@@ -60,7 +59,8 @@ export class AlbumsComponent {
 		{
 			value = value.toLowerCase();
 			this.displayAlbums = this.displayAlbums.filter(
-				album => album.nameKey.includes(value));
+				album => album.nameKey.includes(value.replace(/ /g, ''))
+			);
 		}
 	}
 

@@ -17,7 +17,7 @@
 	</button>
 </div>
 
-<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}" rowHeight="{{zoomLevels[zoomIndex].height}}">
+<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}">
 	<md-grid-tile *ngFor="let album of displayAlbums" [ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}">
 		<md-grid-tile-footer>
 			<span>
