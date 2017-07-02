@@ -24,6 +24,22 @@ function baseRoute(req, res)
 	res.render('index');
 }
 
+function parseTags(filePath, allData, cache, cachePath)
+{
+	var fileObj = fs.readFileSync(filePath);
+	return id3.parse(fileObj).then(tags => {
+		allData.push({
+			path: filePath,
+			tags: tags
+		});
+
+		cache.files.push(encodeURIComponent(filePath));
+		jsonFile.writeFileSync(cachePath, cache);
+
+		console.log('Added ' + filePath);
+	});
+}
+
 /**
  * Syncs all music data
  */
@@ -65,7 +81,6 @@ function sync(req, res)
 	for (var i in files)
 	{
 		var file = files[i];
-		console.log(file);
 		var fileType = path.extname(file);
 
 		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
@@ -79,21 +94,7 @@ function sync(req, res)
 
 			if (fileType == '.mp3')
 			{
-				var fileObj = fs.readFileSync(file);
-				pathLookup.fileObj = file;
-				//tags = id3.read(file);
-
-				id3.parseSync(fileObj).then(tags => {
-					allData.push({
-						path: filePath,
-						tags: tags.version
-					});
-
-					cache.files.push(encodeURIComponent(file));
-					jsonFile.writeFileSync(cachePath, cache);
-
-					console.log('Added ' + filePath);
-				});
+				promises.push(parseTags(filePath, allData, cache, cachePath));
 			}
 		}
 		else
@@ -102,165 +103,157 @@ function sync(req, res)
 		}
 	}
 
-	//Now organize everything to be saved
-	var music = [];
-	for (var i in allData)
-	{
-		var data = allData[i];
-		var tags = data.tags;
-
-		console.log(data, tags);
-
-		//Artist
-		var artistName = tags.artist.replace(/\0/g, '');
-		var artistNameKey = artistName.toLowerCase().replace(' ', '');
-
-		if (!music[artistNameKey])
+	Promise.all(promises).then(values => {
+		//Now organize everything to be saved
+		var music = [];
+		for (var i in allData)
 		{
-			//Find artist image, if one exists
-			var imagePath = null;
-			var checkPath = path.dirname(data.path);
+			var data = allData[i];
+			var tags = data.tags;
 
-			//Attempt to find artist image
-			for (var i = 0; i < 3; i++)
+			//Artist
+			var artistName = tags.artist.replace(/\0/g, '');
+			var artistNameKey = artistName.toLowerCase().replace(' ', '');
+
+			if (!music[artistNameKey])
 			{
-				var potentialImagePath = checkPath + '/artist.png';
-				if (fs.existsSync(potentialImagePath))
+				//Find artist image, if one exists
+				var imagePath = null;
+				var checkPath = path.dirname(data.path);
+
+				//Attempt to find artist image
+				for (var i = 0; i < 3; i++)
 				{
-					var writePath = 'public/img/artists/' + artistNameKey + '.png';
-					imagePath = '/img/artists/' + artistNameKey + '.png';
-					fs.createReadStream(potentialImagePath).pipe(fs.createWriteStream(writePath));
-					break;
-				}
-
-				checkPath = path.dirname(checkPath);
-			}
-
-			music[artistNameKey] = {
-				name: artistName,
-				nameKey: artistNameKey,
-				imagePath: imagePath,
-				albums: []
-			};
-		}
-
-		var albumName = tags.album.replace(/\0/g, '');
-		var year = tags.year.replace(/\0/g, '');
-		var albumNameKey = artistNameKey + albumName.toLowerCase().replace(' ', '') + year;
-		if (!music[artistNameKey].albums[albumNameKey])
-		{
-			//Attempt to find artist image
-			for (var i = 0; i < 3; i++)
-			{
-				var potentialImagePath = checkPath + '/folder.png';
-				var potentialImagePath2 = checkPath + '/folder.jpg';
-				if (fs.existsSync(potentialImagePath))
-				{
-					var writePath = 'public/img/albums/' + albumNameKey + '.png';
-					imagePath = '/img/albums/' + albumNameKey + '.png';
-					fs.createReadStream(potentialImagePath).pipe(fs.createWriteStream(writePath));
-					break;
-				}
-				else if (fs.existsSync(potentialImagePath2))
-				{
-					var writePath = 'public/img/albums/' + albumNameKey + '.jpg';
-					imagePath = '/img/albums/' + albumNameKey + '.jpg';
-					fs.createReadStream(potentialImagePath2).pipe(fs.createWriteStream(writePath));
-					break;
-				}
-
-				checkPath = path.dirname(checkPath);
-			}
-
-			//Album art
-			/*var imagePath = null;
-			if (data.tags.image.imageBuffer)
-			{
-				var imageBuffer = data.tags.image.imageBuffer;
-				var writePath = 'public/img/albums/' + albumNameKey + '.png';
-				imagePath = '/img/albums/' + albumNameKey + '.png';
-				fs.writeFile(writePath, imageBuffer, 'base64', function(error) {
-					if (error)
+					var potentialImagePath = checkPath + '/artist.png';
+					if (fs.existsSync(potentialImagePath))
 					{
-						console.log(error);
+						var writePath = 'public/img/artists/' + artistNameKey + '.png';
+						imagePath = '/img/artists/' + artistNameKey + '.png';
+						fs.createReadStream(potentialImagePath).pipe(fs.createWriteStream(writePath));
+						break;
 					}
-				});
-			}*/
 
-			music[artistNameKey].albums[albumNameKey] = {
-				imagePath: imagePath,
-				name: albumName,
-				nameKey: albumNameKey,
-				year: year,
-				tracks: []
+					checkPath = path.dirname(checkPath);
+				}
+
+				music[artistNameKey] = {
+					name: artistName,
+					nameKey: artistNameKey,
+					imagePath: imagePath,
+					albums: []
+				};
 			}
+
+			var albumName = tags.album.replace(/\0/g, '');
+			var year = tags.year.replace(/\0/g, '');
+			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(' ', '') + year;
+			if (!music[artistNameKey].albums[albumNameKey])
+			{
+				var albumImagePath = null;
+				var checkPath = path.dirname(data.path);
+
+				//Attempt to find artist image
+				for (var i = 0; i < 3; i++)
+				{
+					var potentialImagePath = checkPath + '/folder.png';
+					var potentialImagePath2 = checkPath + '/folder.jpg';
+					if (fs.existsSync(potentialImagePath))
+					{
+						var writePath = 'public/img/albums/' + albumNameKey + '.png';
+						albumImagePath = '/img/albums/' + albumNameKey + '.png';
+						fs.createReadStream(potentialImagePath).pipe(fs.createWriteStream(writePath));
+						break;
+					}
+					else if (fs.existsSync(potentialImagePath2))
+					{
+						var writePath = 'public/img/albums/' + albumNameKey + '.jpg';
+						albumImagePath = '/img/albums/' + albumNameKey + '.jpg';
+						fs.createReadStream(potentialImagePath2).pipe(fs.createWriteStream(writePath));
+						break;
+					}
+
+					checkPath = path.dirname(checkPath);
+				}
+
+				music[artistNameKey].albums[albumNameKey] = {
+					imagePath: albumImagePath,
+					name: albumName,
+					nameKey: albumNameKey,
+					year: year,
+					tracks: []
+				}
+			}
+
+			var trackName = tags.title.replace(/\0/g, '');
+			var discNum = tags['set-part'].replace(/\0/g, '');
+			var trackNum = tags.track.replace(/\0/g, '');
+			var genre = tags.genre.replace(/\0/g, '');
+			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + trackNum;
+			music[artistNameKey].albums[albumNameKey].tracks.push({
+				name: trackName,
+				nameKey: trackNameKey,
+				length: null,
+				genre: genre,
+				discNum: discNum,
+				trackNum: trackNum
+			});
+
 		}
 
-		var trackName = tags.title.replace(/\0/g, '');
-		var discNum = tags.partOfSet.replace(/\0/g, '');
-		var trackNum = tags.trackNumber.replace(/\0/g, '');
-		var genre = tags.genre.replace(/\0/g, '');
-		var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + trackNum;
-		music[artistNameKey].albums[albumNameKey].tracks.push({
-			name: trackName,
-			nameKey: trackNameKey,
-			length: null,
-			genre: genre,
-			discNum: discNum,
-			trackNum: trackNum
-		});
-
-	}
-
-	//Artists
-	for (var artistKey in music)
-	{
-		var artistData = music[artistKey];
-		var artistId = null;
-
-		var artist = new Artist();
-		artist.name = artistData.name;
-		artist.nameKey = artistData.nameKey;
-		artist.imagePath = artistData.imagePath;
-		artist._id = null;
-
-		Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
-			if (error)
-			{
-				console.log(error);
-			}
-		});
-
-		var albums = artistData.albums;
-
-		//Albums
-		for (var albumKey in albums)
+		//Artists
+		for (var artistKey in music)
 		{
-			var albumData = music[artistKey].albums[albumKey];
-			var album = new Album();
-			album._id = null;
-			album.name = albumData.name;
-			album.nameKey = albumData.nameKey;
-			album.year = albumData.year;
-			album.imagePath = albumData.imagePath;
-			album.artist = artist._id;
+			var artistData = music[artistKey];
+			var artistId = null;
 
-			Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
+			var artist = {
+				name: artistData.name,
+				nameKey: artistData.nameKey,
+				imagePath: artistData.imagePath
+			};
+
+			Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
 				if (error)
 				{
 					console.log(error);
 				}
+
+				var albums = artistData.albums;
+
+				//Albums
+				for (var albumKey in albums)
+				{
+					var albumData = music[artistKey].albums[albumKey];
+					var album = {
+						name: albumData.name,
+						nameKey: albumData.nameKey,
+						year: albumData.year,
+						imagePath: albumData.imagePath,
+						artist: artist._id
+					};
+
+					//console.log(albumData);
+
+					Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
+						if (error)
+						{
+							console.log(error);
+						}
+					});
+
+					//Tracks
+					for (var trackKey in artist.tracks)
+					{
+
+					}
+				}
+
 			});
-
-			//Tracks
-			for (var trackKey in artist.tracks)
-			{
-
-			}
 		}
-	}
 
-	res.render('index');
+		res.render('index');
+	});
+
 }
 
 module.exports = router;
