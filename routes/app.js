@@ -145,17 +145,15 @@ function sync(req, res)
 {
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
 	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-	//var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/music';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
+	var complete = false;
 	var cachePath = musicRoot + '/.bearcache.json';
 	if (!fs.existsSync(cachePath))
 	{
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
-
-	//jsonFile.writeFileSync(cachePath, {"files": []});
 
 	//Manage artists
 	var pathLookup = {};
@@ -166,7 +164,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var testIteration = 0;
-	var testIterations = 1250;
+	var testIterations = 1500;
 
 	for (var i in files)
 	{
@@ -187,6 +185,11 @@ function sync(req, res)
 			{
 				var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
 				console.log('[' + percentProgress + '%] Adding ' + filePath);
+				if (percentProgress >= 100)
+				{
+					complete = true;
+				}
+
 				testIteration++;
 				promises.push(parseTags(filePath, allData, cache, cachePath));
 			}
@@ -349,12 +352,16 @@ function sync(req, res)
 		}
 
 		console.error('Done!');
-		res.render('index');
+
+		return res.status(200).json({
+			message: 'Success',
+			complete: complete
+		});
+
 	}).catch(function(reason){
 		console.error(reason);
 		throw reason;
 	});
-
 }
 
 module.exports = router;
