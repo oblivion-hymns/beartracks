@@ -132,8 +132,6 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 function saveTracks(artist, track)
 {
 	mp3Duration(track.filePath, function(error, duration){
-		console.log('Saving track ' + track.filePath);
-
 		track.length = Math.floor(duration);
 		Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
 			if (error)

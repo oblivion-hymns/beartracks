@@ -8,5 +8,6 @@ export class Track
 				public discNum: number,
 				public trackNum: number,
 				public genre: string,
-				public length: string) {}
+				public length: string,
+				public filePath: string) {}
 }

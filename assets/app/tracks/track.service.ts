@@ -29,8 +29,9 @@ export class TrackService
 					var trackNum = trackData.trackNum;
 					var genre = trackData.genre;
 					var length = trackData.length;
+					var filePath = trackData.filePath;
 
-					var track = new Track(name, nameKey, album, discNum, trackNum, genre, length);
+					var track = new Track(name, nameKey, album, discNum, trackNum, genre, length, filePath);
 					tracks.push(track);
 				}
 				this.tracks = tracks;
