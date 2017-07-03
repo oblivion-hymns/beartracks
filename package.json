@@ -37,6 +37,7 @@
     "mongoose": "^4.10.8",
     "mongoose-unique-validator": "^1.0.5",
     "morgan": "~1.6.1",
+    "mp3-duration": "^1.0.10",
     "musicmetadata": "^2.0.5",
     "node-id3": "0.0.9",
     "node-sass": "^4.5.3",

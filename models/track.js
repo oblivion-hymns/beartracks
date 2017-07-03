@@ -8,6 +8,7 @@ var schema = new Schema({
 	discNum: {type: Number, required: true},
 	trackNum: {type: Number, required: true},
 	genre: {type: String, required: true},
+	filePath: {type: String, required: true},
 	length: {type: String}
 });
 

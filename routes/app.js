@@ -5,6 +5,7 @@ var id3 = require('id3-parser');
 var jsonFile = require('jsonfile');
 jsonFile.spaces = 2;
 
+var mp3Duration = require('mp3-duration');
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
 
@@ -116,7 +117,8 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 				discNum: trackData.discNum,
 				trackNum: trackData.trackNum,
 				genre: trackData.genre,
-				length: null
+				length: null,
+				filePath: trackData.filePath
 			};
 
 			saveTracks(artist, track);
@@ -129,12 +131,19 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
  */
 function saveTracks(artist, track)
 {
-	Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
-		if (error)
-		{
-			console.error(error);
-			throw error;
-		}
+	mp3Duration(track.filePath, function(error, duration){
+		console.log('Saving track ' + track.filePath);
+
+		track.length = Math.floor(duration);
+		Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
+			if (error)
+			{
+				console.error(error);
+				throw error;
+			}
+
+			console.log('Saved track ', track.filePath);
+		});
 	});
 }
 
@@ -143,8 +152,8 @@ function saveTracks(artist, track)
  */
 function sync(req, res)
 {
-	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
@@ -155,6 +164,8 @@ function sync(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
+	jsonFile.writeFileSync(cachePath, {"files": []});
+
 	//Manage artists
 	var pathLookup = {};
 	var promises = [];
@@ -164,7 +175,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var testIteration = 0;
-	var testIterations = 1500;
+	var testIterations = 2000;
 
 	for (var i in files)
 	{
@@ -328,10 +339,10 @@ function sync(req, res)
 			music[artistNameKey].albums[albumNameKey].tracks.push({
 				name: trackName,
 				nameKey: trackNameKey,
-				length: null,
 				genre: genre,
 				discNum: discNum,
-				trackNum: trackNum
+				trackNum: trackNum,
+				filePath: data.path
 			});
 		}
 
@@ -350,8 +361,6 @@ function sync(req, res)
 
 			saveArtist(artist, artistKey, artistData, music);
 		}
-
-		console.error('Done!');
 
 		return res.status(200).json({
 			message: 'Success',
