@@ -143,25 +143,9 @@ function saveTracks(artist, track)
  */
 function sync(req, res)
 {
-	Artist.remove({}, function(error){
-		if (error)
-		{
-			console.error('Error removing Artists: ');
-			console.error(error);
-		}
-	});
-	Album.remove({}, function(error){
-		if (error)
-		{
-			console.error('Error removing Albums: ');
-			console.error(error);
-		}
-	});
-	Track.remove({}, function(error){});
-
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/music';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/music';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
@@ -171,7 +155,7 @@ function sync(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
-	jsonFile.writeFileSync(cachePath, {"files": []});
+	//jsonFile.writeFileSync(cachePath, {"files": []});
 
 	//Manage artists
 	var pathLookup = {};
@@ -182,7 +166,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var testIteration = 0;
-	var testIterations = 2000;
+	var testIterations = 1250;
 
 	for (var i in files)
 	{
@@ -202,12 +186,8 @@ function sync(req, res)
 			if (fileType == '.mp3')
 			{
 				var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
-				if (testIterations > 0)
-				{
-					percentProgress = Math.floor((currentFileCount/testIterations) * 100);
-				}
-
 				console.log('[' + percentProgress + '%] Adding ' + filePath);
+				testIteration++;
 				promises.push(parseTags(filePath, allData, cache, cachePath));
 			}
 		}
@@ -216,7 +196,7 @@ function sync(req, res)
 			console.log('Skipped ' + file);
 		}
 
-		testIteration++;
+
 		if (testIteration >= testIterations)
 		{
 			break;
