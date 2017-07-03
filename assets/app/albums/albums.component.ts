@@ -24,7 +24,6 @@ import { AlbumService } from './album.service';
 		.album-name
 		{
 			display: inline-block;
-			font-weight: bold;
 			margin-bottom: 2px;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -35,6 +34,7 @@ import { AlbumService } from './album.service';
 
 		.album-artist
 		{
+			color: rgba(255, 255, 255, 0.38);
 			display: inline-block;
 			font-size: 12px;
 			overflow: hidden;

@@ -31,6 +31,23 @@ function parseTags(filePath, allData, cache, cachePath)
 {
 	var fileObj = fs.readFileSync(filePath);
 	return id3.parse(fileObj).then(tags => {
+
+		if (!tags.artist || tags.artist == '')
+		{
+			console.error("Artist tag not found: " + filePath);
+			throw "Artist tag not found: " + filePath;
+		}
+		else if (!tags['set-part'] || tags['set-part'] == '' || tags['set-part'] == 0)
+		{
+			console.error("Discnum tag not found: " + filePath);
+			throw "Discnum tag not found: " + filePath;
+		}
+		else if (!tags.year || tags.year == '0000' || tags.year == '')
+		{
+			console.error("Year tag not found: " + filePath);
+			throw "Year tag not found: " + filePath;
+		}
+
 		allData.push({
 			path: filePath,
 			tags: tags
@@ -38,8 +55,6 @@ function parseTags(filePath, allData, cache, cachePath)
 
 		cache.files.push(encodeURIComponent(filePath));
 		jsonFile.writeFileSync(cachePath, cache);
-
-		console.log('Added ' + filePath);
 	}).catch(function(reason){
 		console.error(reason);
 	});
@@ -54,6 +69,7 @@ function saveArtist(artist, artistKey, artistData, music)
 		if (error)
 		{
 			console.error(error);
+			throw error;
 		}
 
 		var albums = artistData.albums;
@@ -84,6 +100,7 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 		if (error)
 		{
 			console.error(error);
+			throw error;
 		}
 
 		var allTracks = music[artistKey].albums[albumKey].tracks;
@@ -116,9 +133,8 @@ function saveTracks(artist, track)
 		if (error)
 		{
 			console.error(error);
+			throw error;
 		}
-
-		console.log('Saved ' + artist.name + ' - "' + track.name + '"');
 	});
 }
 
@@ -144,8 +160,8 @@ function sync(req, res)
 	Track.remove({}, function(error){});
 
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-	//var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/music';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
@@ -162,12 +178,17 @@ function sync(req, res)
 	var promises = [];
 	var cache = jsonFile.readFileSync(cachePath);
 
-	var testIterations = 0;
+	var currentFileCount = 0;
+	var totalFileCount = files.length;
+
+	var testIteration = 0;
+	var testIterations = 2000;
 
 	for (var i in files)
 	{
 		var file = files[i];
 		var fileType = path.extname(file);
+		currentFileCount++;
 
 		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
 		if (!cached)
@@ -180,7 +201,13 @@ function sync(req, res)
 
 			if (fileType == '.mp3')
 			{
-				console.log('Adding ' + filePath);
+				var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
+				if (testIterations > 0)
+				{
+					percentProgress = Math.floor((currentFileCount/testIterations) * 100);
+				}
+
+				console.log('[' + percentProgress + '%] Adding ' + filePath);
 				promises.push(parseTags(filePath, allData, cache, cachePath));
 			}
 		}
@@ -189,9 +216,8 @@ function sync(req, res)
 			console.log('Skipped ' + file);
 		}
 
-		testIterations++;
-
-		if (testIterations >= 2500)
+		testIteration++;
+		if (testIteration >= testIterations)
 		{
 			break;
 		}
@@ -218,7 +244,7 @@ function sync(req, res)
 				throw e;
 			}
 
-			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}/g, '');
+			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
 
 			if (!music[artistNameKey])
 			{
@@ -249,10 +275,7 @@ function sync(req, res)
 				};
 			}
 
-
-
 			var albumName = tags.album.replace(/\0/g, '');
-
 			var year = null;
 			try
 			{
@@ -260,11 +283,12 @@ function sync(req, res)
 			}
 			catch (e)
 			{
-				console.error('Could not find year tag: ');
+				console.error('Could not find year tag for: ', artistName, albumName);
 				throw e;
 			}
 
-			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}/g, '') + year;
+			var albumNameKey = artistNameKey + albumName.toLowerCase()
+				.replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '') + year;
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
 				var albumImagePath = null;
@@ -306,8 +330,6 @@ function sync(req, res)
 			var trackNum = '' + tags.track;
 			trackNum = trackNum.replace(/\0/g, '');
 			var genre = tags.genre.replace(/\0/g, '');
-			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + trackNum;
-
 			var discNum = 0;
 			if (tags['set-part'])
 			{
@@ -315,8 +337,10 @@ function sync(req, res)
 			}
 			else
 			{
-				console.log('Could not find disc num for ' + trackNameKey);
+				console.log('Could not find disc num for ' + artistKey + ' - "' + trackName + '"');
 			}
+
+			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + discNum + trackNum;
 
 			music[artistNameKey].albums[albumNameKey].tracks.push({
 				name: trackName,
@@ -329,6 +353,7 @@ function sync(req, res)
 		}
 
 		//Artists
+		console.log('Saving data...');
 		for (var artistKey in music)
 		{
 			var artistData = music[artistKey];
@@ -340,13 +365,14 @@ function sync(req, res)
 				imagePath: artistData.imagePath
 			};
 
-			console.log('Saving ' + artistData.name);
 			saveArtist(artist, artistKey, artistData, music);
 		}
 
+		console.error('Done!');
 		res.render('index');
 	}).catch(function(reason){
 		console.error(reason);
+		throw reason;
 	});
 
 }

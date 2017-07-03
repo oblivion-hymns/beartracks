@@ -24,7 +24,6 @@ import { ArtistService } from './artist.service';
 		.artist-name
 		{
 			display: inline-block;
-			font-weight: bold;
 			margin-bottom: 2px;
 			overflow: hidden;
 			text-overflow: ellipsis;
