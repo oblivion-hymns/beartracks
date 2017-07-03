@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, NgZone } from '@angular/core';
 
 import { Album } from './album';
 import { AlbumService } from './album.service';
@@ -20,6 +20,29 @@ import { AlbumService } from './album.service';
 		#FilterAlbums input {
 			color: rgba(255, 255, 255, 0.54);
 		}
+
+		.album-name
+		{
+			display: inline-block;
+			font-weight: bold;
+			margin-bottom: 2px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			max-width: 100%;
+			width: 100%;
+		}
+
+		.album-artist
+		{
+			display: inline-block;
+			font-size: 12px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			max-width: 100%;
+			width: 100%;
+		}
 	`],
 	templateUrl: './albums.component.html'
 })
@@ -28,6 +51,7 @@ export class AlbumsComponent implements OnInit
 	albums: Album[] = [];
 	displayAlbums: Album[] = [];
 
+	screenWidth: number;
 	@Input() filterQuery = '';
 
 	zoomLevels = [
@@ -38,12 +62,22 @@ export class AlbumsComponent implements OnInit
 		{scale: 12},
 		{scale: 14}
 	];
-	zoomIndex = 2;
+	zoomIndex = 0;
 
-	constructor(private albumService: AlbumService) {}
+	constructor(private albumService: AlbumService, private ngZone: NgZone) {
+		window.onresize = (e) =>
+		{
+			this.ngZone.run(() => {
+				this.screenWidth = window.innerWidth;
+			});
+		};
+
+		this.screenWidth = window.innerWidth;
+	}
 
 	ngOnInit()
 	{
+		this.screenWidth = window.innerWidth;
 		this.albumService.loadAll().subscribe(
 			(albums: Album[]) => {
 				this.albums = albums;

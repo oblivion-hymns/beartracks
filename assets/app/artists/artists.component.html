@@ -1,4 +1,4 @@
-<div id="ArtistsToolbar">
+<div id="ArtistsToolbar" *ngIf="screenWidth > 1000">
 	<!--Search -->
 	<button md-icon-button>
 		<md-icon>search</md-icon>
@@ -17,10 +17,12 @@
 	</button>
 </div>
 
-<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}" rowHeight="{{zoomLevels[zoomIndex].height}}">
+<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}">
 	<md-grid-tile *ngFor="let artist of displayArtists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
 		<md-grid-tile-footer>
-			<strong>{{artist.name}}</strong>
+			<strong class="artist-name">
+				{{artist.name}}
+			</strong>
 		</md-grid-tile-footer>
 	</md-grid-tile>
 </md-grid-list>

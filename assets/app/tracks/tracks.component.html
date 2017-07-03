@@ -1,5 +1,5 @@
-<div fxLayout='row'>
-	<div fxFlex="70" fxFlexOffset="15">
+<div fxLayout='row' *ngIf="screenWidth > 1000">
+	<div fxFlex="70%" fxFlexOffset="15%">
 		<button md-icon-button style="width: 7%;">
 			<md-icon>search</md-icon>
 		</button>
@@ -8,26 +8,50 @@
 			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
 		</md-input-container>
 
-		<md-list>
-			<md-list-item class="track-list-item" *ngFor="let track of displayTracks">
-				<md-icon md-list-icon class="play-button">
-					play_arrow
-				</md-icon>
+		<ul>
+			<li class="track-list-item" *ngFor="let track of displayTracks" style="display: inline-block; width: 100%;">
 
-				<img src="{{track.album.imagePath}}" />
-
-				<div style="float: right;">
-					<strong md-line>
-						{{track.name}}
-					</strong>
-					<div md-line>
-						{{track.album.artist.name}}
-					</div>
-					<div md-line>
-						<em>{{track.album.name}}</em>
+				<div style="float: left; position: relative;">
+					<md-icon class="play-button">
+						play_arrow
+					</md-icon>
+					<div style="float: right;">
+						<img class="track-list-item-image" src="{{track.album.imagePath}}"/>
 					</div>
 				</div>
-			</md-list-item>
-		</md-list>
+
+				<strong class="track-list-item-name">
+					{{track.name}}
+				</strong>
+				<div class="track-list-item-sub">
+					{{track.album.artist.name}} - <em>{{track.album.name}}</em> ({{track.album.year}})
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div fxLayout='row' *ngIf="screenWidth <= 1000">
+	<div fxFlex="100%">
+		<ul>
+			<li class="track-list-item" *ngFor="let track of displayTracks" style="display: inline-block; width: 100%;">
+
+				<div style="float: left; position: relative;">
+					<md-icon class="play-button play-button-mobile">
+						play_arrow
+					</md-icon>
+					<div style="float: right;">
+						<img class="track-list-item-image-mobile" src="{{track.album.imagePath}}"/>
+					</div>
+				</div>
+
+				<strong class="track-list-item-name track-list-item-name-mobile">
+					{{track.name}}
+				</strong>
+				<div class="track-list-item-sub track-list-item-sub-mobile">
+					{{track.album.artist.name}} - <em>{{track.album.name}}</em> ({{track.album.year}})
+				</div>
+			</li>
+		</ul>
 	</div>
 </div>

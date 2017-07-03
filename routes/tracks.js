@@ -15,7 +15,7 @@ function baseRoute(req, res)
 
 function loadAll(req, res)
 {
-	Track.find({}).sort('discNum, trackNum')
+	Track.find({})
 		.populate('album')
 		.populate({
 			path: 'album',
@@ -33,7 +33,22 @@ function loadAll(req, res)
 				});
 			}
 
-			tracks = tracks.sort(
+			tracks = tracks.sort(function(t1, t2){
+				var t1sortKey = t1.nameKey.replace(t1.album.nameKey, '');
+				var t2sortKey = t2.nameKey.replace(t2.album.nameKey, '');
+				if (t1sortKey > t2sortKey)
+				{
+					return 1;
+				}
+				else if (t1sortKey < t2sortKey)
+				{
+					return -1;
+				}
+			});
+
+			console.log(tracks);
+
+			/*tracks = tracks.sort(
 				function(t1, t2)
 				{
 					//Is it a different album?
@@ -68,7 +83,7 @@ function loadAll(req, res)
 
 					return 0;
 				}
-			);
+			);*/
 
 			res.status(200).json({
 				tracks: tracks

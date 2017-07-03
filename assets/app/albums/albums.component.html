@@ -1,4 +1,4 @@
-<div id="AlbumsToolbar">
+<div id="AlbumsToolbar" *ngIf="screenWidth > 1000">
 	<!--Search -->
 	<button md-icon-button>
 		<md-icon>search</md-icon>
@@ -20,11 +20,11 @@
 <md-grid-list cols="{{zoomLevels[zoomIndex].scale}}">
 	<md-grid-tile *ngFor="let album of displayAlbums" [ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}">
 		<md-grid-tile-footer>
-			<span>
-				<em style="display: inline-block; margin-bottom: 2px; font-weight: bold;">
+			<span style="width: 100%;">
+				<em class="album-name">
 					{{album.name}}
 				</em><br />
-				<span style="font-size: 12px;">
+				<span class="album-artist">
 					{{album.artist.name}}
 				</span>
 			</span>
