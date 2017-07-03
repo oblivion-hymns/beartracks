@@ -141,7 +141,6 @@ export class TracksComponent implements OnInit
 		this.trackService.loadAll().subscribe(
 			(tracks: Track[]) => {
 				this.tracks = tracks;
-				console.log(tracks);
 				this.displayTracks = this.tracks.slice();
 			}
 		)

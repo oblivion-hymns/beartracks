@@ -69,7 +69,6 @@ export class ArtistsComponent implements OnInit {
 			(artists: Artist[]) => {
 				this.artists = artists;
 				this.displayArtists = artists.slice();
-				console.log(artists);
 			}
 		)
 	}

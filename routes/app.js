@@ -143,8 +143,8 @@ function sync(req, res)
 	});
 	Track.remove({}, function(error){});
 
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	//var musicRoot = '/mnt/4432CB4E32CB4420/[Temp]/test';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];

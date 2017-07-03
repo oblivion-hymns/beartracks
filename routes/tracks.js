@@ -46,45 +46,6 @@ function loadAll(req, res)
 				}
 			});
 
-			console.log(tracks);
-
-			/*tracks = tracks.sort(
-				function(t1, t2)
-				{
-					//Is it a different album?
-					if (t1.album.nameKey > t2.album.nameKey)
-					{
-						return 1;
-					}
-					else if (t1.album.nameKey < t2.album.nameKey)
-					{
-						return -1;
-					}
-
-					//Is it a different disc?
-					if (t1.discNum > t2.discNum)
-					{
-						return 1;
-					}
-					else if (t1.discNum < t2.discNum)
-					{
-						return -1
-					}
-
-					//Must be a different track
-					if (t1.trackNum > t2.trackNum)
-					{
-						return 1;
-					}
-					else if (t1.trackNum < t2.trackNum)
-					{
-						return -1
-					}
-
-					return 0;
-				}
-			);*/
-
 			res.status(200).json({
 				tracks: tracks
 			});
