@@ -15,6 +15,7 @@ import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIco
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 //App-specific
+import { PlayerComponent } from './player/player.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ArtistsComponent } from './artists/artists.component';
 import { AlbumsComponent } from './albums/albums.component';
@@ -28,6 +29,7 @@ import { JukeboxComponent } from './jukebox/jukebox.component';
 	declarations: [
 		AppComponent,
 
+		PlayerComponent,
 		DashboardComponent,
 		ArtistsComponent,
 		AlbumsComponent,
