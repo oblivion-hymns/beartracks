@@ -21,7 +21,7 @@
 	<md-grid-tile
 		*ngFor="let album of displayAlbums"
 		[ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}"
-		(click)="playerService.player.enqueueAlbum(album)">
+		(click)="playerService.enqueueAlbum(album)">
 		<md-grid-tile-footer>
 			<span style="width: 100%;">
 				<em class="album-name">

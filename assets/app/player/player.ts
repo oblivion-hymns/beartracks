@@ -18,31 +18,28 @@ export class Player implements OnInit
 	public queue = [];
 	public queuePosition = 0;
 
-	constructor()
-	{
-
-	}
+	constructor() { }
 
 	ngOnInit()
 	{
 
 	}
 
-	enqueue(track)
+	enqueueOne(track)
 	{
 		this.queue.push(track);
 	}
 
-	enqueueAlbum(album)
+	enqueueMany(tracks)
 	{
 		this.queue = [];
-		for (var i in album.tracks)
-		{
-			this.queue.push = album.tracks[i];
-		}
-
 		this.queuePosition = 0;
-		this.playPosition(this.queuePosition);
+		if (this.audio)
+		{
+			this.audio.pause();
+			this.audio.currentTime = 0;
+			this.audio = null;
+		}
 	}
 
 	/**
@@ -52,9 +49,7 @@ export class Player implements OnInit
 	{
 		this.queue = [];
 		this.queuePosition = 0;
-		this.enqueue(track);
-
-		this.currentTrack = this.queue[0];
+		this.currentTrack = track;
 
 		if (this.audio)
 		{

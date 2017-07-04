@@ -13,7 +13,8 @@ export class ArtistService {
 
 	constructor(private http: Http) {}
 
-	loadAll() {
+	loadAll()
+	{
 		return this.http.get('http://bwilbur.com/artists/all')
 			.map((response: Response) => {
 				const data = response.json().artists;
