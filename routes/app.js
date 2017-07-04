@@ -203,8 +203,8 @@ function sync(req, res)
 	var currentFileCount = 0;
 	var totalFileCount = files.length;
 
-	var testIteration = 0;
-	var testIterations = 5;
+	var currentIteration = 0;
+	var totalIterations = 5;
 
 	for (var i in files)
 	{
@@ -225,12 +225,12 @@ function sync(req, res)
 			{
 				var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
 				console.log('[' + percentProgress + '%] Queueing ' + filePath);
-
 				if (percentProgress >= 100)
 				{
 					complete = true;
 				}
-				testIteration++;
+
+				currentIteration++;
 				promises.push(parseTags(filePath, allData, cache, cachePath));
 			}
 		}
@@ -240,7 +240,7 @@ function sync(req, res)
 		}
 
 
-		if (testIteration >= testIterations)
+		if (currentIteration >= totalIterations)
 		{
 			break;
 		}
@@ -388,7 +388,7 @@ function sync(req, res)
 		console.log('Saving data...');
 		for (var artistKey in music)
 		{
-			var artistData = music[artistKey];
+			var artistData = music[artistKey];null
 			var artistId = null;
 
 			var artist = {
