@@ -90,8 +90,6 @@ function loadAll(req, res)
 				}
 			});
 
-			console.log(tracks);
-
 			res.status(200).json({
 				tracks: tracks
 			});

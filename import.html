@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<script
+		  src="https://code.jquery.com/jquery-3.2.1.min.js"
+		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		  crossorigin="anonymous"></script>
+	</head>
+	<body>
+
+	</body>
+</html>
+<script type="text/javascript">
+	function sync()
+	{
+		$.ajax({
+			type: 'post',
+			url: 'http://localhost:3000/sync',
+			data: {},
+			success: function(data)
+			{
+				console.log('Done: ', data);
+			}
+		});
+	}
+
+	$(function(){
+		for (var i = 0; i <= 16; i++)
+		{
+
+		}
+
+		sync();
+	});
+</script>

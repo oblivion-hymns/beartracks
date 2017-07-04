@@ -24,7 +24,6 @@ export class PlayerService
 	{
 		this.trackService.loadForAlbum(album._id).subscribe(
 			(tracks: Track[]) => {
-				console.log(album, tracks);
 				var allTracks = [];
 				for (var i in tracks)
 				{
