@@ -1,3 +1,4 @@
+var bodyParser = require('body-parser');
 var express = require('express');
 var mongoose = require('mongoose');
 
@@ -17,10 +18,10 @@ function baseRoute(req, res)
 
 function loadAlbum(req, res)
 {
-	console.log(req.body.albumId);
+	console.log(req.body);
 	var id = mongoose.Types.ObjectId(req.body.albumId);
 
-	console.log(id);
+
 	Track.find({album: id})
 		.populate('album')
 		.populate({
@@ -90,6 +91,8 @@ function loadAll(req, res)
 					return -1;
 				}
 			});
+
+			console.log(tracks);
 
 			res.status(200).json({
 				tracks: tracks

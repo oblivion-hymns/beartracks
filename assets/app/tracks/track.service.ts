@@ -13,10 +13,12 @@ export class TrackService
 
 	constructor(private http: Http) {}
 
-	loadForAlbum(album)
+	loadForAlbum(albumId)
 	{
-		var payload = JSON.stringify({albumId: album._id});
-		return this.http.post('http://bwilbur.com/tracks/album', payload)
+		var headers = new Headers({'Content-Type': 'application/json'});
+		var body = JSON.stringify({albumId: albumId});
+
+		return this.http.post('http://bwilbur.com/tracks/album', body, headers)
 			.map((response: Response) => {
 				const data = response.json().tracks;
 

@@ -110,6 +110,7 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 		for (var trackKey in allTracks)
 		{
 			var trackData = allTracks[trackKey];
+			console.log(album._id);
 			var track = {
 				name: trackData.name,
 				nameKey: trackData.nameKey,
