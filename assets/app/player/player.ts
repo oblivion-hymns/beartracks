@@ -33,10 +33,22 @@ export class Player implements OnInit
 		this.queue.push(track);
 	}
 
+	enqueueAlbum(album)
+	{
+		this.queue = [];
+		for (var i in album.tracks)
+		{
+			this.queue.push = album.tracks[i];
+		}
+
+		this.queuePosition = 0;
+		this.playPosition(this.queuePosition);
+	}
+
 	/**
 	 * Plays a single track.
 	 */
-	play(track)
+	playOne(track)
 	{
 		this.queue = [];
 		this.queuePosition = 0;
@@ -52,6 +64,30 @@ export class Player implements OnInit
 		}
 
 		this.audio = new Audio(track.filePath);
+		this.audio.play();
+
+		if (!this.elapsedInterval)
+		{
+			this.elapsedInterval = setInterval(()=> {
+				this.getElapsed();
+				this.getElapsedPercent();
+			}, 1000);
+		}
+	}
+
+	playPosition(index)
+	{
+		console.log(this.queue);
+		this.currentTrack = this.queue[index];
+
+		if (this.audio)
+		{
+			this.audio.pause();
+			this.audio.currentTime = 0;
+			this.audio = null;
+		}
+
+		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
 
 		if (!this.elapsedInterval)

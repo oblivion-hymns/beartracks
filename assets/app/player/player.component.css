@@ -47,13 +47,13 @@
 	right: 16px;
 }
 
-#Player .player-control
+.player-control
 {
 	color: rgba(255, 255, 255, 0.54);
 	cursor: default;
 }
 
-#Player .player-control:hover
+.player-control:hover
 {
 	color: rgba(255, 255, 255, 0.87);
 	cursor: pointer;
@@ -68,4 +68,9 @@
 	padding: 16px;
 	position: fixed;
 	width: 25%;
+}
+
+#Queue .queue-item
+{
+	padding: 5px;
 }

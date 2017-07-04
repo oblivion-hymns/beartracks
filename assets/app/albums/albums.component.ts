@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, NgZone } from '@angular/core';
 
+import { PlayerService } from '../player/player.service';
 import { Album } from './album';
 import { AlbumService } from './album.service';
 
@@ -64,7 +65,7 @@ export class AlbumsComponent implements OnInit
 	];
 	zoomIndex = 0;
 
-	constructor(private albumService: AlbumService, private ngZone: NgZone) {
+	constructor(private playerService: PlayerService, private albumService: AlbumService, private ngZone: NgZone) {
 		window.onresize = (e) =>
 		{
 			this.ngZone.run(() => {

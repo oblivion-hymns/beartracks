@@ -164,9 +164,4 @@ export class TracksComponent implements OnInit
 	{
 		this.filterQuery = query;
 	}
-
-	playTrack(track)
-	{
-		this.playerService.player.play(track);
-	}
 }

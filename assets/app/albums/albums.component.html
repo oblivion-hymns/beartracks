@@ -18,7 +18,10 @@
 </div>
 
 <md-grid-list cols="{{zoomLevels[zoomIndex].scale}}">
-	<md-grid-tile *ngFor="let album of displayAlbums" [ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}">
+	<md-grid-tile
+		*ngFor="let album of displayAlbums"
+		[ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}"
+		(click)="playerService.player.enqueueAlbum(album)">
 		<md-grid-tile-footer>
 			<span style="width: 100%;">
 				<em class="album-name">
