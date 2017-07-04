@@ -118,7 +118,8 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 				trackNum: trackData.trackNum,
 				genre: trackData.genre,
 				length: null,
-				filePath: trackData.filePath
+				filePath: trackData.filePath,
+				originalPath: trackData.originalPath
 			};
 
 			saveTracks(artist, track);
@@ -131,8 +132,8 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
  */
 function saveTracks(artist, track)
 {
-	mp3Duration(track.filePath, function(error, duration){
-		track.length = Math.floor(duration);
+	mp3Duration(track.originalPath, function(error, duration){
+		track.length = Math.floor(parseInt(duration));
 		Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
 			if (error)
 			{
@@ -334,13 +335,18 @@ function sync(req, res)
 
 			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + discNum + trackNum;
 
+			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
+			var trackPath = '/data/music/' + trackNameKey + '.mp3';
+			fs.createReadStream(data.path).pipe(fs.createWriteStream(writePath));
+
 			music[artistNameKey].albums[albumNameKey].tracks.push({
 				name: trackName,
 				nameKey: trackNameKey,
 				genre: genre,
 				discNum: discNum,
 				trackNum: trackNum,
-				filePath: data.path
+				filePath: trackPath,
+				originalPath: data.path
 			});
 		}
 

@@ -142,6 +142,7 @@ export class TracksComponent implements OnInit
 			(tracks: Track[]) => {
 				this.tracks = tracks;
 				this.displayTracks = this.tracks.slice();
+				console.log(this.tracks);
 			}
 		)
 	}
@@ -166,6 +167,7 @@ export class TracksComponent implements OnInit
 
 	playTrack(track)
 	{
-
+		var audio = new Audio(track.filePath);
+		audio.play();
 	}
 }

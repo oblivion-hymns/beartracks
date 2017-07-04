@@ -14,11 +14,8 @@
 			<li class="track-list-item" *ngFor="let track of displayTracks" style="display: inline-block; width: 100%;">
 
 				<div style="float: left; position: relative;">
-					<md-icon class="play-button">
+					<md-icon class="play-button" (click)="playTrack(track)">
 						play_arrow
-						<audio controls>
-							<source src="{{track.filePath}}" type="audio/mpeg" />
-						</audio>
 					</md-icon>
 					<div style="float: right;">
 						<img class="track-list-item-image" src="{{track.album.imagePath}}"/>
@@ -27,6 +24,9 @@
 
 				<strong class="track-list-item-name">
 					{{track.name}}
+					<div class="track-list-item-sub" style="float: right; font-weight: 400;">
+						{{track.lengthFormatted}}
+					</div>
 				</strong>
 				<div class="track-list-item-sub">
 					{{track.album.artist.name}} - <em>{{track.album.name}}</em> ({{track.album.year}})
