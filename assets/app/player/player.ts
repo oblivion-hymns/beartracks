@@ -33,13 +33,19 @@ export class Player implements OnInit
 	enqueueMany(tracks)
 	{
 		this.queue = [];
-		this.queuePosition = 0;
 		if (this.audio)
 		{
 			this.audio.pause();
 			this.audio.currentTime = 0;
 			this.audio = null;
 		}
+
+		for (var i in tracks)
+		{
+			this.queue.push(tracks[i]);
+		}
+
+		this.playPosition(0);
 	}
 
 	/**
@@ -72,8 +78,8 @@ export class Player implements OnInit
 
 	playPosition(index)
 	{
-		console.log(this.queue);
-		this.currentTrack = this.queue[index];
+		this.queuePosition = index;
+		this.currentTrack = this.queue[this.queuePosition];
 
 		if (this.audio)
 		{

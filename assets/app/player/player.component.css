@@ -11,13 +11,15 @@
 
 #Player .now-playing
 {
-	display: inline-block;
 	line-height: 1.5em;
-	margin-left: 16px;
 	margin-right: 16px;
 	max-height: 96px;
 	min-height: 96px;
+
+	display:block;
 	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 #Player .now-playing-inner
@@ -30,11 +32,18 @@
 	margin: 0px;
 }
 
+#Player .now-playing .now-playing-field
+{
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 #Player img.now-playing-art
 {
 	border: 1px solid rgba(0, 0, 0, 0.54);
 	float: left;
 	height: 96px;
+	margin-right: 8px;
 	width: 96px;
 }
 
@@ -63,11 +72,25 @@
 {
 	background-color: rgb(40, 40, 40);
 	border-radius: 0px 5px 0px 0px;
-	bottom: 0;
-	height: 25%;
-	padding: 16px;
+	bottom: 134px;
+	height: 50%;
+	max-height: 50%;
+	min-height: 50%;
 	position: fixed;
-	width: 25%;
+	width: 50%;
+}
+
+#Queue h3
+{
+	color: rgba(255, 255, 255, 0.54);
+	margin: 8px;
+	text-transform: lowercase;
+}
+
+#Queue .queue-list
+{
+	padding: 8px;
+	overflow-y: auto;
 }
 
 #Queue .queue-item

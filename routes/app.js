@@ -73,9 +73,8 @@ function saveArtist(artist, artistKey, artistData, music)
 			throw error;
 		}
 
-		var albums = artistData.albums;
-
 		//Albums
+		var albums = artistData.albums;
 		for (var albumKey in albums)
 		{
 			var albumData = music[artistKey].albums[albumKey];

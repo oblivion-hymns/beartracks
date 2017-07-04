@@ -18,9 +18,7 @@ function baseRoute(req, res)
 
 function loadAlbum(req, res)
 {
-	console.log(req.body.albumId);
 	var id = mongoose.Types.ObjectId(req.body.albumId);
-
 
 	Track.find({album: id})
 		.populate('album')
