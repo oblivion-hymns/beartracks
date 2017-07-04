@@ -193,7 +193,7 @@ function sync(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
-	jsonFile.writeFileSync(cachePath, {"files": []});
+	//jsonFile.writeFileSync(cachePath, {"files": []});
 
 	//Manage artists
 	var pathLookup = {};
@@ -204,7 +204,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var currentIteration = 0;
-	var totalIterations = 5;
+	var totalIterations = 500;
 
 	for (var i in files)
 	{
