@@ -31,6 +31,8 @@ function baseRoute(req, res)
  */
 function parseTags(filePath, allData, cache, cachePath)
 {
+	console.log('Parsing tags for ' + filePath);
+
 	var fileObj = fs.readFileSync(filePath);
 	var tags;
 
@@ -60,6 +62,7 @@ function parseTags(filePath, allData, cache, cachePath)
 	});
 
 	return Promise.all([parsePromise, durationPromise]).then(results => {
+		console.log('Done parsing tags for ' + filePath);
 		allData.push({
 			path: filePath,
 			tags: results[0]
