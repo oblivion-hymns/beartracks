@@ -95,5 +95,21 @@
 
 #Queue .queue-item
 {
+	overflow-x: hidden;
 	padding: 5px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#Queue .queue-item md-icon
+{
+	font-size: 19px;
+	height: 19px;
+	margin-right: 8px;
+	width: 19px;
+}
+
+#Queue .queue-item .queue-item-field
+{
+	vertical-align: top;
 }

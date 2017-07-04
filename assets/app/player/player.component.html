@@ -7,33 +7,32 @@
 			*ngFor="let track of playerService.player.queue; let i = index"
 			[style.backgroundColor]="playerService.player.queuePosition == i ? 'rgba(0, 0, 0, 0.13)' : null">
 
-			<span style="float: left" *ngIf="playerService.player.queuePosition == i">
+			<span style="float: left;" *ngIf="playerService.player.queuePosition == i">
 				<md-icon
 					class="player-control player-pause"
 					 *ngIf="!playerService.player.audio.paused"
-					(click)="playerService.player.pause()"
-					style="font-size: 20px;">
+					(click)="playerService.player.pause()">
 					pause
 				</md-icon>
 				<md-icon
-					class="player-control player-pause"
+					class="player-control player-play"
 					 *ngIf="playerService.player.audio.paused"
-					(click)="playerService.player.resume()"
-					style="font-size: 20px;">
+					(click)="playerService.player.resume()" >
 					play_arrow
 				</md-icon>
 			</span>
+
 			<span style="float: left;" *ngIf="playerService.player.queuePosition != i">
 				<md-icon
 					class="player-control player-play"
-					(click)="playerService.player.playPosition(i)"
-					style="font-size: 20px;">
+					(click)="playerService.player.playPosition(i)" >
 					play_arrow
 				</md-icon>
 			</span>
 
-			{{i+1}}. {{ track.name }}
-
+			<span class="queue-item-field">
+				{{i+1}}. {{ track.name }}
+			</span>
 		</div>
 	</div>
 </div>
