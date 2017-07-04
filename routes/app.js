@@ -240,7 +240,6 @@ function sync(req, res)
 			console.log('Skipped ' + file);
 		}
 
-
 		if (currentIteration >= totalIterations)
 		{
 			break;
