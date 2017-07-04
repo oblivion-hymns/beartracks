@@ -103,7 +103,7 @@ function saveArtist(artist, artistKey, artistData, music)
 			throw error;
 		}
 
-		console.log('Saved artist ', artist.name);
+		console.log('Saved artist ' + artist.name);
 
 		//Albums
 		var albums = artistData.albums;
@@ -135,7 +135,7 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 			throw error;
 		}
 
-		console.log('Saved album ', album.name);
+		console.log('Saved album ' + album.name);
 
 		var allTracks = music[artistKey].albums[albumKey].tracks;
 
@@ -172,7 +172,7 @@ function saveTracks(artist, track)
 			throw error;
 		}
 
-		console.log('Saved ', artist.name + ' - "' + track.name + '"');
+		console.log('Saved ' + artist.name + ' - "' + track.name + '"');
 	});
 }
 
@@ -250,7 +250,6 @@ function sync(req, res)
 		console.log('Organizing data to save...');
 
 		var savePromises = [];
-
 		var music = [];
 		for (var i in allData)
 		{
@@ -353,6 +352,7 @@ function sync(req, res)
 
 			var trackName = tags.title.replace(/\0/g, '');
 			var trackNum = '' + tags.track;
+			var length = tags.length;
 			trackNum = trackNum.replace(/\0/g, '');
 			var genre = tags.genre.replace(/\0/g, '');
 			var discNum = 0;
@@ -378,7 +378,7 @@ function sync(req, res)
 				genre: genre,
 				discNum: discNum,
 				trackNum: trackNum,
-				length: null,
+				length: length,
 				filePath: trackPath,
 				originalPath: data.path
 			});
