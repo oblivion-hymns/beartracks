@@ -135,34 +135,22 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
  */
 function saveTracks(artist, track)
 {
-	if (track.length)
-	{
-		saveTrack(track);
-	}
-	else
-	{
-		mp3Duration(track.originalPath, function(error, length) {
-			if (error)
-			{
-				console.error(error);
-			}
-
-			track.length = Math.floor(parseInt(length));
-			saveTrack(track);
-		});
-	}
-}
-
-function saveTrack(track)
-{
-	Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
+	mp3Duration(track.originalPath, function(error, length) {
 		if (error)
 		{
 			console.error(error);
-			throw error;
 		}
 
-		console.log('Saved track ', track.filePath);
+		track.length = Math.floor(parseInt(length));
+		Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
+			if (error)
+			{
+				console.error(error);
+				throw error;
+			}
+
+			console.log('Saved track ', track.filePath);
+		});
 	});
 }
 
@@ -358,17 +346,6 @@ function sync(req, res)
 			var trackNameStripped = trackName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
 			var trackNameKey = artistNameKey + albumNameKey + trackNameStripped + discNum + trackNum;
 
-			var length = null;
-			if (tags.length)
-			{
-				length = parseInt(tags.length);
-			}
-			else
-			{
-				//console.error('No length found for ' + trackNameKey);
-			}
-
-
 			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';
 			fs.createReadStream(data.path).pipe(fs.createWriteStream(writePath));
@@ -379,7 +356,7 @@ function sync(req, res)
 				genre: genre,
 				discNum: discNum,
 				trackNum: trackNum,
-				length: length,
+				length: null,
 				filePath: trackPath,
 				originalPath: data.path
 			});
