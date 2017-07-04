@@ -15,10 +15,10 @@ export class TrackService
 
 	loadForAlbum(albumId)
 	{
-		var headers = new Headers({'Content-Type': 'application/json'});
-		var body = JSON.stringify({albumId: albumId});
+		const body = JSON.stringify({albumId: albumId});
+		const headers = new Headers({'Content-Type': 'application/json'});
 
-		return this.http.post('http://bwilbur.com/tracks/album', body, headers)
+		return this.http.post('http://bwilbur.com/tracks/album', body, {headers: headers})
 			.map((response: Response) => {
 				const data = response.json().tracks;
 
