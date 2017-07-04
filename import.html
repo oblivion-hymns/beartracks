@@ -5,12 +5,12 @@
 		  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		  crossorigin="anonymous"></script>
 	</head>
-	<body>
+	<body style="background-color: rgb(40, 40, 40); color: rgba(255, 255, 255, 0.87); font-family: monospace;">
 
 	</body>
 </html>
 <script type="text/javascript">
-	var counter = 0;
+	var counter = 1;
 	var totalSyncs = 10;
 
 	$(sync);
@@ -18,7 +18,7 @@
 	function sync()
 	{
 		var body = $('body');
-		body.append('Sync # ' + counter + '/' + totalSyncs + '<br />');
+		body.append('Sync #' + counter + '/' + totalSyncs + ' in progress<br />');
 		$.ajax({
 			type: 'post',
 			url: 'http://localhost:3000/sync',
@@ -28,16 +28,14 @@
 				counter++;
 				if (counter <= totalSyncs)
 				{
-					body.append('Prepping sync' + counter + '/' + totalSyncs);
+					body.append('Prepping to sync again<br />');
 					setTimeout(sync, 15000);
 				}
 				else
 				{
-					body.append('Done syncing');
+					body.append('All done!');
 				}
 			}
 		});
 	}
-
-	$(sync);
 </script>
