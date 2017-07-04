@@ -31,8 +31,6 @@ function baseRoute(req, res)
  */
 function parseTags(filePath, allData, cache, cachePath)
 {
-	console.log('Parsing tags for ' + filePath);
-
 	var fileObj = fs.readFileSync(filePath);
 	var tags;
 
@@ -207,7 +205,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var currentIteration = 0;
-	var totalIterations = 500;
+	var totalIterations = 100;
 
 	for (var i in files)
 	{
