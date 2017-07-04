@@ -1,4 +1,3 @@
-import { Http, Response, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 import 'rxjs/Rx';
@@ -15,18 +14,8 @@ export class PlayerService
 	player: Player;
 	public isPlaying: boolean;
 
-	public currentTrack: Track;
-	public currentAlbum: Album;
-	public currentArtist: Artist;
-	public queue;
-
-	constructor(){ }
-
-	/**
-	 * Plays a single track.
-	 */
-	play(track)
+	constructor()
 	{
-		this.queue = [];
+		this.player = new Player();
 	}
 }

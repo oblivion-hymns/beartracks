@@ -17,7 +17,22 @@ import { PlayerService } from './player.service';
 
 		#Player .now-playing
 		{
+			display: inline-block;
+			line-height: 1.5em;
+			margin-left: 16px;
+			max-height: 96px;
+			min-height: 96px;
+			overflow: hidden;
+		}
 
+		#Player .now-playing-inner
+		{
+			margin-bottom: 3px;
+		}
+
+		#Player .now-playing h3
+		{
+			margin: 0px;
 		}
 
 		#Player img.now-playing-art
@@ -28,6 +43,11 @@ import { PlayerService } from './player.service';
 			width: 96px;
 		}
 
+		#Player .now-playing-progress
+		{
+
+		}
+
 	`],
 	templateUrl: './player.component.html'
 })
@@ -35,5 +55,8 @@ export class PlayerComponent implements OnInit
 {
 	constructor(private playerService: PlayerService){}
 
-	ngOnInit() {}
+	ngOnInit()
+	{
+		this.playerService.player.elapsedObservable.subscribe();
+	}
 }

@@ -1,3 +1,21 @@
-<div id="Player">
-	<img class="now-playing-art" />
+<div id="Player" *ngIf="playerService.player.currentTrack">
+	<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}"/>
+
+	<div class="now-playing" *ngIf="playerService.player.currentTrack">
+		<h3>
+			{{playerService.player.currentTrack.name}}
+		</h3>
+		<em style="color: rgba(255, 255, 255, 0.87);">
+			{{playerService.player.currentTrack.album.name}} ({{playerService.player.currentTrack.album.year}})
+		</em><br />
+		<span style="color: rgba(255, 255, 255, 0.54);">
+			{{playerService.player.currentTrack.album.artist.name}}
+		</span>
+	</div>
+
+	<md-progress-bar
+		class="now-playing-progress"
+		[mode]="determinate"
+		[value]="playerService.player.getElapsedPercent()">
+	</md-progress-bar>
 </div>

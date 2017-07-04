@@ -11,7 +11,7 @@ import 'hammerjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
 import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIconModule,
-		MdMenuModule, MdSidenavModule, MdTabsModule } from '@angular/material';
+		MdMenuModule, MdProgressBarModule, MdSidenavModule, MdTabsModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 //App-specific
@@ -53,6 +53,7 @@ import { JukeboxComponent } from './jukebox/jukebox.component';
 		MdGridListModule,
 		MdIconModule,
 		MdMenuModule,
+		MdProgressBarModule,
 		MdSidenavModule,
 		MdTabsModule
 	],

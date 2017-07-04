@@ -114,7 +114,7 @@ import { TrackService } from './track.service';
 		{
 			color: rgba(255, 255, 255, 0.54);
 		}
-	=`],
+	`],
 	templateUrl: './tracks.component.html'
 })
 export class TracksComponent implements OnInit
@@ -168,8 +168,6 @@ export class TracksComponent implements OnInit
 
 	playTrack(track)
 	{
-		/*var audio = new Audio(track.filePath);
-		audio.play();*/
-		this.playerService.play(track);
+		this.playerService.player.play(track);
 	}
 }
