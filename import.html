@@ -11,10 +11,14 @@
 </html>
 <script type="text/javascript">
 	var counter = 0;
+	var totalSyncs = 10;
+
+	$(sync);
 
 	function sync()
 	{
-		console.log('Syncing...');
+		var body = $('body');
+		body.append('Sync # ' + counter + '/' + totalSyncs + '<br />');
 		$.ajax({
 			type: 'post',
 			url: 'http://localhost:3000/sync',
@@ -22,14 +26,14 @@
 			success: function(data)
 			{
 				counter++;
-				if (counter <= 10)
+				if (counter <= totalSyncs)
 				{
-					console.log('Prepping to sync again...');
+					body.append('Prepping sync' + counter + '/' + totalSyncs);
 					setTimeout(sync, 15000);
 				}
 				else
 				{
-					console.log('Done');
+					body.append('Done syncing');
 				}
 			}
 		});
