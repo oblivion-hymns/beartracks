@@ -2,6 +2,7 @@ var express = require('express');
 var extend = require('util')._extend;
 var fs = require('fs');
 var id3 = require('id3-parser');
+var musicMetadata = require('music-metadata');
 var jsonFile = require('jsonfile');
 jsonFile.spaces = 2;
 
@@ -135,22 +136,29 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
  */
 function saveTracks(artist, track)
 {
-	mp3Duration(track.originalPath, function(error, length) {
-		if (error)
+	musicMetadata.parseFile(track.originalPath, {
+		duration: true
+	}).then(function(metadata) {
+
+		if (metadata.format.duration)
 		{
-			console.error(error);
+			track.length = parseInt(metadata.format.duration);
+		}
+		else
+		{
+			console.error('Could not find track length for ', track.originalPath);
 		}
 
-		track.length = Math.floor(parseInt(length));
 		Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
 			if (error)
 			{
 				console.error(error);
 				throw error;
 			}
-
-			console.log('Saved track ', track.filePath);
 		});
+
+	}).catch(function(error) {
+		console.error(error.message);
 	});
 }
 
@@ -375,7 +383,7 @@ function sync(req, res)
 				imagePath: artistData.imagePath
 			};
 
-			//saveArtist(artist, artistKey, artistData, music);
+			saveArtist(artist, artistKey, artistData, music);
 		}
 
 		return res.status(200).json({
