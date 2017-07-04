@@ -1,5 +1,4 @@
 var express = require('express');
-//var extend = require('util')._extend;
 var fs = require('fs');
 var id3 = require('id3-parser');
 var musicMetadata = require('music-metadata');
@@ -29,17 +28,15 @@ function baseRoute(req, res)
  */
 function parseTags(filePath, allData, cache, cachePath)
 {
-	var fileObj = fs.readFileSync(filePath);
-	var tags;
+	var parsePromise = musicMetadata.parseFile(filePath, {duration: true}).then(function(metadata) {
+		var tags = metadata.common;
 
-	//Get tags
-	var parsePromise = id3.parse(fileObj).then(tags => {
 		if (!tags.artist || tags.artist == '')
 		{
 			console.error("Artist tag not found: " + filePath);
 			throw "Artist tag not found: " + filePath;
 		}
-		else if (!tags['set-part'] || tags['set-part'] == '' || tags['set-part'] == 0)
+		else if (!tags.disk.no || tags.disk.no == 0)
 		{
 			console.error("Discnum tag not found: " + filePath);
 			throw "Discnum tag not found: " + filePath;
@@ -50,25 +47,92 @@ function parseTags(filePath, allData, cache, cachePath)
 			throw "Year tag not found: " + filePath;
 		}
 
-		return tags;
-	});
+		if (metadata.format.duration)
+		{
+			tags.length = parseInt(metadata.format.duration);
+		}
+		else
+		{
+			console.error('Could not find track length for ', track.originalPath);
+		}
 
-	var durationPromise = parsePromise.then(function(tags) {
-		return getTrackDuration(filePath, tags);
-	});
-
-	return Promise.all([parsePromise, durationPromise]).then(results => {
-		console.log('Done parsing tags for ' + filePath);
 		allData.push({
 			path: filePath,
-			tags: results[0]
+			tags: tags
 		});
 
 		cache.files.push(encodeURIComponent(filePath));
-		jsonFile.writeFileSync(cachePath, cache);
-	}).catch(function(reason){
-		console.error(reason);
+		jsonFile.writeFile(cachePath, cache, function(error, data){
+			if (error)
+			{
+				console.error(error);
+			}
+		});
+
+		console.log('Done parsing tags for ' + filePath);
+
+	}).catch(function(error) {
+		console.error(error.message);
 	});
+
+	/*var durationPromise = parsePromise.then(function(tags) {
+		return getTrackDuration(filePath, tags);
+	});*/
+
+	/*fs.readFile(filePath, function(error, data){
+		var tags;
+
+		//Get tags
+		/*var parsePromise = id3.parse(data).then(tags => {
+			if (!tags.artist || tags.artist == '')
+			{
+				console.error("Artist tag not found: " + filePath);
+				throw "Artist tag not found: " + filePath;
+			}
+			else if (!tags['set-part'] || tags['set-part'] == '' || tags['set-part'] == 0)
+			{
+				console.error("Discnum tag not found: " + filePath);
+				throw "Discnum tag not found: " + filePath;
+			}
+			else if (!tags.year || tags.year == '0000' || tags.year == '')
+			{
+				console.error("Year tag not found: " + filePath);
+				throw "Year tag not found: " + filePath;
+			}
+
+			return tags;
+		});*/
+
+		/*var parsePromise = musicMetadata.parseFile(track, {duration: true}).then(function(metadata) {
+			if (metadata.format.duration)
+			{
+				tags.length = parseInt(metadata.format.duration);
+			}
+			else
+			{
+				console.error('Could not find track length for ', track.originalPath);
+			}
+		}).catch(function(error) {
+			console.error(error.message);
+		});
+
+		/*var durationPromise = parsePromise.then(function(tags) {
+			return getTrackDuration(filePath, tags);
+		});*/
+
+		/*return Promise.all([parsePromise, durationPromise]).then(results => {
+			console.log('Done parsing tags for ' + filePath);
+			allData.push({
+				path: filePath,
+				tags: results[0]
+			});
+
+			cache.files.push(encodeURIComponent(filePath));
+			jsonFile.writeFileSync(cachePath, cache);
+		}).catch(function(reason){
+			console.error(reason);
+		});
+	});*/
 }
 
 /**
@@ -98,7 +162,6 @@ function saveArtist(artist, artistKey, artistData, music)
 	//Artist
 	var artistPromise = Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}).exec();
 	artistPromise.then(function(artist){
-		console.log('Saved artist ' + artist.name);
 		return artist;
 	});
 
@@ -130,7 +193,6 @@ function saveArtist(artist, artistKey, artistData, music)
 			var album = albums[i];
 			var albumSavePromise = Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}).exec();
 			albumSavePromise.then(function(album){
-				console.log('Saved album ' + album.name);
 				return album;
 			}).catch(function(reason){
 				console.error(reason);
@@ -140,7 +202,6 @@ function saveArtist(artist, artistKey, artistData, music)
 		}
 
 		return Promise.all(albumPromises).then(results => {
-			console.log('Done saving albums for ' + artistData.name);
 			return results;
 		}).catch(function(reason){
 			console.error(reason);
@@ -239,7 +300,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var currentIteration = 0;
-	var totalIterations = 5;
+	var totalIterations = 100;
 
 	for (var i in files)
 	{
@@ -435,7 +496,10 @@ function sync(req, res)
 		}
 
 		Promise.all(savePromises).then(values => {
-			console.log('Done!');
+			console.log('Done saving all data');
+			res.status(200).json({
+				success: true
+			});
 		});
 
 	}).catch(function(reason){
