@@ -73,6 +73,8 @@ function saveArtist(artist, artistKey, artistData, music)
 			throw error;
 		}
 
+		console.log('Saved artist ', artist.name);
+
 		//Albums
 		var albums = artistData.albums;
 		for (var albumKey in albums)
@@ -103,6 +105,8 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 			throw error;
 		}
 
+		console.log('Saved album ', album.name);
+
 		var allTracks = music[artistKey].albums[albumKey].tracks;
 
 		//Tracks
@@ -116,7 +120,7 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
 				discNum: trackData.discNum,
 				trackNum: trackData.trackNum,
 				genre: trackData.genre,
-				length: null,
+				length: trackData.length,
 				filePath: trackData.filePath,
 				originalPath: trackData.originalPath
 			};
@@ -131,17 +135,34 @@ function saveAlbums(artist, artistKey, album, albumKey, music)
  */
 function saveTracks(artist, track)
 {
-	mp3Duration(track.originalPath, function(error, duration){
-		track.length = Math.floor(parseInt(duration));
-		Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
+	if (track.length)
+	{
+		saveTrack(track);
+	}
+	else
+	{
+		mp3Duration(track.originalPath, function(error, length) {
 			if (error)
 			{
 				console.error(error);
-				throw error;
 			}
 
-			console.log('Saved track ', track.filePath);
+			track.length = Math.floor(parseInt(length));
+			saveTrack(track);
 		});
+	}
+}
+
+function saveTrack(track)
+{
+	Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
+		if (error)
+		{
+			console.error(error);
+			throw error;
+		}
+
+		console.log('Saved track ', track.filePath);
 	});
 }
 
@@ -151,7 +172,7 @@ function saveTracks(artist, track)
 function sync(req, res)
 {
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/3 Doors Down';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
@@ -173,7 +194,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var testIteration = 0;
-	var testIterations = 1000;
+	var testIterations = 500;
 
 	for (var i in files)
 	{
@@ -216,6 +237,8 @@ function sync(req, res)
 	}
 
 	Promise.all(promises).then(values => {
+		var savePromises = [];
+
 		console.log('Organizing data to be saved...');
 
 		var music = [];
@@ -335,10 +358,19 @@ function sync(req, res)
 			var trackNameStripped = trackName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
 			var trackNameKey = artistNameKey + albumNameKey + trackNameStripped + discNum + trackNum;
 
+			var length = null;
+			if (tags.length)
+			{
+				length = parseInt(tags.length);
+			}
+			else
+			{
+				//console.error('No length found for ' + trackNameKey);
+			}
+
+
 			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';
-
-			console.log(writePath, trackPath);
 			fs.createReadStream(data.path).pipe(fs.createWriteStream(writePath));
 
 			music[artistNameKey].albums[albumNameKey].tracks.push({
@@ -347,6 +379,7 @@ function sync(req, res)
 				genre: genre,
 				discNum: discNum,
 				trackNum: trackNum,
+				length: length,
 				filePath: trackPath,
 				originalPath: data.path
 			});
@@ -365,7 +398,7 @@ function sync(req, res)
 				imagePath: artistData.imagePath
 			};
 
-			saveArtist(artist, artistKey, artistData, music);
+			//saveArtist(artist, artistKey, artistData, music);
 		}
 
 		return res.status(200).json({
