@@ -1,14 +1,12 @@
 var express = require('express');
-var extend = require('util')._extend;
+//var extend = require('util')._extend;
 var fs = require('fs');
 var id3 = require('id3-parser');
 var musicMetadata = require('music-metadata');
-var jsonFile = require('jsonfile');
-jsonFile.spaces = 2;
-
-var mp3Duration = require('mp3-duration');
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
+var jsonFile = require('jsonfile');
+jsonFile.spaces = 2;
 
 var Artist = require('../models/artist');
 var Album = require('../models/album');
@@ -97,17 +95,17 @@ function getTrackDuration(track, tags)
  */
 function saveArtist(artist, artistKey, artistData, music)
 {
-	Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}, function(error, artist){
-		if (error)
-		{
-			console.error(error);
-			throw error;
-		}
-
+	//Artist
+	var artistPromise = Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}).exec();
+	artistPromise.then(function(artist){
 		console.log('Saved artist ' + artist.name);
+		return artist;
+	});
 
-		//Albums
+	//Albums
+	var albumPromise = artistPromise.then(function(artist){
 		var albums = artistData.albums;
+		var promiseAlbums = [];
 		for (var albumKey in albums)
 		{
 			var albumData = music[artistKey].albums[albumKey];
@@ -119,61 +117,97 @@ function saveArtist(artist, artistKey, artistData, music)
 				artist: artist._id
 			};
 
-			saveAlbums(artist, artistKey, album, albumKey, music);
+			promiseAlbums.push(album);
 		}
+
+		return promiseAlbums;
+
+	}).then(function(albums){
+
+		var albumPromises = [];
+		for (var i in albums)
+		{
+			var album = albums[i];
+			var albumSavePromise = Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}).exec();
+			albumSavePromise.then(function(album){
+				console.log('Saved album ' + album.name);
+				return album;
+			}).catch(function(reason){
+				console.error(reason);
+			});
+
+			albumPromises.push(albumSavePromise);
+		}
+
+		return Promise.all(albumPromises).then(results => {
+			console.log('Done saving albums for ' + artistData.name);
+			return results;
+		}).catch(function(reason){
+			console.error(reason);
+		});
 	});
-}
 
-/**
- * Saves an artist's albums, including tracks
- */
-function saveAlbums(artist, artistKey, album, albumKey, music)
-{
-	Album.findOneAndUpdate({'nameKey': album.nameKey}, album, {new: true, upsert: true}, function(error, album){
-		if (error)
+	//Tracks
+	var trackPromise = albumPromise.then(function(albums){
+
+		var promiseTracks = [];
+		for (var i in albums)
 		{
-			console.error(error);
-			throw error;
+			var album = albums[i];
+			var allTracks = music[artistKey].albums[album.nameKey].tracks;
+
+			//Tracks
+			for (var trackKey in allTracks)
+			{
+				var trackData = allTracks[trackKey];
+				var track = {
+					name: trackData.name,
+					nameKey: trackData.nameKey,
+					album: album._id,
+					discNum: trackData.discNum,
+					trackNum: trackData.trackNum,
+					genre: trackData.genre,
+					length: trackData.length,
+					filePath: trackData.filePath,
+					originalPath: trackData.originalPath
+				};
+
+				promiseTracks.push(track);
+			}
 		}
 
-		console.log('Saved album ' + album.name);
+		return promiseTracks;
 
-		var allTracks = music[artistKey].albums[albumKey].tracks;
-
-		//Tracks
-		for (var trackKey in allTracks)
+	}).then(function(tracks){
+		var trackPromises = [];
+		for (var i in tracks)
 		{
-			var trackData = allTracks[trackKey];
-			var track = {
-				name: trackData.name,
-				nameKey: trackData.nameKey,
-				album: album._id,
-				discNum: trackData.discNum,
-				trackNum: trackData.trackNum,
-				genre: trackData.genre,
-				length: trackData.length,
-				filePath: trackData.filePath,
-				originalPath: trackData.originalPath
-			};
+			var track = tracks[i];
+			var trackPromise = Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}).exec();
+			trackPromise.then(function(track){
+				console.log('Saved ' + artist.name + ' - "' + track.name + '"');
+			}).catch(function(reason){
+				console.error(reason);
+			});
 
-			saveTracks(artist, track);
+			trackPromises.push(trackPromise);
 		}
+
+		return Promise.all(trackPromises).then(results => {
+			console.log('Done saving tracks for ' + artistData.name);
+		}).catch(function(reason){
+			console.error(reason);
+		});
+
+	}).catch(function(reason){
+		console.error(reason);
 	});
-}
 
-/**
- * Saves an artist & album's tracks
- */
-function saveTracks(artist, track)
-{
-	Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}, function(error, track){
-		if (error)
-		{
-			console.error(error);
-			throw error;
-		}
-
-		console.log('Saved ' + artist.name + ' - "' + track.name + '"');
+	//Done!
+	return Promise.all([artistPromise, albumPromise, trackPromise]).then(results => {
+		console.log('Done saving all data for ' + artistData.name);
+	}).catch(function(reason){
+		console.error(reason);
 	});
 }
 
@@ -194,7 +228,7 @@ function sync(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
-	//jsonFile.writeFileSync(cachePath, {"files": []});
+	jsonFile.writeFileSync(cachePath, {"files": []});
 
 	//Manage artists
 	var pathLookup = {};
@@ -205,7 +239,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var currentIteration = 0;
-	var totalIterations = 1000;
+	var totalIterations = 5;
 
 	for (var i in files)
 	{
@@ -247,12 +281,6 @@ function sync(req, res)
 	}
 
 	Promise.all(promises).then(values => {
-
-		res.status(200).json({
-			message: 'Success',
-			complete: complete
-		});
-
 		console.log('Organizing data to save...');
 
 		var savePromises = [];
@@ -391,7 +419,7 @@ function sync(req, res)
 		}
 
 		//Artists
-		console.log('Saving data...');
+		console.log('Saving data');
 		for (var artistKey in music)
 		{
 			var artistData = music[artistKey];null
@@ -403,8 +431,12 @@ function sync(req, res)
 				imagePath: artistData.imagePath
 			};
 
-			saveArtist(artist, artistKey, artistData, music);
+			savePromises.push(saveArtist(artist, artistKey, artistData, music));
 		}
+
+		Promise.all(savePromises).then(values => {
+			console.log('Done!');
+		});
 
 	}).catch(function(reason){
 		console.error(reason);
