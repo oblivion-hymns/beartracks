@@ -205,7 +205,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var currentIteration = 0;
-	var totalIterations = 100;
+	var totalIterations = 200;
 
 	for (var i in files)
 	{
@@ -268,7 +268,7 @@ function sync(req, res)
 				throw e;
 			}
 
-			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
+			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\|:,/g, '');
 
 			if (!music[artistNameKey])
 			{
