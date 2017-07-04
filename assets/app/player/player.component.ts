@@ -9,6 +9,7 @@ import { PlayerService } from './player.service';
 		{
 			background-color: rgb(40, 40, 40);
 			bottom: 0px;
+			box-sizing: border-box;
 			left: 0px;
 			padding: 16px;
 			position: fixed;
@@ -20,6 +21,7 @@ import { PlayerService } from './player.service';
 			display: inline-block;
 			line-height: 1.5em;
 			margin-left: 16px;
+			margin-right: 16px;
 			max-height: 96px;
 			min-height: 96px;
 			overflow: hidden;
@@ -43,9 +45,25 @@ import { PlayerService } from './player.service';
 			width: 96px;
 		}
 
-		#Player .now-playing-progress
+		#Player .now-playing-elapsed
 		{
+			color:rgba(255, 255, 255, 0.54);
+			float: right;
+			position: absolute;
+			bottom: 24px;
+			right: 16px;
+		}
 
+		#Player .player-control
+		{
+			color: rgba(255, 255, 255, 0.54);
+			cursor: default;
+		}
+
+		#Player .player-control:hover
+		{
+			color: rgba(255, 255, 255, 0.87);
+			cursor: pointer;
 		}
 
 	`],
@@ -57,6 +75,5 @@ export class PlayerComponent implements OnInit
 
 	ngOnInit()
 	{
-		this.playerService.player.elapsedObservable.subscribe();
 	}
 }

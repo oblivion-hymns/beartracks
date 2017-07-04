@@ -4,30 +4,32 @@ import { Artist } from '../artists/artist';
 import { Album } from '../albums/album';
 import { Track } from '../tracks/track';
 
-import 'rxjs/Rx';
-import { Observable } from 'rxjs/Rx';
-
 export class Player implements OnInit
 {
 	private audio;
 	private interval;
 	public isPlaying: boolean;
 
-	public elapsedObservable;
-	public elapsedPercentObservable;
+	public elapsedInterval;
+	public elapsed;
+	public elapsedPercent;
 
 	public currentTrack: Track;
-	public queue;
+	public queue = [];
 
 	constructor()
 	{
-		this.elapsedObservable = Observable.interval(1000).flatMap(this.getElapsed);
-		this.elapsedPercentObservable = Observable.interval(1000).flatMap(this.getElapsedPercent);
+
 	}
 
 	ngOnInit()
 	{
 
+	}
+
+	enqueue(track)
+	{
+		this.queue.push(track);
 	}
 
 	/**
@@ -36,22 +38,53 @@ export class Player implements OnInit
 	play(track)
 	{
 		this.queue = [];
-		this.queue.push(track);
-		this.currentTrack = track;
+		this.enqueue(track);
+
+		this.currentTrack = this.queue.pop();
+
+		if (this.audio)
+		{
+			this.audio.pause();
+			this.audio.currentTime = 0;
+			this.audio = null;
+		}
 
 		this.audio = new Audio(track.filePath);
 		this.audio.play();
+
+		if (!this.elapsedInterval)
+		{
+			this.elapsedInterval = setInterval(()=> {
+				this.getElapsed();
+				this.getElapsedPercent();
+			}, 1000);
+		}
+	}
+
+	pause()
+	{
+		if (this.audio)
+		{
+			this.audio.pause();
+		}
+	}
+
+	resume()
+	{
+		if (this.audio)
+		{
+			this.audio.play();
+		}
 	}
 
 	getElapsed()
 	{
-		console.log('Hello world!');
 		if (this.currentTrack)
 		{
-			var tempLength = parseInt(this.audio.duration);
-			var length_h = null;
-			var length_m = null;
-			var length_s = null;
+			var tempLength = parseInt(this.audio.currentTime);
+			var length_h = 0;
+			var length_m;
+			var length_s;
 
 			//Hours
 			while (tempLength >= 3600)
@@ -61,6 +94,7 @@ export class Player implements OnInit
 			}
 
 			//Minutes
+			length_m = 0;
 			while (tempLength >= 60)
 			{
 				length_m += 1;
@@ -87,12 +121,23 @@ export class Player implements OnInit
 				elapsed = '' + length_m + ':' + length_s;
 			}
 
-			return elapsed;
+			this.elapsed = elapsed;
+		}
+		else
+		{
+			this.elapsed = '0:00';
 		}
 	}
 
 	getElapsedPercent()
 	{
-		return ((this.audio.duration / parseInt(this.currentTrack.length)) * 100).toString();
+		if (this.currentTrack)
+		{
+			this.elapsedPercent = (this.audio.currentTime / parseInt(this.currentTrack.length)) * 100;
+		}
+		else
+		{
+			this.elapsedPercent = 0;
+		}
 	}
 }

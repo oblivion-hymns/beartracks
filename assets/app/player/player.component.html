@@ -1,3 +1,7 @@
+<div id="Queue" *ngIf="playerService.player.queue.length > 1">
+	hi
+</div>
+
 <div id="Player" *ngIf="playerService.player.currentTrack">
 	<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}"/>
 
@@ -10,12 +14,31 @@
 		</em><br />
 		<span style="color: rgba(255, 255, 255, 0.54);">
 			{{playerService.player.currentTrack.album.artist.name}}
-		</span>
+		</span><br />
+
+		<!-- Toolbar -->
+		<md-icon
+			class="player-control player-pause"
+			*ngIf="!playerService.player.audio.paused"
+			(click)="playerService.player.pause()">
+			pause
+		</md-icon>
+		<md-icon
+			class="player-control player-play"
+			*ngIf="playerService.player.audio.paused"
+			(click)="playerService.player.resume()">
+			play_arrow
+		</md-icon>
+
+	</div>
+
+	<div class="now-playing-elapsed">
+		{{playerService.player.elapsed}} / {{playerService.player.currentTrack.lengthFormatted}}
 	</div>
 
 	<md-progress-bar
 		class="now-playing-progress"
 		[mode]="determinate"
-		[value]="playerService.player.getElapsedPercent()">
+		[value]="playerService.player.elapsedPercent">
 	</md-progress-bar>
 </div>

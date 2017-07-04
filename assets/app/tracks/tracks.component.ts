@@ -143,7 +143,6 @@ export class TracksComponent implements OnInit
 			(tracks: Track[]) => {
 				this.tracks = tracks;
 				this.displayTracks = this.tracks.slice();
-				console.log(this.tracks);
 			}
 		)
 	}
