@@ -11,7 +11,7 @@
 </html>
 <script type="text/javascript">
 	var counter = 1;
-	var totalSyncs = 105;
+	var totalSyncs = 25;
 
 	$(sync);
 
@@ -23,6 +23,10 @@
 			type: 'post',
 			url: 'http://localhost:3000/sync',
 			data: {},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+				console.log('Error: ', jqXHR, textStatus, errorThrown);
+			},
 			success: function(data)
 			{
 				counter++;
@@ -35,7 +39,8 @@
 				{
 					body.append('All done!');
 				}
-			}
+			},
+			timeout: 0
 		});
 	}
 </script>

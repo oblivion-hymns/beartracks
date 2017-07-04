@@ -205,7 +205,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var currentIteration = 0;
-	var totalIterations = 200;
+	var totalIterations = 1000;
 
 	for (var i in files)
 	{
@@ -247,6 +247,12 @@ function sync(req, res)
 	}
 
 	Promise.all(promises).then(values => {
+
+		res.status(200).json({
+			message: 'Success',
+			complete: complete
+		});
+
 		console.log('Organizing data to save...');
 
 		var savePromises = [];
@@ -399,11 +405,6 @@ function sync(req, res)
 
 			saveArtist(artist, artistKey, artistData, music);
 		}
-
-		return res.status(200).json({
-			message: 'Success',
-			complete: complete
-		});
 
 	}).catch(function(reason){
 		console.error(reason);
