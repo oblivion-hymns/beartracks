@@ -1,5 +1,8 @@
-<div id="Queue" *ngIf="playerService.player.queue.length > 1">
-	hi
+<div id="Queue" *ngIf="playerService.player.currentTrack">
+	<h3>Next</h3>
+	<div class="queue-item" *ngFor="let track of playerService.player.queue; let i = index">
+		{{i+1}}. {{ track.name }}
+	</div>
 </div>
 
 <div id="Player" *ngIf="playerService.player.currentTrack">

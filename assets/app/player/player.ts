@@ -16,6 +16,7 @@ export class Player implements OnInit
 
 	public currentTrack: Track;
 	public queue = [];
+	public queuePosition = 0;
 
 	constructor()
 	{
@@ -38,9 +39,10 @@ export class Player implements OnInit
 	play(track)
 	{
 		this.queue = [];
+		this.queuePosition = 0;
 		this.enqueue(track);
 
-		this.currentTrack = this.queue.pop();
+		this.currentTrack = this.queue[0];
 
 		if (this.audio)
 		{
