@@ -150,8 +150,8 @@ function saveTracks(artist, track)
  */
 function sync(req, res)
 {
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/3 Doors Down';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
@@ -173,7 +173,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var testIteration = 0;
-	var testIterations = 2000;
+	var testIterations = 1000;
 
 	for (var i in files)
 	{
@@ -332,10 +332,13 @@ function sync(req, res)
 				console.log('Could not find disc num for ' + artistKey + ' - "' + trackName + '"');
 			}
 
-			var trackNameKey = artistNameKey + albumNameKey + trackName.toLowerCase().replace(' ', '') + discNum + trackNum;
+			var trackNameStripped = trackName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
+			var trackNameKey = artistNameKey + albumNameKey + trackNameStripped + discNum + trackNum;
 
 			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';
+
+			console.log(writePath, trackPath);
 			fs.createReadStream(data.path).pipe(fs.createWriteStream(writePath));
 
 			music[artistNameKey].albums[albumNameKey].tracks.push({

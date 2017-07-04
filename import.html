@@ -10,25 +10,26 @@
 	</body>
 </html>
 <script type="text/javascript">
+	var counter = 0;
+
 	function sync()
 	{
+		console.log('Syncing...');
 		$.ajax({
 			type: 'post',
 			url: 'http://localhost:3000/sync',
 			data: {},
 			success: function(data)
 			{
-				console.log('Done: ', data);
+				counter++;
+				if (counter <= 0)
+				{
+					console.log('Prepping to sync again...');
+					setTimeout(sync, 60000);
+				}
 			}
 		});
 	}
 
-	$(function(){
-		for (var i = 0; i <= 16; i++)
-		{
-
-		}
-
-		sync();
-	});
+	$(sync);
 </script>
