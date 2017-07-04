@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, NgZone } from '@angular/core';
 
+import { PlayerService } from '../player/player.service';
 import { Track } from './track';
 import { TrackService } from './track.service';
 
@@ -124,7 +125,7 @@ export class TracksComponent implements OnInit
 	screenWidth: number;
 	@Input() filterQuery = '';
 
-	constructor(private trackService: TrackService, private ngZone: NgZone){
+	constructor(private trackService: TrackService, private playerService: PlayerService, private ngZone: NgZone){
 		window.onresize = (e) =>
 		{
 			this.ngZone.run(() => {
@@ -167,7 +168,8 @@ export class TracksComponent implements OnInit
 
 	playTrack(track)
 	{
-		var audio = new Audio(track.filePath);
-		audio.play();
+		/*var audio = new Audio(track.filePath);
+		audio.play();*/
+		this.playerService.play(track);
 	}
 }

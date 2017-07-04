@@ -1,21 +1,39 @@
 import { Component, ElementRef, Input, OnInit, NgZone } from '@angular/core';
 
-import { Player } from './player';
 import { PlayerService } from './player.service';
 
-import { Track } from '../tracks/track';
-
 @Component({
-	providers: [PlayerService],
 	selector: 'bt-player',
-	styles: [``],
+	styles: [`
+		#Player
+		{
+			background-color: rgb(40, 40, 40);
+			bottom: 0px;
+			left: 0px;
+			padding: 16px;
+			position: fixed;
+			width: 100%;
+		}
+
+		#Player .now-playing
+		{
+
+		}
+
+		#Player img.now-playing-art
+		{
+			border: 1px solid rgba(0, 0, 0, 0.54);
+			float: left;
+			height: 96px;
+			width: 96px;
+		}
+
+	`],
 	templateUrl: './player.component.html'
 })
 export class PlayerComponent implements OnInit
 {
-	queue: Track[] = [];
-
-	constructor(private playerService: PlayerService, private ngZone: NgZone){}
+	constructor(private playerService: PlayerService){}
 
 	ngOnInit() {}
 }
