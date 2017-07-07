@@ -37,52 +37,64 @@ function determineLengths(req, res)
 	}
 
 	var cache = jsonFile.readFileSync(cachePath);
-	var currentFileCount = 0;
 	var totalFileCount = files.length;
-	var currentIteration = 0;
-	var totalIterations = 100;
-
+	var filesParsed = totalFileCount;
+	var currentFileCount = 0;
 	var promises = [];
+
 	for (var i in files)
 	{
 		var file = files[i];
-		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
-		//console.log(cached, encodeURIComponent(file), cache);
 
-		var fileType = path.extname(file);
-		currentFileCount++;
 		var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
+		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
 
-		if (fileType == '.mp3' && !cached)
+		if (!cached)
 		{
-			currentIteration++;
-			var promise = assignTagLength(file, percentProgress, cache, cachePath);
-
-			if (promise)
+			var fileType = path.extname(file);
+			if (fileType == '.mp3')
 			{
-				promises.push(promise);
-			}
+				var promise = assignTagLength(file, percentProgress, cache, cachePath, filesParsed);
+				if (promise)
+				{
+					promises.push(promise);
+				}
 
-			cache.files.push(encodeURIComponent(file));
-			jsonFile.writeFileSync(cachePath, cache);
+				cache.files.push(encodeURIComponent(file));
+				jsonFile.writeFileSync(cachePath, cache);
+				currentFileCount++;
+			}
+			else
+			{
+				console.log('[' + percentProgress + '%]' + ' File ' + filesParsed + ' is non-music, skipping');
+			}
 		}
 		else
 		{
-			console.log('[' + percentProgress + '%]' + ' File ' + i + ' cached, skipping');
+			console.log('[' + percentProgress + '%]' + ' File ' + filesParsed + ' is cached, skipping');
 		}
 
-		if (currentIteration >= totalIterations)
+		filesParsed++;
+
+		if (currentFileCount >= 500)
 		{
 			break;
 		}
 	}
 
 	Promise.all(promises).then(function(results){
-		console.log('Done!');
+		if (filesParsed < totalFileCount)
+		{
+			determineLengths(req, res);
+		}
+		else
+		{
+			return res.status(200).json({success: true});
+		}
 	});
 }
 
-function assignTagLength(filePath, percentProgress, cache, cachePath)
+function assignTagLength(filePath, percentProgress, cache, cachePath, iterator)
 {
 	var readTags = null;
 	try
@@ -122,7 +134,7 @@ function assignTagLength(filePath, percentProgress, cache, cachePath)
 	}
 	else
 	{
-		console.log(percentProgressString + 'Skipping track, has file information.');
+		console.log(percentProgressString + 'File ' + iterator + ' already has length information.');
 	}
 }
 
