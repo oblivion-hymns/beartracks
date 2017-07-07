@@ -1,6 +1,6 @@
 var express = require('express');
 var fs = require('fs');
-var id3 = require('id3-parser');
+var id3 = require('node-id3');
 var musicMetadata = require('music-metadata');
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
@@ -14,6 +14,7 @@ var Track = require ('../models/track');
 var router = express.Router();
 router.get('/', baseRoute);
 router.post('/sync', sync);
+router.post('/update-lengths', determineLengths);
 
 /**
  * Base route
@@ -21,6 +22,108 @@ router.post('/sync', sync);
 function baseRoute(req, res)
 {
 	res.render('index');
+}
+
+function determineLengths(req, res)
+{
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var files = recursiveReaddirSync(musicRoot);
+
+	var cachePath = musicRoot + '/.bearcache-durations.json';
+	if (!fs.existsSync(cachePath))
+	{
+		jsonFile.writeFileSync(cachePath, {"files": []});
+	}
+
+	var cache = jsonFile.readFileSync(cachePath);
+	var currentFileCount = 0;
+	var totalFileCount = files.length;
+	var currentIteration = 0;
+	var totalIterations = 100;
+
+	var promises = [];
+	for (var i in files)
+	{
+		var file = files[i];
+		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
+		//console.log(cached, encodeURIComponent(file), cache);
+
+		var fileType = path.extname(file);
+		currentFileCount++;
+		var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
+
+		if (fileType == '.mp3' && !cached)
+		{
+			currentIteration++;
+			var promise = assignTagLength(file, percentProgress, cache, cachePath);
+
+			if (promise)
+			{
+				promises.push(promise);
+			}
+
+			cache.files.push(encodeURIComponent(file));
+			jsonFile.writeFileSync(cachePath, cache);
+		}
+		else
+		{
+			console.log('[' + percentProgress + '%]' + ' File ' + i + ' cached, skipping');
+		}
+
+		if (currentIteration >= totalIterations)
+		{
+			break;
+		}
+	}
+
+	Promise.all(promises).then(function(results){
+		console.log('Done!');
+	});
+}
+
+function assignTagLength(filePath, percentProgress, cache, cachePath)
+{
+	var readTags = null;
+	try
+	{
+		readTags = id3.read(filePath);
+	}
+	catch (e)
+	{
+		console.error('Did not successfully read ' + filePath);
+		return;
+	}
+
+	var percentProgressString = '[' + percentProgress + '%] ';
+	if (!readTags.length)
+	{
+		console.log('Could not find read tag: ' + filePath);
+		var parsePromise = musicMetadata.parseFile(filePath, {duration: true}).then(function(metadata) {
+			console.log('File duration parsed successfully.');
+
+			var tags = metadata.common;
+			if (metadata.format.duration)
+			{
+				var length = metadata.format.duration;
+				readTags.length = length;
+
+				console.log(percentProgressString + 'Found duration ' + parseInt(metadata.format.duration) + '. Writing to ' + filePath);
+				id3.write(readTags, filePath);
+				//tags.length = parseInt(metadata.format.duration);
+			}
+			else
+			{
+				console.error(percentProgressString + 'Could not find track length for ', filePath);
+			}
+		}).catch(function(error) {
+			console.error(error.message);
+		});
+	}
+	else
+	{
+		console.log(percentProgressString + 'Skipping track, has file information.');
+	}
 }
 
 /**
@@ -98,13 +201,15 @@ function parseTags(filePath, allData, cache, cachePath)
 			{
 				console.error("Year tag not found: " + filePath);
 				throw "Year tag not found: " + filePath;
+	var pathLookup = {};
+	var promises = [];
 			}
 
 			return tags;
 		});*/
 
 		/*var parsePromise = musicMetadata.parseFile(track, {duration: true}).then(function(metadata) {
-			if (metadata.format.duration)
+			if (metadata.format.duration)console.log(cache);
 			{
 				tags.length = parseInt(metadata.format.duration);
 			}
@@ -133,6 +238,8 @@ function parseTags(filePath, allData, cache, cachePath)
 			console.error(reason);
 		});
 	});*/
+
+	return parsePromise;
 }
 
 /**
@@ -159,7 +266,7 @@ function getTrackDuration(track, tags)
  */
 function saveArtist(artist, artistKey, artistData, music)
 {
-	//Artist
+	//Artistcache.files.push(encodeURIComponent(filePath));
 	var artistPromise = Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}).exec();
 	artistPromise.then(function(artist){
 		return artist;
@@ -289,7 +396,7 @@ function sync(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
-	jsonFile.writeFileSync(cachePath, {"files": []});
+	//jsonFile.writeFileSync(cachePath, {"files": []});
 
 	//Manage artists
 	var pathLookup = {};
@@ -300,7 +407,7 @@ function sync(req, res)
 	var totalFileCount = files.length;
 
 	var currentIteration = 0;
-	var totalIterations = 100;
+	var totalIterations = 1000;
 
 	for (var i in files)
 	{
@@ -327,7 +434,9 @@ function sync(req, res)
 				}
 
 				currentIteration++;
+				console.log('Before push (outside)');
 				promises.push(parseTags(filePath, allData, cache, cachePath));
+				console.log('After push (outside)');
 			}
 		}
 		else
@@ -342,6 +451,7 @@ function sync(req, res)
 	}
 
 	Promise.all(promises).then(values => {
+
 		console.log('Organizing data to save...');
 
 		var savePromises = [];
@@ -398,7 +508,8 @@ function sync(req, res)
 			var year = null;
 			try
 			{
-				year = tags.year.replace(/\0/g, '');
+				year = tags.year;
+
 			}
 			catch (e)
 			{
@@ -446,18 +557,15 @@ function sync(req, res)
 			}
 
 			var trackName = tags.title.replace(/\0/g, '');
-			var trackNum = '' + tags.track;
+			var trackNum = '' + tags.track.no;
 			var length = tags.length;
 			trackNum = trackNum.replace(/\0/g, '');
-			var genre = tags.genre.replace(/\0/g, '');
-			var discNum = 0;
-			if (tags['set-part'])
+			var genre = tags.genre[0].replace(/\0/g, '');
+			var discNum = tags.disk.no;
+
+			if (!discNum || discNum == 0)
 			{
-				discNum = tags['set-part'].replace(/\0/g, '');
-			}
-			else
-			{
-				console.log('Could not find disc num for ' + artistKey + ' - "' + trackName + '"');
+				console.log('Could not find disc num for ' + artistNameKey + ' - "' + trackName + '"');
 			}
 
 			var trackNameStripped = trackName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
