@@ -1,7 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var id3 = require('node-id3');
-var musicMetadata = require('music-metadata');
+var id3js = require('id3js');
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
 var jsonFile = require('jsonfile');
@@ -38,15 +38,17 @@ function determineLengths(req, res)
 
 	var cache = jsonFile.readFileSync(cachePath);
 	var totalFileCount = files.length;
-	var filesParsed = totalFileCount;
+	var runFilesParsed = 0;
 	var currentFileCount = 0;
+	var percentFileCount = 0;
+	var filesToParse = 250;
 	var promises = [];
 
 	for (var i in files)
 	{
 		var file = files[i];
 
-		var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
+		var percentProgress = Math.floor((percentFileCount/totalFileCount) * 100);
 		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
 
 		if (!cached)
@@ -54,7 +56,7 @@ function determineLengths(req, res)
 			var fileType = path.extname(file);
 			if (fileType == '.mp3')
 			{
-				var promise = assignTagLength(file, percentProgress, cache, cachePath, filesParsed);
+				var promise = assignTagLength(file, percentProgress, cache, cachePath);
 				if (promise)
 				{
 					promises.push(promise);
@@ -63,38 +65,43 @@ function determineLengths(req, res)
 				cache.files.push(encodeURIComponent(file));
 				jsonFile.writeFileSync(cachePath, cache);
 				currentFileCount++;
+				percentFileCount++;
 			}
 			else
 			{
-				console.log('[' + percentProgress + '%]' + ' File ' + filesParsed + ' is non-music, skipping');
+				console.log('[' + percentProgress + '%]' + ' File is non-music, skipping');
 			}
 		}
 		else
 		{
-			console.log('[' + percentProgress + '%]' + ' File ' + filesParsed + ' is cached, skipping');
+			percentFileCount++;
+			//console.log('[' + percentProgress + '%]' + ' File is cached, skipping');
 		}
 
-		filesParsed++;
+		runFilesParsed++;
 
-		if (currentFileCount >= 500)
+		if (currentFileCount >= filesToParse)
 		{
 			break;
 		}
 	}
 
 	Promise.all(promises).then(function(results){
-		if (filesParsed < totalFileCount)
+		console.log(runFilesParsed, filesToParse);
+		if (currentFileCount <= filesToParse)
 		{
+			console.log('Determining lengths again');
 			determineLengths(req, res);
 		}
 		else
 		{
+			console.log('Done');
 			return res.status(200).json({success: true});
 		}
 	});
 }
 
-function assignTagLength(filePath, percentProgress, cache, cachePath, iterator)
+function assignTagLength(filePath, percentProgress, cache, cachePath)
 {
 	var readTags = null;
 	try
@@ -103,7 +110,7 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, iterator)
 	}
 	catch (e)
 	{
-		console.error('Did not successfully read ' + filePath);
+		console.error('Did not successfully read ' + filePath + '!');
 		return;
 	}
 
@@ -126,7 +133,7 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, iterator)
 			}
 			else
 			{
-				console.error(percentProgressString + 'Could not find track length for ', filePath);
+				console.error(percentProgressString + 'Could not find track length for ' + filePath);
 			}
 		}).catch(function(error) {
 			console.error(error.message);
@@ -134,7 +141,7 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, iterator)
 	}
 	else
 	{
-		console.log(percentProgressString + 'File ' + iterator + ' already has length information.');
+		console.log(percentProgressString + 'File already has length information.');
 	}
 }
 
@@ -143,115 +150,41 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, iterator)
  */
 function parseTags(filePath, allData, cache, cachePath)
 {
-	var parsePromise = musicMetadata.parseFile(filePath, {duration: true}).then(function(metadata) {
-		var tags = metadata.common;
+	var tags = id3.read(filePath);
+	if (!tags.artist || tags.artist == '')
+	{
+		console.error("Artist tag not found: " + filePath);
+		return false;
+	}
+	else if (!tags.partOfSet || tags.partOfSet == 0)
+	{
+		console.error("Discnum tag not found: " + filePath);
+		return false;
+	}
+	else if (!tags.year || tags.year == '0000' || tags.year == '')
+	{
+		console.error("Year tag not found: " + filePath);
+		return false;
+	}
+	else if (!tags.length)
+	{
+		console.error('Could not find track length for ' + filePath);
+		return false;
+	}
 
-		if (!tags.artist || tags.artist == '')
-		{
-			console.error("Artist tag not found: " + filePath);
-			throw "Artist tag not found: " + filePath;
-		}
-		else if (!tags.disk.no || tags.disk.no == 0)
-		{
-			console.error("Discnum tag not found: " + filePath);
-			throw "Discnum tag not found: " + filePath;
-		}
-		else if (!tags.year || tags.year == '0000' || tags.year == '')
-		{
-			console.error("Year tag not found: " + filePath);
-			throw "Year tag not found: " + filePath;
-		}
-
-		if (metadata.format.duration)
-		{
-			tags.length = parseInt(metadata.format.duration);
-		}
-		else
-		{
-			console.error('Could not find track length for ', track.originalPath);
-		}
-
-		allData.push({
-			path: filePath,
-			tags: tags
-		});
-
-		cache.files.push(encodeURIComponent(filePath));
-		jsonFile.writeFile(cachePath, cache, function(error, data){
-			if (error)
-			{
-				console.error(error);
-			}
-		});
-
-		console.log('Done parsing tags for ' + filePath);
-
-	}).catch(function(error) {
-		console.error(error.message);
+	allData.push({
+		path: filePath,
+		tags: tags
 	});
 
-	/*var durationPromise = parsePromise.then(function(tags) {
-		return getTrackDuration(filePath, tags);
-	});*/
-
-	/*fs.readFile(filePath, function(error, data){
-		var tags;
-
-		//Get tags
-		/*var parsePromise = id3.parse(data).then(tags => {
-			if (!tags.artist || tags.artist == '')
-			{
-				console.error("Artist tag not found: " + filePath);
-				throw "Artist tag not found: " + filePath;
-			}
-			else if (!tags['set-part'] || tags['set-part'] == '' || tags['set-part'] == 0)
-			{
-				console.error("Discnum tag not found: " + filePath);
-				throw "Discnum tag not found: " + filePath;
-			}
-			else if (!tags.year || tags.year == '0000' || tags.year == '')
-			{
-				console.error("Year tag not found: " + filePath);
-				throw "Year tag not found: " + filePath;
-	var pathLookup = {};
-	var promises = [];
-			}
-
-			return tags;
-		});*/
-
-		/*var parsePromise = musicMetadata.parseFile(track, {duration: true}).then(function(metadata) {
-			if (metadata.format.duration)console.log(cache);
-			{
-				tags.length = parseInt(metadata.format.duration);
-			}
-			else
-			{
-				console.error('Could not find track length for ', track.originalPath);
-			}
-		}).catch(function(error) {
-			console.error(error.message);
-		});
-
-		/*var durationPromise = parsePromise.then(function(tags) {
-			return getTrackDuration(filePath, tags);
-		});*/
-
-		/*return Promise.all([parsePromise, durationPromise]).then(results => {
-			console.log('Done parsing tags for ' + filePath);
-			allData.push({
-				path: filePath,
-				tags: results[0]
-			});
-
-			cache.files.push(encodeURIComponent(filePath));
-			jsonFile.writeFileSync(cachePath, cache);
-		}).catch(function(reason){
-			console.error(reason);
-		});
-	});*/
-
-	return parsePromise;
+	cache.files.push(encodeURIComponent(filePath));
+	jsonFile.writeFile(cachePath, cache, function(error, data){
+		if (error)
+		{
+			console.error(error);
+			throw error;
+		}
+	});
 }
 
 /**
@@ -266,7 +199,7 @@ function getTrackDuration(track, tags)
 		}
 		else
 		{
-			console.error('Could not find track length for ', track.originalPath);
+			console.error('Could not find track length for ' + track.originalPath);
 		}
 	}).catch(function(error) {
 		console.error(error.message);
@@ -413,19 +346,27 @@ function sync(req, res)
 	//Manage artists
 	var pathLookup = {};
 	var promises = [];
-	var cache = jsonFile.readFileSync(cachePath);
 
+	var cache = null;
+	//If the cache is borked (e.g. due to a crash), rebuild it from scratch
+	try
+	{
+		cache = jsonFile.readFileSync(cachePath);
+	}
+	catch (e)
+	{
+		jsonFile.writeFileSync(cachePath, {"files": []});
+		cache = jsonFile.readFileSync(cachePath);
+	}
+
+	var numFilesToSync = 2500;
 	var currentFileCount = 0;
 	var totalFileCount = files.length;
-
-	var currentIteration = 0;
-	var totalIterations = 1000;
 
 	for (var i in files)
 	{
 		var file = files[i];
 		var fileType = path.extname(file);
-		currentFileCount++;
 
 		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
 		if (!cached)
@@ -439,16 +380,17 @@ function sync(req, res)
 			if (fileType == '.mp3')
 			{
 				var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
-				console.log('[' + percentProgress + '%] Queueing ' + filePath);
+				console.log('[' + percentProgress + '%] Parsing ' + filePath);
 				if (percentProgress >= 100)
 				{
 					complete = true;
 				}
 
-				currentIteration++;
-				console.log('Before push (outside)');
-				promises.push(parseTags(filePath, allData, cache, cachePath));
-				console.log('After push (outside)');
+				var parseSuccess = parseTags(filePath, allData, cache, cachePath);
+				if (parseSuccess)
+				{
+					currentFileCount++;
+				}
 			}
 		}
 		else
@@ -456,7 +398,7 @@ function sync(req, res)
 			console.log('Skipped ' + file);
 		}
 
-		if (currentIteration >= totalIterations)
+		if (currentFileCount >= numFilesToSync)
 		{
 			break;
 		}
@@ -569,11 +511,10 @@ function sync(req, res)
 			}
 
 			var trackName = tags.title.replace(/\0/g, '');
-			var trackNum = '' + tags.track.no;
+			var trackNum = tags.trackNumber.replace(/\0/g, '');
 			var length = tags.length;
-			trackNum = trackNum.replace(/\0/g, '');
-			var genre = tags.genre[0].replace(/\0/g, '');
-			var discNum = tags.disk.no;
+			var genre = tags.genre.replace(/\0/g, '');
+			var discNum = tags.partOfSet.replace(/\0/g, '');
 
 			if (!discNum || discNum == 0)
 			{
@@ -585,6 +526,8 @@ function sync(req, res)
 
 			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';
+
+			console.log(writePath);
 			fs.createReadStream(data.path).pipe(fs.createWriteStream(writePath));
 
 			music[artistNameKey].albums[albumNameKey].tracks.push({
@@ -617,9 +560,17 @@ function sync(req, res)
 
 		Promise.all(savePromises).then(values => {
 			console.log('Done saving all data');
-			res.status(200).json({
-				success: true
-			});
+
+			if (currentFileCount < numFilesToSync)
+			{
+				return res.status(200).json({
+					success: true
+				});
+			}
+			else
+			{
+				return sync(req, res);
+			}
 		});
 
 	}).catch(function(reason){

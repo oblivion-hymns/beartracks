@@ -19,6 +19,9 @@ var server = app.listen(app.get('port'), function(){
 	console.log('listening');
 });
 server.timeout = 60000;
+server.on('uncaughtException', function (err) {
+	console.log('Caught exception: ' + err);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
