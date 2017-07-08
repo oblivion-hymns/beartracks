@@ -343,25 +343,23 @@ function sync(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
-	//jsonFile.writeFileSync(cachePath, {"files": []});
-
 	//Manage artists
 	var pathLookup = {};
 	var promises = [];
 
 	var cache = null;
-	//If the cache is borked (e.g. due to a crash), rebuild it from scratch
 	try
 	{
 		cache = jsonFile.readFileSync(cachePath);
 	}
 	catch (e)
 	{
+		//If the cache is borked (e.g. due to a crash), rebuild it from scratch
 		jsonFile.writeFileSync(cachePath, {"files": []});
 		cache = jsonFile.readFileSync(cachePath);
 	}
 
-	var numFilesToSync = 100;
+	var numFilesToSync = 1000;
 	var percentageFileCount = cache.files.length;
 	var currentFileCount = 0;
 	var totalFileCount = files.length;
@@ -535,7 +533,6 @@ function sync(req, res)
 			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';
 
-			console.log(writePath);
 			fs.createReadStream(data.path).pipe(fs.createWriteStream(writePath));
 
 			music[artistNameKey].albums[albumNameKey].tracks.push({
