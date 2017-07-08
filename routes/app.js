@@ -185,6 +185,8 @@ function parseTags(filePath, allData, cache, cachePath)
 			throw error;
 		}
 	});
+
+	return true;
 }
 
 /**
@@ -359,7 +361,8 @@ function sync(req, res)
 		cache = jsonFile.readFileSync(cachePath);
 	}
 
-	var numFilesToSync = 2500;
+	var numFilesToSync = 100;
+	var percentageFileCount = cache.files.length;
 	var currentFileCount = 0;
 	var totalFileCount = files.length;
 
@@ -379,7 +382,7 @@ function sync(req, res)
 
 			if (fileType == '.mp3')
 			{
-				var percentProgress = Math.floor((currentFileCount/totalFileCount) * 100);
+				var percentProgress = Math.floor((percentageFileCount/totalFileCount) * 100);
 				console.log('[' + percentProgress + '%] Parsing ' + filePath);
 				if (percentProgress >= 100)
 				{
@@ -392,10 +395,13 @@ function sync(req, res)
 					currentFileCount++;
 				}
 			}
+
+			percentageFileCount++;
 		}
 		else
 		{
 			console.log('Skipped ' + file);
+			percentageFileCount++;
 		}
 
 		if (currentFileCount >= numFilesToSync)
@@ -428,6 +434,7 @@ function sync(req, res)
 			}
 
 			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\|:,/g, '');
+			artistNameKey = artistNameKey.replace(/\0/g, '');
 
 			if (!music[artistNameKey])
 			{
@@ -473,6 +480,7 @@ function sync(req, res)
 
 			var albumNameKey = artistNameKey + albumName.toLowerCase()
 				.replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '') + year;
+			albumNameKey = albumNameKey.replace(/\0/g, '');
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
 				var albumImagePath = null;
