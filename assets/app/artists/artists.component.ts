@@ -24,10 +24,7 @@ export class ArtistsComponent implements OnInit {
 	ngOnInit()
 	{
 		this.artistService.loadAll().subscribe(
-			(artists: Artist[]) => {
-				this.artists = artists;
-				this.displayArtists = [];
-			}
+			(artists: Artist[]) => { this.artists = artists; }
 		)
 	}
 

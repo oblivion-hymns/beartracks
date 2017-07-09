@@ -122,42 +122,29 @@ export class TracksComponent implements OnInit
 	tracks: Track[] = [];
 	displayTracks: Track[] = [];
 
-	screenWidth: number;
 	@Input() filterQuery = '';
 
-	constructor(private trackService: TrackService, private playerService: PlayerService, private ngZone: NgZone){
-		window.onresize = (e) =>
-		{
-			this.ngZone.run(() => {
-				this.screenWidth = window.innerWidth;
-			});
-		};
-
-		this.screenWidth = window.innerWidth;
-	}
+	constructor(private trackService: TrackService, private playerService: PlayerService){}
 
 	ngOnInit()
 	{
-		this.screenWidth = window.innerWidth;
 		this.trackService.loadAll().subscribe(
-			(tracks: Track[]) => {
-				this.tracks = tracks;
-				this.displayTracks = this.tracks.slice();
-			}
+			(tracks: Track[]) => { this.tracks = tracks; }
 		)
 	}
 
 	set filterString(value)
 	{
-		this.displayTracks = this.tracks.slice();
+		this.displayTracks = [];
 
-		if (value)
+		value = value.trim().toLowerCase().replace(/\W/g, '');
+		if (value && value.length > 2)
 		{
-			value = value.toLowerCase();
 			this.displayTracks = this.displayTracks.filter(
-				track => track.nameKey.includes(value.replace(/ /g, ''))
-			);
+				track => track.nameKey.includes(value));
 		}
+
+		this.filterQuery = value;
 	}
 
 	filterTracks(query)
