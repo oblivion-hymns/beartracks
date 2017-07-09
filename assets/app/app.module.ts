@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { routing } from './app.routing';
 import { HttpModule } from '@angular/http';
+import { SocketIoModule, SocketIoConfig } from 'ng2-socket-io';
 
 //Material
 import 'hammerjs';
@@ -23,6 +24,11 @@ import { TracksComponent } from './tracks/tracks.component';
 import { RadioComponent } from './radio/radio.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
+
+const socketIoConfig: SocketIoConfig = {
+	url: 'http://localhost:8988',
+	options: {}
+};
 
 //decorator
 @NgModule({
@@ -55,8 +61,11 @@ import { JukeboxComponent } from './jukebox/jukebox.component';
 		MdMenuModule,
 		MdProgressBarModule,
 		MdSidenavModule,
-		MdTabsModule
+		MdTabsModule,
+
+		SocketIoModule.forRoot(socketIoConfig)
 	],
+	providers: [],
 	bootstrap: [
 		AppComponent
 	]

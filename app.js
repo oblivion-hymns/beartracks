@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
+var io = require('socket.io');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var path = require('path');
@@ -15,12 +16,21 @@ var trackRoutes = require('./routes/tracks');
 var app = express();
 mongoose.connect('localhost:27017/beartracks');
 
-var server = app.listen(app.get('port'), function(){
+/*var server = app.listen(app.get('port'), function(){
 	console.log('listening');
-});
+});*/
+var server = io.listen(app.listen(app.get('port')));
 server.timeout = 60000;
 server.on('uncaughtException', function (err) {
 	console.log('Caught exception: ' + err);
+});
+
+server.sockets.on('connection', function(socket){
+	socket.on('sendMessage', function(data){
+		console.log('Sent message');
+
+		socket.emit('message', {message: 'Hello world!'});
+	});
 });
 
 // view engine setup
