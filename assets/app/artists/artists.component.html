@@ -4,8 +4,8 @@
 			<md-icon>search</md-icon>
 		</button>
 
-		<md-input-container id="FilterArtists" class="filter-box-top" autofocus>
-			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
+		<md-input-container id="FilterArtists" class="filter-box-top">
+			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
 		</md-input-container>
 	</div>
 </div>
@@ -13,7 +13,7 @@
 <md-grid-list cols="5" *ngIf="displayArtists.length > 0">
 	<md-grid-tile *ngFor="let artist of displayArtists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
 		<md-grid-tile-footer>
-			<strong class="artist-name">
+			<strong class="tile-name">
 				{{artist.name}}
 			</strong>
 		</md-grid-tile-footer>
@@ -27,7 +27,7 @@
 				error_outline
 			</md-icon><br />
 			<div class="error-text">
-				No results found
+				No artists found
 			</div>
 		</div>
 
@@ -36,8 +36,12 @@
 				search
 			</md-icon><br />
 			<div class="error-text">
-				Type in the box above to find artists
+				Type in the box to find artists
 			</div>
+		</div>
+
+		<div class="error-hint-text">
+			Type an asterisk (*) to see all
 		</div>
 	</div>
 </div>

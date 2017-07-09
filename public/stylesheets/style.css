@@ -39,9 +39,27 @@ md-icon.error-icon
 .error-text
 {
 	color: rgba(80, 80, 80, 0.87);
+	cursor: default;
+}
+
+.error-hint-text
+{
+	color: rgba(60, 60, 60, 0.87);
+	margin-top: 5px;
 }
 
 .filter-box-top
 {
 	width: 90%;
+}
+
+.tile-name
+{
+	display: inline-block;
+	margin-bottom: 2px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 100%;
+	width: 100%;
 }

@@ -1,30 +1,23 @@
-<div id="AlbumsToolbar" *ngIf="screenWidth > 1000">
-	<!--Search -->
-	<button md-icon-button>
-		<md-icon>search</md-icon>
-	</button>
+<div fxLayout='row'>
+	<div fxFlex="70%" fxFlexOffset="15%">
+		<button md-icon-button style="width: 7%;">
+			<md-icon>search</md-icon>
+		</button>
 
-	<md-input-container id="FilterAlbums">
-		<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
-	</md-input-container>
-
-	<!-- Controls -->
-	<button md-icon-button (click)="zoomIn()">
-		<md-icon>zoom_in</md-icon>
-	</button>
-	<button md-icon-button (click)="zoomOut()">
-		<md-icon>zoom_out</md-icon>
-	</button>
+		<md-input-container id="FilterAlbums" class="filter-box-top">
+			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
+		</md-input-container>
+	</div>
 </div>
 
-<md-grid-list cols="{{zoomLevels[zoomIndex].scale}}">
+<md-grid-list cols="5" *ngIf="displayAlbums.length > 0">
 	<md-grid-tile
 		*ngFor="let album of displayAlbums"
 		[ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}"
 		(click)="playerService.enqueueAlbum(album)">
 		<md-grid-tile-footer>
 			<span style="width: 100%;">
-				<em class="album-name">
+				<em class="tile-name">
 					{{album.name}}
 				</em><br />
 				<span class="album-artist">
@@ -34,3 +27,25 @@
 		</md-grid-tile-footer>
 	</md-grid-tile>
 </md-grid-list>
+
+<div fxLayout='row' *ngIf="displayAlbums.length == 0">
+	<div fxFlex="70%" fxFlexOffset="15%" style="text-align: center;">
+		<div *ngIf="filterQuery.length >= 3">
+			<md-icon class="error-icon">
+				error_outline
+			</md-icon><br />
+			<div class="error-text">
+				No albums found
+			</div>
+		</div>
+
+		<div *ngIf="filterQuery.length < 3">
+			<md-icon class="error-icon">
+				search
+			</md-icon><br />
+			<div class="error-text">
+				Type in the box to find albums
+			</div>
+		</div>
+	</div>
+</div>

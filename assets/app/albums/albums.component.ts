@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, NgZone } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { PlayerService } from '../player/player.service';
 import { Album } from './album';
@@ -9,29 +9,8 @@ import { TrackService } from '../tracks/track.service';
 	providers: [AlbumService, TrackService],
 	selector: 'bt-albums',
 	styles: [`
-		#AlbumsToolbar {
-			background-color: rgba(0, 0, 0, 0.54);
-			border-radius: 3px;
-			padding: 12px;
-			position: fixed;
-			right: 0px;
-			top: 96px;
-			z-index: 5;
-		}
-
 		#FilterAlbums input {
 			color: rgba(255, 255, 255, 0.54);
-		}
-
-		.album-name
-		{
-			display: inline-block;
-			margin-bottom: 2px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			max-width: 100%;
-			width: 100%;
 		}
 
 		.album-artist
@@ -53,75 +32,37 @@ export class AlbumsComponent implements OnInit
 	albums: Album[] = [];
 	displayAlbums: Album[] = [];
 
-	screenWidth: number;
 	@Input() filterQuery = '';
-
-	zoomLevels = [
-		{scale: 4},
-		{scale: 6},
-		{scale: 8},
-		{scale: 10},
-		{scale: 12},
-		{scale: 14}
-	];
-	zoomIndex = 0;
 
 	constructor(private playerService: PlayerService,
 				private albumService: AlbumService,
-				private trackService: TrackService,
-				private ngZone: NgZone) {
-		window.onresize = (e) =>
-		{
-			this.ngZone.run(() => {
-				this.screenWidth = window.innerWidth;
-			});
-		};
-
-		this.screenWidth = window.innerWidth;
-	}
+				private trackService: TrackService) {}
 
 	ngOnInit()
 	{
-		this.screenWidth = window.innerWidth;
 		this.albumService.loadAll().subscribe(
 			(albums: Album[]) => {
 				this.albums = albums;
-				this.displayAlbums = albums.slice();
 			}
 		)
 	}
 
 	set filterString(value)
 	{
-		this.displayAlbums = this.albums.slice();
+		this.displayAlbums = [];
 
-		if (value)
+		value = value.trim().toLowerCase().replace(/\W/g, '');
+		if (value && value.length > 2)
 		{
-			value = value.toLowerCase();
-			this.displayAlbums = this.displayAlbums.filter(
-				album => album.nameKey.includes(value.replace(/ /g, ''))
-			);
+			this.displayAlbums = this.albums.filter(
+				album => album.nameKey.includes(value));
 		}
+
+		this.filterQuery = value;
 	}
 
 	filterAlbums(query)
 	{
 		this.filterQuery = query;
-	}
-
-	zoomOut()
-	{
-		if (this.zoomIndex < this.zoomLevels.length-1)
-		{
-			this.zoomIndex += 1;
-		}
-	}
-
-	zoomIn()
-	{
-		if (this.zoomIndex > 0)
-		{
-			this.zoomIndex -= 1;
-		}
 	}
 }
