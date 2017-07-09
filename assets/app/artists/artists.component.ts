@@ -38,36 +38,16 @@ export class ArtistsComponent implements OnInit {
 	artists: Artist[] = [];
 	displayArtists: Artist[] = [];
 
-	screenWidth: number;
 	@Input() filterQuery = '';
 
-	zoomLevels = [
-		{scale: 4},
-		{scale: 5},
-		{scale: 6},
-		{scale: 7},
-		{scale: 8}
-	];
-	zoomIndex = 0;
-
-	constructor(private artistService: ArtistService, private ngZone: NgZone) {
-		window.onresize = (e) =>
-		{
-			this.ngZone.run(() => {
-				this.screenWidth = window.innerWidth;
-			});
-		};
-
-		this.screenWidth = window.innerWidth;
-	}
+	constructor(private artistService: ArtistService, private ngZone: NgZone) {}
 
 	ngOnInit()
 	{
-		this.screenWidth = window.innerWidth;
 		this.artistService.loadAll().subscribe(
 			(artists: Artist[]) => {
 				this.artists = artists;
-				this.displayArtists = artists.slice();
+				this.displayArtists = [];
 			}
 		)
 	}
@@ -75,34 +55,20 @@ export class ArtistsComponent implements OnInit {
 	set filterString(value)
 	{
 		//Reset list
-		this.displayArtists = this.artists.slice();
+		this.displayArtists = [];
 
-		if (value)
+		if (value && value.length > 2)
 		{
-			value = value.toLowerCase();
-			this.displayArtists = this.displayArtists.filter(
+			value = value.toLowerCase().replace(/\W/g, '');
+			this.displayArtists = this.artists.filter(
 				artist => artist.nameKey.includes(value));
 		}
+
+		this.filterQuery = value;
 	}
 
 	filterArtists(query)
 	{
 		this.filterQuery = query;
-	}
-
-	zoomOut()
-	{
-		if (this.zoomIndex < this.zoomLevels.length-1)
-		{
-			this.zoomIndex += 1;
-		}
-	}
-
-	zoomIn()
-	{
-		if (this.zoomIndex > 0)
-		{
-			this.zoomIndex -= 1;
-		}
 	}
 }
