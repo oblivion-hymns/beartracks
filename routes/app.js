@@ -2,6 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var id3 = require('node-id3');
 var id3js = require('id3js');
+var mp3Duration = require('mp3-duration');
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
 var jsonFile = require('jsonfile');
@@ -41,41 +42,47 @@ function determineLengths(req, res)
 	var runFilesParsed = 0;
 	var currentFileCount = 0;
 	var percentFileCount = 0;
-	var filesToParse = 250;
+	var filesToParse = 1000;
 	var promises = [];
 
 	for (var i in files)
 	{
 		var file = files[i];
+		var encodedFilePath = encodeURIComponent(file).replace(/\W/g, '');
 
 		var percentProgress = Math.floor((percentFileCount/totalFileCount) * 100);
-		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
+		var progressString = '[' + percentProgress + '%]' + ' (' + percentFileCount + '/' + totalFileCount + ') ';
+		var cached = cache.files.indexOf(encodedFilePath) != -1;
 
 		if (!cached)
 		{
 			var fileType = path.extname(file);
 			if (fileType == '.mp3')
 			{
-				var promise = assignTagLength(file, percentProgress, cache, cachePath);
-				if (promise)
+				var lengthAssignedPromise = assignTagLength(file, percentProgress, cache, cachePath, encodedFilePath);
+				if (lengthAssignedPromise)
 				{
-					promises.push(promise);
+					promises.push(lengthAssignedPromise);
+					console.log(progressString + 'Writing length information to file ' + file);
+				}
+				else
+				{
+					console.log(progressString + 'Skipping file with length information.');
 				}
 
-				cache.files.push(encodeURIComponent(file));
-				jsonFile.writeFileSync(cachePath, cache);
 				currentFileCount++;
 				percentFileCount++;
 			}
 			else
 			{
-				console.log('[' + percentProgress + '%]' + ' File is non-music, skipping');
+				console.log(progressString + 'Skipping non-audio file.');
+				percentFileCount++;
 			}
 		}
 		else
 		{
 			percentFileCount++;
-			//console.log('[' + percentProgress + '%]' + ' File is cached, skipping');
+			console.log(progressString + 'Skipping cached file.');
 		}
 
 		runFilesParsed++;
@@ -87,21 +94,42 @@ function determineLengths(req, res)
 	}
 
 	Promise.all(promises).then(function(results){
-		console.log(runFilesParsed, filesToParse);
-		if (currentFileCount <= filesToParse)
+		if (currentFileCount >= filesToParse)
 		{
-			console.log('Determining lengths again');
+			console.log('Syncing again...');
 			determineLengths(req, res);
 		}
 		else
 		{
-			console.log('Done');
+			console.log('All done!');
 			return res.status(200).json({success: true});
 		}
 	});
 }
 
-function assignTagLength(filePath, percentProgress, cache, cachePath)
+function getDuration(filePath, readTags, cachePath, cache)
+{
+	return new Promise(function(resolve, reject){
+		mp3Duration(filePath, function(error, duration){
+			if (error)
+			{
+				reject();
+				console.error(error);
+				throw error;
+			}
+
+			readTags.length = duration;
+			id3.write(readTags, filePath);
+			cache.files.push();
+			jsonFile.writeFileSync(cachePath, cache);
+			console.log('Finished writing data for file ' + filePath);
+			resolve();
+		});
+	});
+
+}
+
+function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFilePath)
 {
 	var readTags = null;
 	try
@@ -110,38 +138,20 @@ function assignTagLength(filePath, percentProgress, cache, cachePath)
 	}
 	catch (e)
 	{
-		console.error('Did not successfully read ' + filePath + '!');
+		console.error('Could not successfully read id3 tags for ' + filePath + '!');
 		return;
 	}
 
 	var percentProgressString = '[' + percentProgress + '%] ';
 	if (!readTags.length)
 	{
-		console.log('Could not find read tag: ' + filePath);
-		var parsePromise = musicMetadata.parseFile(filePath, {duration: true}).then(function(metadata) {
-			console.log('File duration parsed successfully.');
-
-			var tags = metadata.common;
-			if (metadata.format.duration)
-			{
-				var length = metadata.format.duration;
-				readTags.length = length;
-
-				console.log(percentProgressString + 'Found duration ' + parseInt(metadata.format.duration) + '. Writing to ' + filePath);
-				id3.write(readTags, filePath);
-				//tags.length = parseInt(metadata.format.duration);
-			}
-			else
-			{
-				console.error(percentProgressString + 'Could not find track length for ' + filePath);
-			}
-		}).catch(function(error) {
-			console.error(error.message);
-		});
+		lengthPromise = getDuration(filePath, readTags, cachePath, cache);
+		return lengthPromise;
 	}
 	else
 	{
-		console.log(percentProgressString + 'File already has length information.');
+		cache.files.push(encodedFilePath);
+		jsonFile.writeFileSync(cachePath, cache);
 	}
 }
 
@@ -154,6 +164,16 @@ function parseTags(filePath, allData, cache, cachePath)
 	if (!tags.artist || tags.artist == '')
 	{
 		console.error("Artist tag not found: " + filePath);
+		return false;
+	}
+	else if (!tags.trackNumber)
+	{
+		console.error('Track number tag not found: ' + filePath);
+		return false;
+	}
+	else if (!tags.genre)
+	{
+		console.error('Genre tag not found: ' + filePath);
 		return false;
 	}
 	else if (!tags.partOfSet || tags.partOfSet == 0)
@@ -177,14 +197,8 @@ function parseTags(filePath, allData, cache, cachePath)
 		tags: tags
 	});
 
-	cache.files.push(encodeURIComponent(filePath));
-	jsonFile.writeFile(cachePath, cache, function(error, data){
-		if (error)
-		{
-			console.error(error);
-			throw error;
-		}
-	});
+	var fileKey = encodeURIComponent(filePath).replace(/\W/g, '');
+	cache.files.push(fileKey);
 
 	return true;
 }
@@ -213,7 +227,6 @@ function getTrackDuration(track, tags)
  */
 function saveArtist(artist, artistKey, artistData, music)
 {
-	//Artistcache.files.push(encodeURIComponent(filePath));
 	var artistPromise = Artist.findOneAndUpdate({'nameKey': artist.nameKey}, artist, {new: true, upsert: true}).exec();
 	artistPromise.then(function(artist){
 		return artist;
@@ -331,6 +344,8 @@ function saveArtist(artist, artistKey, artistData, music)
  */
 function sync(req, res)
 {
+	console.log('Syncing...');
+
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
 	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
@@ -348,19 +363,10 @@ function sync(req, res)
 	var promises = [];
 
 	var cache = null;
-	try
-	{
-		cache = jsonFile.readFileSync(cachePath);
-	}
-	catch (e)
-	{
-		//If the cache is borked (e.g. due to a crash), rebuild it from scratch
-		jsonFile.writeFileSync(cachePath, {"files": []});
-		cache = jsonFile.readFileSync(cachePath);
-	}
+	cache = jsonFile.readFileSync(cachePath);
 
-	var numFilesToSync = 1000;
-	var percentageFileCount = cache.files.length;
+	var numFilesToSync = 50;
+	var percentageFileCount = 0;
 	var currentFileCount = 0;
 	var totalFileCount = files.length;
 
@@ -369,7 +375,8 @@ function sync(req, res)
 		var file = files[i];
 		var fileType = path.extname(file);
 
-		var cached = cache.files.indexOf(encodeURIComponent(file)) != -1;
+		var fileKey = encodeURIComponent(file).replace(/\W/g, '');
+		var cached = cache.files.indexOf(fileKey) != -1;
 		if (!cached)
 		{
 			var isAlbumArt = false;
@@ -398,7 +405,7 @@ function sync(req, res)
 		}
 		else
 		{
-			console.log('Skipped ' + file);
+			//console.log('Skipped ' + file);
 			percentageFileCount++;
 		}
 
@@ -464,18 +471,7 @@ function sync(req, res)
 			}
 
 			var albumName = tags.album.replace(/\0/g, '');
-			var year = null;
-			try
-			{
-				year = tags.year;
-
-			}
-			catch (e)
-			{
-				console.error('Could not find year tag for: ', artistName, albumName);
-				throw e;
-			}
-
+			var year = tags.year.replace(/\0/g, '');
 			var albumNameKey = artistNameKey + albumName.toLowerCase()
 				.replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '') + year;
 			albumNameKey = albumNameKey.replace(/\0/g, '');
@@ -566,16 +562,29 @@ function sync(req, res)
 		Promise.all(savePromises).then(values => {
 			console.log('Done saving all data');
 
-			if (currentFileCount < numFilesToSync)
-			{
-				return res.status(200).json({
-					success: true
-				});
-			}
-			else
-			{
-				return sync(req, res);
-			}
+			console.log('Writing to cache');
+			jsonFile.writeFile(cachePath, cache, function(error, data){
+				if (error)
+				{
+					console.error(error);
+					throw error;
+				}
+
+				if (currentFileCount < numFilesToSync)
+				{
+					return res.status(200).json({
+						success: true
+					});
+				}
+				else
+				{
+					return sync(req, res);
+				}
+			});
+
+		}).catch(function(reason){
+			console.error(reason);
+			throw reason;
 		});
 
 	}).catch(function(reason){
