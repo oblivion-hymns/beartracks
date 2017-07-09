@@ -438,7 +438,7 @@ function sync(req, res)
 				throw e;
 			}
 
-			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\|:,/g, '');
+			var artistNameKey = artistName.toLowerCase().replace(/\W/g, '');
 			artistNameKey = artistNameKey.replace(/\0/g, '').substring(0, 100);
 
 			if (!music[artistNameKey])
@@ -472,8 +472,7 @@ function sync(req, res)
 
 			var albumName = tags.album.replace(/\0/g, '');
 			var year = tags.year.replace(/\0/g, '');
-			var albumNameKey = artistNameKey + albumName.toLowerCase()
-				.replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '') + year;
+			var albumNameKey = artistNameKey + albumName.toLowerCase().replace(/\W/g, '') + year;
 			albumNameKey = albumNameKey.replace(/\0/g, '').substring(0, 100);
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
@@ -571,14 +570,18 @@ function sync(req, res)
 					throw error;
 				}
 
+				console.log('Wrote cache');
+
 				if (currentFileCount < numFilesToSync)
 				{
+					console.log('Done!');
 					return res.status(200).json({
 						success: true
 					});
 				}
 				else
 				{
+					console.log('Syncing again');
 					return sync(req, res);
 				}
 			});
