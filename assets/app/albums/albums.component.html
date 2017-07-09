@@ -10,7 +10,7 @@
 	</div>
 </div>
 
-<md-grid-list cols="5" *ngIf="displayAlbums.length > 0">
+<md-grid-list cols="8" *ngIf="displayAlbums.length > 0">
 	<md-grid-tile
 		*ngFor="let album of displayAlbums"
 		[ngStyle]="{'background-image': 'url(' + album.imagePath + ')'}"

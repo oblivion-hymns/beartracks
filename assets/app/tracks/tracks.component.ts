@@ -121,6 +121,7 @@ export class TracksComponent implements OnInit
 {
 	tracks: Track[] = [];
 	displayTracks: Track[] = [];
+	tracksLoaded: boolean = false;
 
 	@Input() filterQuery = '';
 
@@ -129,7 +130,10 @@ export class TracksComponent implements OnInit
 	ngOnInit()
 	{
 		this.trackService.loadAll().subscribe(
-			(tracks: Track[]) => { this.tracks = tracks; }
+			(tracks: Track[]) => {
+				this.tracksLoaded = true;
+				this.tracks = tracks;
+			}
 		)
 	}
 
@@ -138,9 +142,9 @@ export class TracksComponent implements OnInit
 		this.displayTracks = [];
 
 		value = value.trim().toLowerCase().replace(/\W/g, '');
-		if (value && value.length > 2)
+		if (value && value.length > 3)
 		{
-			this.displayTracks = this.displayTracks.filter(
+			this.displayTracks = this.tracks.filter(
 				track => track.nameKey.includes(value));
 		}
 

@@ -4,13 +4,27 @@
 			<md-icon>search</md-icon>
 		</button>
 
-		<md-input-container id="FilterTracks" style="width: 92%;">
-			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" />
+		<md-input-container id="FilterTracks" class="filter-box-top">
+			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
 		</md-input-container>
+	</div>
+</div>
 
-		<audio id="Player"></audio>
+<div fxLayout='row' *ngIf="!tracksLoaded">
+	<div fxFlex="70%" fxFlexOffset="15%" style="text-align: center;">
+		<md-spinner mode="indeterminate" style="display: inline-block;">
+		</md-spinner>
+		<div style="margin-top: 5px;">
+			Loading tracks...
+		</div>
+	</div>
+</div>
 
-		<ul>
+<div fxLayout='row' *ngIf="tracksLoaded">
+	<div fxFlex="70%" fxFlexOffset="15%">
+		<!-- <audio id="Player"></audio> -->
+
+		<ul *ngIf="displayTracks.length > 0">
 			<li class="track-list-item" *ngFor="let track of displayTracks" style="display: inline-block; width: 100%;">
 
 				<div style="float: left; position: relative;">
@@ -30,5 +44,27 @@
 				</div>
 			</li>
 		</ul>
+	</div>
+</div>
+
+<div fxLayout='row' *ngIf="displayTracks.length == 0 && tracksLoaded">
+	<div fxFlex="70%" fxFlexOffset="15%" style="text-align: center;">
+		<div *ngIf="filterQuery.length >= 5">
+			<md-icon class="error-icon">
+				error_outline
+			</md-icon><br />
+			<div class="error-text">
+				No tracks found
+			</div>
+		</div>
+
+		<div *ngIf="filterQuery.length < 5">
+			<md-icon class="error-icon">
+				search
+			</md-icon><br />
+			<div class="error-text">
+				Type in the box to find tracks
+			</div>
+		</div>
 	</div>
 </div>
