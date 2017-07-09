@@ -439,7 +439,7 @@ function sync(req, res)
 			}
 
 			var artistNameKey = artistName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\|:,/g, '');
-			artistNameKey = artistNameKey.replace(/\0/g, '');
+			artistNameKey = artistNameKey.replace(/\0/g, '').substring(0, 100);
 
 			if (!music[artistNameKey])
 			{
@@ -474,7 +474,7 @@ function sync(req, res)
 			var year = tags.year.replace(/\0/g, '');
 			var albumNameKey = artistNameKey + albumName.toLowerCase()
 				.replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '') + year;
-			albumNameKey = albumNameKey.replace(/\0/g, '');
+			albumNameKey = albumNameKey.replace(/\0/g, '').substring(0, 100);
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
 				var albumImagePath = null;
@@ -525,6 +525,7 @@ function sync(req, res)
 
 			var trackNameStripped = trackName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
 			var trackNameKey = artistNameKey + albumNameKey + trackNameStripped + discNum + trackNum;
+			trackNameKey = trackNameKey.substring(0, 100);
 
 			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';
