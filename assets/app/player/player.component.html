@@ -37,45 +37,52 @@
 	</div>
 </div>
 
-<div id="Player" *ngIf="playerService.player.currentTrack">
-	<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}"/>
+<div id="Player">
+	<div *ngIf="playerService.player.currentTrack">
+		<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}"/>
 
-	<div
-		class="now-playing"
-		*ngIf="playerService.player.currentTrack">
-		<h3 class="now-playing-field">
-			{{playerService.player.currentTrack.name}}
-		</h3>
-		<em class="now-playing-field" style="color: rgba(255, 255, 255, 0.87);">
-			{{playerService.player.currentTrack.album.name}} ({{playerService.player.currentTrack.album.year}})
-		</em><br />
-		<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
-			{{playerService.player.currentTrack.album.artist.name}}
-		</span><br />
+		<div
+			class="now-playing"
+			*ngIf="playerService.player.currentTrack">
+			<h3 class="now-playing-field">
+				{{playerService.player.currentTrack.name}}
+			</h3>
+			<em class="now-playing-field" style="color: rgba(255, 255, 255, 0.87);">
+				{{playerService.player.currentTrack.album.name}} ({{playerService.player.currentTrack.album.year}})
+			</em><br />
+			<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
+				{{playerService.player.currentTrack.album.artist.name}}
+			</span><br />
 
-		<!-- Toolbar -->
-		<md-icon
-			class="player-control player-pause"
-			*ngIf="!playerService.player.audio.paused"
-			(click)="playerService.player.pause()">
-			pause
-		</md-icon>
-		<md-icon
-			class="player-control player-play"
-			*ngIf="playerService.player.audio.paused"
-			(click)="playerService.player.resume()">
-			play_arrow
-		</md-icon>
+			<!-- Toolbar -->
+			<md-icon
+				class="player-control player-pause"
+				*ngIf="!playerService.player.audio.paused"
+				(click)="playerService.player.pause()">
+				pause
+			</md-icon>
+			<md-icon
+				class="player-control player-play"
+				*ngIf="playerService.player.audio.paused"
+				(click)="playerService.player.resume()">
+				play_arrow
+			</md-icon>
 
+		</div>
+
+		<div class="now-playing-elapsed">
+			{{playerService.player.elapsed}} / {{playerService.player.currentTrack.lengthFormatted}}
+		</div>
+
+		<md-progress-bar
+			class="now-playing-progress"
+			[mode]="determinate"
+			[value]="playerService.player.elapsedPercent">
+		</md-progress-bar>
 	</div>
-
-	<div class="now-playing-elapsed">
-		{{playerService.player.elapsed}} / {{playerService.player.currentTrack.lengthFormatted}}
+	<div *ngIf="!playerService.player.currentTrack">
+		<p style="color: rgba(80, 80, 80, 0.87);">
+			Nothing currently playing
+		</p>
 	</div>
-
-	<md-progress-bar
-		class="now-playing-progress"
-		[mode]="determinate"
-		[value]="playerService.player.elapsedPercent">
-	</md-progress-bar>
 </div>
