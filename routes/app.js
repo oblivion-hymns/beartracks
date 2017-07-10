@@ -27,8 +27,8 @@ function baseRoute(req, res)
 
 function determineLengths(req, res)
 {
-	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 
 	var cachePath = musicRoot + '/.bearcache-durations.json';
@@ -36,6 +36,8 @@ function determineLengths(req, res)
 	{
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
+
+	jsonFile.writeFileSync(cachePath, {"files": []});
 
 	var cache = jsonFile.readFileSync(cachePath);
 	var totalFileCount = files.length;
@@ -107,28 +109,6 @@ function determineLengths(req, res)
 	});
 }
 
-function getDuration(filePath, readTags, cachePath, cache)
-{
-	return new Promise(function(resolve, reject){
-		mp3Duration(filePath, function(error, duration){
-			if (error)
-			{
-				reject();
-				console.error(error);
-				throw error;
-			}
-
-			readTags.length = duration;
-			id3.write(readTags, filePath);
-			cache.files.push();
-			jsonFile.writeFileSync(cachePath, cache);
-			console.log('Finished writing data for file ' + filePath);
-			resolve();
-		});
-	});
-
-}
-
 function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFilePath)
 {
 	var readTags = null;
@@ -143,7 +123,13 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFil
 	}
 
 	var percentProgressString = '[' + percentProgress + '%] ';
-	if (!readTags.length)
+
+
+
+
+
+	//if (!readTags.length) @TODO
+	if (readTags.length)
 	{
 		lengthPromise = getDuration(filePath, readTags, cachePath, cache);
 		return lengthPromise;
@@ -153,6 +139,35 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFil
 		cache.files.push(encodedFilePath);
 		jsonFile.writeFileSync(cachePath, cache);
 	}
+
+
+
+
+
+}
+
+function getDuration(filePath, readTags, cachePath, cache)
+{
+	return new Promise(function(resolve, reject){
+		mp3Duration(filePath, function(error, duration){
+			if (error)
+			{
+				reject();
+				console.error(error);
+				throw error;
+			}
+
+			duration = parseInt(duration);
+
+			readTags.length = duration;
+			id3.write(readTags, filePath);
+			cache.files.push();
+			jsonFile.writeFileSync(cachePath, cache);
+			console.log('Finished writing data for file ' + filePath);
+			resolve();
+		});
+	});
+
 }
 
 /**
