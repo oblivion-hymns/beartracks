@@ -25,15 +25,21 @@ export class Track
 					}
 
 					//Minutes
+					length_m = 0;
 					while (tempLength >= 60)
 					{
 						length_m += 1;
 						tempLength -= 60;
 					}
-					if (length_m < 10 && length_h > 0)
+					if (length_m == 0)
+					{
+						length_m = '0';
+					}
+					else if (length_m < 10 && length_h > 0)
 					{
 						length_m = '0' + length_m;
 					}
+
 
 					length_s = tempLength;
 					if (length_s < 10)

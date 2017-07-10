@@ -11,8 +11,8 @@ export class Player implements OnInit
 	public isPlaying: boolean;
 
 	public elapsedInterval;
-	public elapsed;
-	public elapsedPercent;
+	public elapsed = '0:00';
+	public elapsedPercent = 0;
 
 	public currentTrack: Track;
 	public queue = [];
@@ -139,10 +139,16 @@ export class Player implements OnInit
 				length_m += 1;
 				tempLength -= 60;
 			}
-			if (length_m < 10 && length_h > 0)
+			if (length_m == 0)
+			{
+				length_m = '0';
+			}
+			else if (length_m < 10 && length_h > 0)
 			{
 				length_m = '0' + length_m;
 			}
+
+
 
 			length_s = tempLength;
 			if (length_s < 10)
@@ -177,6 +183,22 @@ export class Player implements OnInit
 		else
 		{
 			this.elapsedPercent = 0;
+		}
+
+		console.log(this.elapsedPercent);
+
+		if (this.elapsedPercent >= 100)
+		{
+			this.elapsedPercent = 0;
+			this.elapsed = '0:00';
+			if (this.queue[this.queuePosition] + 1)
+			{
+				this.playPosition(this.queuePosition + 1);
+			}
+			else
+			{
+				this.pause();
+			}
 		}
 	}
 }

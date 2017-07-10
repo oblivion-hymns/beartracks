@@ -61,9 +61,7 @@ const socketIoConfig: SocketIoConfig = {
 		MdMenuModule,
 		MdProgressBarModule,
 		MdSidenavModule,
-		MdTabsModule,
-
-		SocketIoModule.forRoot(socketIoConfig)
+		MdTabsModule
 	],
 	providers: [],
 	bootstrap: [
