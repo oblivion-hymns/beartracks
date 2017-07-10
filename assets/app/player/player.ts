@@ -53,6 +53,9 @@ export class Player implements OnInit
 	 */
 	playOne(track)
 	{
+		this.elapsedPercent = 0;
+		this.elapsed = '0:00';
+
 		this.queue = [];
 		this.queuePosition = 0;
 		this.currentTrack = track;
@@ -78,6 +81,9 @@ export class Player implements OnInit
 
 	playPosition(index)
 	{
+		this.elapsedPercent = 0;
+		this.elapsed = '0:00';
+
 		this.queuePosition = index;
 		this.currentTrack = this.queue[this.queuePosition];
 

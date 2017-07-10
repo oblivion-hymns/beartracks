@@ -4,6 +4,8 @@
 	bottom: 0px;
 	box-sizing: border-box;
 	left: 0px;
+	min-height: 138px;
+	max-height: 138px;
 	padding: 16px;
 	position: fixed;
 	width: 100%;
@@ -11,12 +13,12 @@
 
 #Player .now-playing
 {
+	display: block;
 	line-height: 1.5em;
+	margin-bottom: 5px;
 	margin-right: 16px;
 	max-height: 96px;
 	min-height: 96px;
-
-	display:block;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -49,10 +51,11 @@
 
 #Player .now-playing-elapsed
 {
+	bottom: 24px;
 	color:rgba(255, 255, 255, 0.54);
 	float: right;
+	margin-bottom: 5px;
 	position: absolute;
-	bottom: 24px;
 	right: 16px;
 }
 
@@ -72,7 +75,7 @@
 {
 	background-color: rgb(40, 40, 40);
 	border-radius: 0px 5px 0px 0px;
-	bottom: 134px;
+	bottom: 138px;
 	height: 50%;
 	max-height: 50%;
 	min-height: 50%;
