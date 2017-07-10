@@ -148,8 +148,6 @@ export class Player implements OnInit
 				length_m = '0' + length_m;
 			}
 
-
-
 			length_s = tempLength;
 			if (length_s < 10)
 			{
@@ -184,8 +182,6 @@ export class Player implements OnInit
 		{
 			this.elapsedPercent = 0;
 		}
-
-		console.log(this.elapsedPercent);
 
 		if (this.elapsedPercent >= 100)
 		{
