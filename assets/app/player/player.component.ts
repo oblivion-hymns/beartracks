@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, NgZone } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { PlayerService } from './player.service';
 import { TrackService } from '../tracks/track.service';
@@ -9,10 +9,7 @@ import { TrackService } from '../tracks/track.service';
 	styleUrls: ['./player.component.css'],
 	templateUrl: './player.component.html'
 })
-export class PlayerComponent implements OnInit
+export class PlayerComponent
 {
 	constructor(private playerService: PlayerService, private trackService: TrackService){}
-
-	ngOnInit() {
-	}
 }

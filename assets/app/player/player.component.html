@@ -1,7 +1,25 @@
-<div id="Queue" *ngIf="playerService.player.queue.length > 1">
-	<h3>Next</h3>
-	<div class="queue-list">
+<div id="OpenQueue"
+	(click)="playerService.player.openQueue()">
+	<md-icon>
+		queue_music
+	</md-icon>
+</div>
 
+<div id="Queue"
+	class="queue-closed"
+	[ngClass]="{'queue-closed': playerService.player.queueOpen == false}">
+	<div style="display: block;">
+		<h3>
+			Queue
+			<button md-icon-button id="CloseQueue" (click)="playerService.player.closeQueue()">
+				<md-icon>
+					close
+				</md-icon>
+			</button>
+		</h3>
+	</div>
+
+	<div class="queue-list" *ngIf="playerService.player.queue.length">
 		<div
 			class="queue-item"
 			*ngFor="let track of playerService.player.queue; let i = index"
@@ -31,8 +49,21 @@
 			</span>
 
 			<span class="queue-item-field">
-				{{i+1}}. {{ track.name }}
+				<span class="queue-item-field-text">
+					{{i+1}}. {{ track.name }}
+				</span>
+				<span style="float: right; padding-top: 1px; color: rgba(255, 255, 255, 0.34);">
+					{{track.lengthFormatted}}
+				</span>
 			</span>
+		</div>
+	</div>
+	<div class="queue-list" *ngIf="playerService.player.queue.length == 0" style="text-align: center;">
+		<md-icon class="error-icon">
+			queue_music
+		</md-icon><br />
+		<div class="error-text">
+			No music queued
 		</div>
 	</div>
 </div>

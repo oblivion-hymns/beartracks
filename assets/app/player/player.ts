@@ -17,6 +17,7 @@ export class Player implements OnInit
 	public currentTrack: Track;
 	public queue = [];
 	public queuePosition = 0;
+	public queueOpen: boolean = false;
 
 	constructor() { }
 
@@ -28,6 +29,14 @@ export class Player implements OnInit
 	enqueueOne(track)
 	{
 		this.queue.push(track);
+		if (this.queue.length > 1)
+		{
+			this.openQueue();
+		}
+		else
+		{
+			this.closeQueue();
+		}
 	}
 
 	enqueueMany(tracks)
@@ -42,10 +51,12 @@ export class Player implements OnInit
 
 		for (var i in tracks)
 		{
+			console.log(tracks[i]);
 			this.queue.push(tracks[i]);
 		}
 
 		this.playPosition(0);
+		this.openQueue();
 	}
 
 	/**
@@ -202,5 +213,15 @@ export class Player implements OnInit
 				this.pause();
 			}
 		}
+	}
+
+	openQueue()
+	{
+		this.queueOpen = true;
+	}
+
+	closeQueue()
+	{
+		this.queueOpen = false;
 	}
 }
