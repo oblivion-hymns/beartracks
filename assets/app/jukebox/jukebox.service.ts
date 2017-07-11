@@ -1,18 +1,28 @@
+import 'rxjs/Rx';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { Socket } from 'ng2-socket-io';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class JukeboxService {
 
-	constructor(private socket: Socket) {}
+	constructor(private http: Http) {}
 
-	sendMessage(msg: string)
+	postMessage(msg: string)
 	{
-		this.socket.emit("message", msg);
+		var url = 'http://bwilbur.com:3000/messages/send';
+		var body = {
+			message: msg
+		};
+		var headers = new Headers({'Content-Type': 'application/json'});
+		var options = new RequestOptions({headers: headers});
+		var response;
+
+		this.http.post(url, body, options).map((res:Response) => res.json()).subscribe();
 	}
 
-	getMessage()
+	/*getMessage()
 	{
 		return this.socket.fromEvent("message").map(data => data.msg);
-	}
+	}*/
 }
