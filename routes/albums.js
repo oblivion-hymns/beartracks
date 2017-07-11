@@ -40,7 +40,7 @@ function find(req, res)
 	if (query.length > 2)
 	{
 		var regex = new RegExp('.*' + query + '.*', 'i');
-		Album.find({nameKey: regex}).sort('nameKey').exec(function(err, albums){
+		Album.find({nameKey: regex}).sort('nameKey').populate('artist').exec(function(err, albums){
 			if (err)
 			{
 				return res.status(500).json({

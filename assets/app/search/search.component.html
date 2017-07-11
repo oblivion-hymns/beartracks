@@ -27,8 +27,8 @@
 					<md-list>
 						<md-list-item class="item-line" *ngFor="let artist of artists">
 							<div md-line style="padding: 0px;">
-								<img src="{{artist.imagePath}}" style="float: left; width: 48px; height: 48px;" />
-								<span class="item-text" style="word-break: break-word;">
+								<img src="{{artist.imagePath}}"/>
+								<span class="item-text">
 									{{artist.name}}
 								</span>
 							</div>
@@ -54,7 +54,22 @@
 			</div>
 			<div *ngIf="!albumsLoading">
 				<div *ngIf="albums.length > 0">
-					Found {{albums.length}} results
+					<md-list>
+						<md-list-item
+							class="item-line"
+							*ngFor="let album of albums"
+							(click)="playerService.enqueueAlbum(album)">
+							<div md-line style="padding: 0px;">
+								<img src="{{album.imagePath}}"/>
+								<span class="item-text-single">
+									{{album.name}}
+								</span>
+								<span class="item-text-single item-text-description">
+									{{album.artist.name}}, {{album.year}}
+								</span>
+							</div>
+						</md-list-item>
+					</md-list>
 				</div>
 				<div *ngIf="albums.length == 0" style="text-align: center;">
 					<md-icon class="error-icon">
@@ -75,7 +90,22 @@
 			</div>
 			<div *ngIf="!tracksLoading">
 				<div *ngIf="tracks.length > 0">
-					Found {{tracks.length}} results
+					<md-list>
+						<md-list-item
+							class="item-line"
+							*ngFor="let track of tracks"
+							(click)="playerService.player.playOne(track)">
+							<div md-line>
+								<img src="{{track.album.imagePath}}" />
+								<span class="item-text-single">
+									{{track.name}}
+								</span>
+								<span class="item-text-single item-text-description">
+									{{track.album.artist.name}}
+								</span>
+							</div>
+						</md-list-item>
+					</md-list>
 				</div>
 				<div *ngIf="tracks.length == 0" style="text-align: center;">
 					<md-icon class="error-icon">

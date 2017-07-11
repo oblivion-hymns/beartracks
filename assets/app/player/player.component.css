@@ -3,7 +3,7 @@
 	background-color: rgb(40, 40, 40);
 	bottom: 0px;
 	box-sizing: border-box;
-	box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.12);
+	box-shadow: 2px 2px 9px 9px rgba(0, 0, 0, 0.87);
 	left: 0px;
 	min-height: 138px;
 	max-height: 138px;
@@ -113,9 +113,10 @@
 	color: rgba(255, 255, 255, 0.54);
 	height: 40px;
 	left: 0px;
+	opacity: 0.95;
 	padding: 8px;
-	position: absolute;
-	top: 18%;
+	position: fixed;
+	top: 24%;
 	transition: background-color 0.3s ease-out;
 	width: 40px;
 }

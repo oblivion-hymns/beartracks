@@ -36,14 +36,7 @@ export class Player implements OnInit
 	enqueueOne(track)
 	{
 		this.queue.push(track);
-		if (this.queue.length > 1)
-		{
-			this.openQueue();
-		}
-		else
-		{
-			this.closeQueue();
-		}
+		this.openQueue();
 	}
 
 	enqueueMany(tracks)
