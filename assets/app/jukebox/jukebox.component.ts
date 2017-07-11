@@ -11,16 +11,61 @@ import { Message } from './message';
 	styles: [`
 		#JukeboxChat
 		{
-			background-color: rgba(0, 0, 0, 0.18);
+			background-color: rgb(40, 40, 40);
 			border-left: 1px solid rgba(0, 0, 0, 0.87);
 			border-radius: 5px 0px 0px 0px;
 			bottom: 137px;
 			display: block;
-			height: 35%;
+			height: 50%;
 			padding: 8px;
 			position: absolute;
+			overflow-y: hidden;
 			right: 0px;
 			width: 50%;
+		}
+
+		#JukeboxChat #Messages
+		{
+			background-color: rgba(0, 0, 0, 0.12);
+			border: 1px solid rgba(0, 0, 0, 0.38);
+			border-radius: 2px;
+			box-shadow: inset 1px 1px 2px 2px rgba(0, 0, 0, 0.38);
+			height: 80%;
+			overflow-y: scroll;
+			padding: 8px;
+		}
+
+		#JukeboxChat #Messages .message-item
+		{
+			margin-bottom: 4px;
+			padding: 12px;
+		}
+
+		#JukeboxChat #Messages .message-item:nth-child(odd)
+		{
+			background-color: rgba(0, 0, 0, 0.20);
+		}
+
+		#JukeboxChat #Messages .message-item-username
+		{
+			color: rgba(255, 255, 255, 0.54);
+		}
+
+		#JukeboxChat #Messages .message-item-text
+		{
+			color: rgba(255, 255, 255, 0.87);
+		}
+
+		#JukeboxChat #Messages .message-item-date
+		{
+			color: rgba(255, 255, 255, 0.36);
+			float: right;
+			font-size: 12px;
+		}
+
+		#JukeboxChat #Send
+		{
+			height: 6%;
 		}
 	`],
 	templateUrl: './jukebox.component.html'
