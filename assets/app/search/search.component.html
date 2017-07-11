@@ -2,8 +2,8 @@
 	<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
 </md-input-container>
 
-<div fxLayout='row' *ngIf='filterQuery.length > 2'>
-	<div fxFlex="70%" fxFlexOffset="15%" style="text-align: center;">
+<div fxLayout='row' *ngIf='filterQuery.length < 3'>
+	<div fxFlex='98%' fxFlexOffset="2%" style="text-align: center;">
 		<md-icon class="error-icon">
 			search
 		</md-icon><br />
@@ -13,25 +13,64 @@
 	</div>
 </div>
 
-<div fxLayout='row' *ngIf='filterQuery.length < 2'>
-	<div fxFlex='98%' fxFlexOffset="2%" *ngIf="numResults.length > 0">
+<div fxLayout='row' *ngIf='filterQuery.length >= 3'>
+	<div fxFlex='98%' fxFlexOffset="2%">
 		<div fxFlex='33%'>
 			<h2>Artists</h2>
+			<div *ngIf="artistsLoading">
+				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+			</div>
+			<div *ngIf="!artistsLoading">
+				<div *ngIf="artists.length > 0">
+					Found {{artists.length}} results
+				</div>
+				<div *ngIf="artists.length == 0" style="text-align: center;">
+					<md-icon class="error-icon">
+						not_interested
+					</md-icon><br />
+					<div class="error-text">
+						No artists found
+					</div>
+				</div>
+			</div>
 		</div>
 		<div fxFlex='33%'>
 			<h2>Albums</h2>
+			<div *ngIf="albumsLoading">
+				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+			</div>
+			<div *ngIf="!albumsLoading">
+				<div *ngIf="albums.length > 0">
+					Found {{albums.length}} results
+				</div>
+				<div *ngIf="albums.length == 0" style="text-align: center;">
+					<md-icon class="error-icon">
+						not_interested
+					</md-icon><br />
+					<div class="error-text">
+						No albums found
+					</div>
+				</div>
+			</div>
 		</div>
 		<div fxFlex='33%'>
 			<h2>Tracks</h2>
-		</div>
-	</div>
-
-	<div fxFlex='98%' fxFlexOffset="2%" style="text-align: center;" *ngIf="numResults.length == 0">
-		<md-icon class="error-icon">
-			search
-		</md-icon><br />
-		<div class="error-text">
-			Start your search by typing above
+			<div *ngIf="tracksLoading">
+				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+			</div>
+			<div *ngIf="!tracksLoading">
+				<div *ngIf="tracks.length > 0">
+					Found {{tracks.length}} results
+				</div>
+				<div *ngIf="tracks.length == 0" style="text-align: center;">
+					<md-icon class="error-icon">
+						not_interested
+					</md-icon><br />
+					<div class="error-text">
+						No tracks found
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

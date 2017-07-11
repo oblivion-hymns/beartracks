@@ -17,8 +17,11 @@ export class SearchComponent implements OnInit {
 	artists: Artist[] = [];
 	albums: Album[] = [];
 	tracks: Track[] = [];
+	artistsLoading: boolean = false;
+	albumsLoading: boolean = false;
+	tracksLoading: boolean = false;
 	numResults: number = 0;
-	filterQuery: string = '';
+	@Input() filterQuery: string = '';
 
 	constructor(private artistService: ArtistService,
 				private albumService: AlbumService,
@@ -36,20 +39,29 @@ export class SearchComponent implements OnInit {
 
 		if (key.length > 2)
 		{
+			this.artistsLoading = true;
+			this.albumsLoading = true;
+			this.tracksLoading = true;
+
 			this.artistService.find(key).subscribe(function(artists){
-				this.artists = artists;
-				this.results = self.artists.length + self.albums.length + self.tracks.length;
+				self.artists = artists;
+				self.numResults = self.artists.length + self.albums.length + self.tracks.length;
+				self.artistsLoading = false;
 			});
 
 			this.albumService.find(key).subscribe(function(albums){
-				this.albums = albums;
-				this.results = self.artists.length + self.albums.length + self.tracks.length;
+				self.albums = albums;
+				self.numResults = self.artists.length + self.albums.length + self.tracks.length;
+				self.albumsLoading = false;
 			});
 
 			this.trackService.find(key).subscribe(function(tracks){
-				this.tracks = tracks;
-				this.results = self.artists.length + self.albums.length + self.tracks.length;
+				self.tracks = tracks;
+				self.numResults = self.artists.length + self.albums.length + self.tracks.length;
+				self.tracksLoading = false;
 			});
 		}
+
+		this.filterQuery = key;
 	}
 }
