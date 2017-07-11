@@ -1,5 +1,6 @@
 var bodyParser = require('body-parser');
 var express = require('express');
+var Levenshtein = require('levenshtein');
 var mongoose = require('mongoose');
 
 var Artist = require('../models/artist');
@@ -9,11 +10,52 @@ var Track = require('../models/track');
 var router = express.Router();
 router.get('/', baseRoute);
 router.get('/all', loadAll);
+router.get('/find', find);
 router.post('/album', loadAlbum);
 
 function baseRoute(req, res)
 {
 	res.render('index');
+}
+
+/**
+ * Returns a list of albums with a name like the given one
+ */
+function find(req, res)
+{
+	var query = req.query.query.trim().toLowerCase().replace(/\W/g, '');
+	if (query.length > 2)
+	{
+		var regex = new RegExp('.*' + query + '.*', 'i');
+		Track.find({nameKey: regex}).sort('nameKey').exec(function(err, tracks){
+			if (err)
+			{
+				return res.status(500).json({
+					title: 'An error occurred',
+					error: err
+				});
+			}
+
+			//Sort results based on levenshtein distance from original query
+			tracks = tracks.sort(function(a, b){
+				//Do not include artist
+				var aKey = a.name.trim().toLowerCase();
+				var bKey = b.name.trim().toLowerCase();
+
+				var aDistance = new Levenshtein(aKey, query).distance;
+				var bDistance = new Levenshtein(bKey, query).distance;
+
+				return aDistance - bDistance;
+			});
+
+			tracks = tracks.slice(0, 10);
+
+			res.status(200).json({
+				message: 'Success',
+				tracks: tracks
+			});
+		});
+	}
 }
 
 function loadAlbum(req, res)

@@ -454,7 +454,12 @@ function sync(req, res)
 			}
 
 			var artistNameKey = artistName.toLowerCase().replace(/\W/g, '');
-			artistNameKey = artistNameKey.replace(/\0/g, '').substring(0, 100);
+			artistNameKey = artistNameKey.replace(/\0/g, '').substring(0, 50);
+			if (artistNameKey.length == 0)
+			{
+				//Artists like nic
+				artistNameKey = artistName.toLowerCase().trim().replace(/\\|\/|\,|\>|\<|\(|\)|\[|\]|\{|\}/g, '');
+			}
 
 			if (!music[artistNameKey])
 			{
@@ -539,7 +544,7 @@ function sync(req, res)
 
 			var trackNameStripped = trackName.toLowerCase().replace(/ |\/|\(|\)|\'|\"|\?|\[|\]|\{|\}|\#|\,/g, '');
 			var trackNameKey = artistNameKey + albumNameKey + trackNameStripped + discNum + trackNum;
-			trackNameKey = trackNameKey.substring(0, 100);
+			trackNameKey = trackNameKey.substring(0, 200);
 
 			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';

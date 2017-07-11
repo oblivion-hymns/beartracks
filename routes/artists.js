@@ -24,7 +24,7 @@ function find(req, res)
 	var query = req.query.query.trim().toLowerCase().replace(/\W/g, '');
 	if (query.length > 2)
 	{
-		var regex = new RegExp('.*' + query + '.*');
+		var regex = new RegExp('.*' + query + '.*', 'i');
 		Artist.find({nameKey: regex})
 			.sort('nameKey')
 			.exec(function(err, artists){
@@ -43,8 +43,6 @@ function find(req, res)
 
 					return aDistance - bDistance;
 				});
-
-				console.log(artists);
 
 				res.status(200).json({
 					message: 'Success',
