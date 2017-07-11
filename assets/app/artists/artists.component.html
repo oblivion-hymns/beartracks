@@ -2,7 +2,7 @@
 	<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
 </md-input-container>
 
-<md-grid-list cols="5" *ngIf="displayArtists.length > 0" style="position: relative; top: -2em;">
+<md-grid-list cols="8" *ngIf="displayArtists.length > 0" style="position: relative; top: -2em;">
 	<md-grid-tile *ngFor="let artist of displayArtists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
 		<md-grid-tile-footer>
 			<strong class="tile-name">
