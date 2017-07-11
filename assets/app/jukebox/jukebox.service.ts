@@ -12,7 +12,7 @@ export class JukeboxService {
 
 	loadRecent()
 	{
-		return this.http.get('http://bwilbur.com/jukebox/get-recent')
+		return this.http.get('http://bwilbur.com/jukebox/load-recent')
 			.map((response: Response) => {
 				const data = response.json().messages;
 				let messages: Message[] = [];

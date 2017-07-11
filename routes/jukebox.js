@@ -5,6 +5,7 @@ var Message = require('./../models/message');
 
 var router = express.Router();
 router.get('/', baseRoute);
+router.get('/load-recent', loadRecent);
 router.post('/send-message', sendMessage);
 
 /**
@@ -15,6 +16,30 @@ function baseRoute(req, res)
 	res.render('index');
 }
 
+/**
+ * Loads and returns the most recent 100 chat messages
+ */
+function loadRecent(req, res)
+{
+	Message.find({}).sort('-dateTime').limit(100).exec(function(err, messages){
+		if (err)
+		{
+			return res.status(500).json({
+				title: 'An error occurred',
+				error: err
+			});
+		}
+
+		res.status(200).json({
+			message: 'Success',
+			messages: messages
+		});
+	});
+}
+
+/**
+ * Sends a new chat message
+ */
 function sendMessage(req, res)
 {
 	if (!req.body.message)
