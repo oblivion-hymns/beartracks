@@ -24,7 +24,16 @@
 			</div>
 			<div *ngIf="!artistsLoading">
 				<div *ngIf="artists.length > 0">
-					Found {{artists.length}} results
+					<md-list>
+						<md-list-item class="item-line" *ngFor="let artist of artists">
+							<div md-line style="padding: 0px;">
+								<img src="{{artist.imagePath}}" style="float: left; width: 48px; height: 48px;" />
+								<span class="item-text" style="word-break: break-word;">
+									{{artist.name}}
+								</span>
+							</div>
+						</md-list-item>
+					</md-list>
 				</div>
 				<div *ngIf="artists.length == 0" style="text-align: center;">
 					<md-icon class="error-icon">

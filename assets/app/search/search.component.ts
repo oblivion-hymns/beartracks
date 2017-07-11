@@ -10,7 +10,40 @@ import { TrackService } from './../tracks/track.service';
 @Component({
 	providers: [ArtistService, AlbumService, TrackService],
 	selector: 'bt-search',
-	styles: [``],
+	styles: [`
+		.item-line
+		{
+			padding: 5px;
+			overflow: hidden;
+		}
+
+		.item-line:hover
+		{
+			background-color: rgba(40, 40, 40, 0.87);
+			cursor: pointer;
+		}
+
+		.item-line .mat-list .mat-list-item .mat-list-item-content
+		{
+			padding: 0px !important;
+		}
+
+		.item-line img
+		{
+			float: left;
+			height: 48px;
+			margin-right: 10px;
+			width: 48px;
+		}
+
+		.item-line .item-text
+		{
+			display: block;
+			line-height: 24px;
+			margin-top: 0;
+			white-space: normal;
+		}
+	`],
 	templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnInit {
