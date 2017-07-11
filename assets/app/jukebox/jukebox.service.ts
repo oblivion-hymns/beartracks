@@ -10,6 +10,23 @@ export class JukeboxService {
 
 	constructor(private http: Http) {}
 
+	loadRecent()
+	{
+		return this.http.get('http://bwilbur.com/jukebox/get-recent')
+			.map((response: Response) => {
+				const data = response.json().messages;
+				let messages: Message[] = [];
+				for (let messageData of data)
+				{
+					var message = new Message(messageData.text, messageData.username, messageData.dateTime);
+					messages.push(message);
+				}
+
+				return messages;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	postMessage(msg: Message)
 	{
 		var url = 'http://bwilbur.com:3000/jukebox/send-message';

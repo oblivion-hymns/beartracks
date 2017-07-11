@@ -1,5 +1,5 @@
 import 'rxjs/Rx';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { JukeboxService } from './jukebox.service';
@@ -11,12 +11,20 @@ import { Message } from './message';
 	styles: [``],
 	templateUrl: './jukebox.component.html'
 })
-export class JukeboxComponent
+export class JukeboxComponent implements OnInit
 {
 	@Input() message: string = '';
 	username: string = 'User ' + (Math.floor(Math.random() * (1000000 - 0) + 0));
 
+	messages: Message[] = [];
+
 	constructor(private jukeboxService: JukeboxService) {}
+
+	ngOnInit()
+	{
+		this.jukeboxService.loadRecent().subscribe(
+			(messages: Message[]) => { this.messages = messages; });
+	}
 
 	set setMessage(value)
 	{
