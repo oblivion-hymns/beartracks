@@ -32,17 +32,19 @@ function sendMessage(req, res)
 		});
 	}
 
-	var message = req.body.message.trim();
+	var messageText = req.body.message.trim().substring(0, 255);
 	var username = req.body.username.trim();
 
 	var message = new Message();
-	message.text = message;
+	message.text = messageText;
 	message.username = username;
-
-	message = message.slice(0, 255);
 
 	message.save(function(error, response){
 		console.log('Message saved', message);
+	});
+
+	return res.status(200).json({
+		success: true
 	});
 }
 
