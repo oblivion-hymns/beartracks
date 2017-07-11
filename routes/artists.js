@@ -41,10 +41,6 @@ function find(req, res)
 					var aDistance = new Levenshtein(a.nameKey, query).distance;
 					var bDistance = new Levenshtein(b.nameKey, query).distance;
 
-					console.log('Distance from ' + a.nameKey + ': ' + aDistance);
-					console.log('Distance from ' + b.nameKey + ': ' + bDistance);
-					console.log(a);
-
 					return aDistance - bDistance;
 				});
 
