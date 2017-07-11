@@ -1,7 +1,7 @@
 var express = require('express');
 var Levenshtein = require('levenshtein');
 
-var Artist = require('../models/artist');
+var Message = require('./../models/message');
 
 var router = express.Router();
 router.get('/', baseRoute);
@@ -17,8 +17,33 @@ function baseRoute(req, res)
 
 function sendMessage(req, res)
 {
-	var message = req.body.post;
-	console.log(message);
+	if (!req.body.message)
+	{
+		return res.status(400).json({
+			success: false,
+			message: 'No message provided'
+		});
+	}
+	else if (!req.body.username)
+	{
+		return res.status(400).json({
+			success: false,
+			message: 'No username provided'
+		});
+	}
+
+	var message = req.body.message.trim();
+	var username = req.body.username.trim();
+
+	var message = new Message();
+	message.text = message;
+	message.username = username;
+
+	message = message.slice(0, 255);
+
+	message.save(function(error, response){
+		console.log('Message saved', message);
+	});
 }
 
 module.exports = router;

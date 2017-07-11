@@ -10,7 +10,7 @@ export class JukeboxService {
 
 	postMessage(msg: string)
 	{
-		var url = 'http://bwilbur.com:3000/messages/send';
+		var url = 'http://bwilbur.com:3000/jukebox/send-message';
 		var body = {
 			message: msg
 		};

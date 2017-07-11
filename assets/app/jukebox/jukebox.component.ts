@@ -13,6 +13,7 @@ import { JukeboxService } from './jukebox.service';
 export class JukeboxComponent
 {
 	@Input() message: string = '';
+	username: string = '' + (Math.random() * (1000000 - 0) + 0);
 
 	constructor(private jukeboxService: JukeboxService) {}
 
