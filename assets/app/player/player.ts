@@ -9,6 +9,7 @@ export class Player implements OnInit
 	private audio;
 	private interval;
 	public isPlaying: boolean;
+	public volume: number = 50;
 
 	public elapsedInterval;
 	public elapsed = '0:00';
@@ -24,6 +25,12 @@ export class Player implements OnInit
 	ngOnInit()
 	{
 
+	}
+
+	setVolume(value)
+	{
+		this.volume = value/100;
+		this.audio.volume = this.volume;
 	}
 
 	enqueueOne(track)
@@ -51,7 +58,6 @@ export class Player implements OnInit
 
 		for (var i in tracks)
 		{
-			console.log(tracks[i]);
 			this.queue.push(tracks[i]);
 		}
 

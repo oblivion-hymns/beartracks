@@ -74,7 +74,8 @@
 
 		<div
 			class="now-playing"
-			*ngIf="playerService.player.currentTrack">
+			*ngIf="playerService.player.currentTrack"
+			style="float: left;">
 			<h3 class="now-playing-field">
 				{{playerService.player.currentTrack.name}}
 			</h3>
@@ -84,8 +85,9 @@
 			<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
 				{{playerService.player.currentTrack.album.artist.name}}
 			</span><br />
-
-			<!-- Toolbar -->
+		</div>
+		<!-- Toolbar -->
+		<div style="float: right; font-size: 46px;">
 			<md-icon
 				class="player-control player-pause"
 				*ngIf="!playerService.player.audio.paused"
@@ -99,6 +101,8 @@
 				play_arrow
 			</md-icon>
 
+			<!-- Volume -->
+			<md-slider min="0" max="100" step="1" value="50" [(ngModel)]="volume" ></md-slider>
 		</div>
 
 		<div class="now-playing-elapsed">

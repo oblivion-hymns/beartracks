@@ -12,4 +12,9 @@ import { TrackService } from '../tracks/track.service';
 export class PlayerComponent
 {
 	constructor(private playerService: PlayerService, private trackService: TrackService){}
+
+	set volume(value)
+	{
+		this.playerService.player.setVolume(value);
+	}
 }
