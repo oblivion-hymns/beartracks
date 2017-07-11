@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node-sass ./public/stylesheets/material-dark.scss ./public/stylesheets/material-dark.css && supervisor --max-old-space-size=10240 ./bin/www",
+	"startnomon": "node-sass ./public/stylesheets/material-dark.scss ./public/stylesheets/material-dark.css && node --max-old-space-size=10240 ./bin/www",
     "build": "del-cli public/js/app && webpack --config webpack.config.dev.js --progress --profile --watch",
     "build:prod": "del-cli public/js/app && ngc -p tsconfig.aot.json && ngc -p tsconfig.aot.json && webpack --config webpack.config.prod.js --progress --profile --bail && del-cli 'public/js/app/**/*.js' 'public/js/app/**/*.js.map' '!public/js/app/bundle.js' '!public/js/app/*.chunk.js' 'assets/app/**/*.ngfactory.ts' 'assets/app/**/*.shim.ts' 'assets/app/**/*.ngsummary.json' 'assets/app/**/*.ngstyle.ts'"
   },

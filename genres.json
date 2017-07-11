@@ -1,0 +1,337 @@
+{
+	"genres":
+	[
+		{
+			"name": "Acoustic",
+			"related": []
+		},
+		{
+			"name": "Alternative Rock",
+			"related": []
+		},
+		{
+			"name": "Alternative",
+			"related": []
+		},
+		{
+			"name": "Ambient",
+			"related": []
+		},
+		{
+			"name": "Anti-folk",
+			"related": []
+		},
+		{
+			"name": "Art Rock",
+			"related": []
+		},
+		{
+			"name": "Avant-garde",
+			"related": []
+		},
+		{
+			"name": "Black Metal",
+			"related": []
+		},
+		{
+			"name": "Blues",
+			"related": []
+		},
+		{
+			"name": "Bossa Nova",
+			"related": []
+		},
+		{
+			"name": "Chillstep",
+			"related": []
+		},
+		{
+			"name": "Chillwave",
+			"related": []
+		},
+		{
+			"name": "Christian Rock",
+			"related": []
+		},
+		{
+			"name": "Classic Rock",
+			"related": []
+		},
+		{
+			"name": "Country",
+			"related": []
+		},
+		{
+			"name": "Deathcore",
+			"related": []
+		},
+		{
+			"name": "Doom Jazz",
+			"related": []
+		},
+		{
+			"name": "Dream Pop",
+			"related": []
+		},
+		{
+			"name": "Drum & Bass",
+			"related": []
+		},
+		{
+			"name": "Dubstep",
+			"related": []
+		},
+		{
+			"name": "Electronic",
+			"related": []
+		},
+		{
+			"name": "Electronica",
+			"related": []
+		},
+		{
+			"name": "Emo",
+			"related": []
+		},
+		{
+			"name": "Experimental Hip Hop",
+			"related": []
+		},
+		{
+			"name": "Experimental",
+			"related": []
+		},
+		{
+			"name": "Folk Punk",
+			"related": []
+		},
+		{
+			"name": "Folk",
+			"related": []
+		},
+		{
+			"name": "Funk Rock",
+			"related": []
+		},
+		{
+			"name": "Funk",
+			"related": []
+		},
+		{
+			"name": "Glitch",
+			"related": []
+		},
+		{
+			"name": "Hard Rock",
+			"related": []
+		},
+		{
+			"name": "Hardcore",
+			"related": []
+		},
+		{
+			"name": "Heavy Metal",
+			"related": []
+		},
+		{
+			"name": "Hip-hop",
+			"related": []
+		},
+		{
+			"name": "Indie Folk",
+			"related": []
+		},
+		{
+			"name": "Indie Pop",
+			"related": []
+		},
+		{
+			"name": "Indie Rock",
+			"related": []
+		},
+		{
+			"name": "Indie",
+			"related": []
+		},
+		{
+			"name": "Industrial Rock",
+			"related": []
+		},
+		{
+			"name": "Industrial",
+			"related": []
+		},
+		{
+			"name": "Instrumental",
+			"related": []
+		},
+		{
+			"name": "Jazz",
+			"related": []
+		},
+		{
+			"name": "Lo-Fi",
+			"related": []
+		},
+		{
+			"name": "Melodic Hardcore",
+			"related": []
+		},
+		{
+			"name": "Metal",
+			"related": []
+		},
+		{
+			"name": "Metalcore",
+			"related": []
+		},
+		{
+			"name": "Modern Classical",
+			"related": []
+		},
+		{
+			"name": "Neo-classical",
+			"related": []
+		},
+		{
+			"name": "Nerdcore Rap",
+			"related": []
+		},
+		{
+			"name": "New Age",
+			"related": []
+		},
+		{
+			"name": "Nu Metal",
+			"related": []
+		},
+		{
+			"name": "Pop Punk",
+			"related": []
+		},
+		{
+			"name": "Pop Rock",
+			"related": []
+		},
+		{
+			"name": "Pop",
+			"related": []
+		},
+		{
+			"name": "Post-black Metal",
+			"related": []
+		},
+		{
+			"name": "Post-classical",
+			"related": []
+		},
+		{
+			"name": "Post-hardcore",
+			"related": []
+		},
+		{
+			"name": "Post-punk",
+			"related": []
+		},
+		{
+			"name": "Post-rock",
+			"related": []
+		},
+		{
+			"name": "Progressive Metal",
+			"related": []
+		},
+		{
+			"name": "Progressive Rock",
+			"related": []
+		},
+		{
+			"name": "Psychedelic Drone",
+			"related": []
+		},
+		{
+			"name": "Psychedelic",
+			"related": []
+		},
+		{
+			"name": "Punk Rock",
+			"related": []
+		},
+		{
+			"name": "Punk",
+			"related": []
+		},
+		{
+			"name": "R&B",
+			"related": []
+		},
+		{
+			"name": "Rap",
+			"related": []
+		},
+		{
+			"name": "Rap-rock",
+			"related": []
+		},
+		{
+			"name": "Reggae",
+			"related": []
+		},
+		{
+			"name": "Rock",
+			"related": []
+		},
+		{
+			"name": "Screamo",
+			"related": []
+		},
+		{
+			"name": "Shoegaze",
+			"related": []
+		},
+		{
+			"name": "Ska Punk",
+			"related": []
+		},
+		{
+			"name": "Ska",
+			"related": []
+		},
+		{
+			"name": "Soul",
+			"related": []
+		},
+		{
+			"name": "Southern Rock",
+			"related": []
+		},
+		{
+			"name": "Spoken Word",
+			"related": []
+		},
+		{
+			"name": "Stoner Metal",
+			"related": []
+		},
+		{
+			"name": "Stoner Rock",
+			"related": []
+		},
+		{
+			"name": "Techno",
+			"related": []
+		},
+		{
+			"name": "Thrash Metal",
+			"related": []
+		},
+		{
+			"name": "Trance",
+			"related": []
+		},
+		{
+			"name": "Trip-hop",
+			"related": []
+		}
+	]
+}

@@ -27,8 +27,8 @@ function baseRoute(req, res)
 
 function determineLengths(req, res)
 {
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
+	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 
 	var cachePath = musicRoot + '/.bearcache-durations.json';
@@ -37,20 +37,20 @@ function determineLengths(req, res)
 		jsonFile.writeFileSync(cachePath, {"files": []});
 	}
 
-	jsonFile.writeFileSync(cachePath, {"files": []});
+	//jsonFile.writeFileSync(cachePath, {"files": []});
 
 	var cache = jsonFile.readFileSync(cachePath);
 	var totalFileCount = files.length;
 	var runFilesParsed = 0;
 	var currentFileCount = 0;
 	var percentFileCount = 0;
-	var filesToParse = 1000;
+	var filesToParse = 100;
 	var promises = [];
 
 	for (var i in files)
 	{
 		var file = files[i];
-		var encodedFilePath = encodeURIComponent(file).replace(/\W/g, '');
+		var encodedFilePath = encodeURIComponent(file);
 
 		var percentProgress = Math.floor((percentFileCount/totalFileCount) * 100);
 		var progressString = '[' + percentProgress + '%]' + ' (' + percentFileCount + '/' + totalFileCount + ') ';
@@ -131,7 +131,7 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFil
 	//if (!readTags.length) @TODO
 	if (readTags.length)
 	{
-		lengthPromise = getDuration(filePath, readTags, cachePath, cache);
+		lengthPromise = getDuration(filePath, readTags, cachePath, cache, encodedFilePath);
 		return lengthPromise;
 	}
 	else
@@ -146,7 +146,7 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFil
 
 }
 
-function getDuration(filePath, readTags, cachePath, cache)
+function getDuration(filePath, readTags, cachePath, cache, encodedFilePath)
 {
 	return new Promise(function(resolve, reject){
 		mp3Duration(filePath, function(error, duration){
@@ -161,7 +161,7 @@ function getDuration(filePath, readTags, cachePath, cache)
 
 			readTags.length = duration;
 			id3.write(readTags, filePath);
-			cache.files.push();
+			cache.files.push(encodedFilePath);
 			jsonFile.writeFileSync(cachePath, cache);
 			console.log('Finished writing data for file ' + filePath);
 			resolve();
