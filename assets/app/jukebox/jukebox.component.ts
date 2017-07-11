@@ -8,7 +8,21 @@ import { Message } from './message';
 @Component({
 	providers: [JukeboxService],
 	selector: 'bt-jukebox',
-	styles: [``],
+	styles: [`
+		#JukeboxChat
+		{
+			background-color: rgba(0, 0, 0, 0.18);
+			border-left: 1px solid rgba(0, 0, 0, 0.87);
+			border-radius: 5px 0px 0px 0px;
+			bottom: 137px;
+			display: block;
+			height: 35%;
+			padding: 8px;
+			position: absolute;
+			right: 0px;
+			width: 50%;
+		}
+	`],
 	templateUrl: './jukebox.component.html'
 })
 export class JukeboxComponent implements OnInit
