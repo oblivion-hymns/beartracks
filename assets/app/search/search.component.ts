@@ -30,6 +30,10 @@ export class SearchComponent implements OnInit {
 
 	set filterString(value)
 	{
-
+		var key = value.trim().toLowerCase().replace(/\W/g, '');
+		//Load 10 each of artists, albums & songs using the key
+		//artists (by name key is fine)
+		//albums (by the album's name keyed - NOT the unique name key)
+		//songs (by the song's name keyed - NOT the unique name key)
 	}
 }
