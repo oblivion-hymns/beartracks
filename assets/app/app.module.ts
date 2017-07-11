@@ -18,9 +18,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 //App-specific
 import { PlayerComponent } from './player/player.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SearchComponent } from './search/search.component';
 import { ArtistsComponent } from './artists/artists.component';
 import { AlbumsComponent } from './albums/albums.component';
-import { TracksComponent } from './tracks/tracks.component';
 import { RadioComponent } from './radio/radio.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
@@ -36,10 +36,10 @@ const socketIoConfig: SocketIoConfig = {
 		AppComponent,
 
 		PlayerComponent,
+		SearchComponent,
 		DashboardComponent,
 		ArtistsComponent,
 		AlbumsComponent,
-		TracksComponent,
 		RadioComponent,
 		DiscoveryComponent,
 		JukeboxComponent

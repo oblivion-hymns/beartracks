@@ -9,7 +9,7 @@ export class Player implements OnInit
 	private audio;
 	private interval;
 	public isPlaying: boolean;
-	public volume: number = 50;
+	public volume: number = 0.5;
 
 	public elapsedInterval;
 	public elapsed = '0:00';

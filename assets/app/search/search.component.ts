@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Artist } from './../artists/artist';
 import { Album } from './../albums/album';
-import { Track } from './../track/track';
+import { Track } from './../tracks/track';
 import { ArtistService } from './../artists/artist.service';
 import { AlbumService } from './../albums/album.service';
-import { TrackService } from './../track/track.service';
+import { TrackService } from './../tracks/track.service';
 
 @Component({
 	providers: [ArtistService, AlbumService, TrackService],
