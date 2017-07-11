@@ -3,7 +3,7 @@
 		content
 	</div>
 	<div id="JukeboxChat" fxFlex='35%'>
-		<div id="Messages">
+		<div id="Messages" #chat>
 			<div class="message-item" *ngFor="let message of messages">
 				<div class="message-item-date">
 					{{message.dateTime | date:'MMM dd hh:mm'}}
@@ -18,7 +18,13 @@
 		</div>
 		<div id="Send">
 			<md-input-container style="margin-left: 5px; width: 92%;">
-				<input mdInput id="Message" [(ngModel)]="setMessage" type="text" maxlength="256" style="width: 100%" />
+				<input mdInput
+					id="Message"
+					[(ngModel)]="setMessage"
+					(keyup.enter)="this.sendMessage()"
+					type="text"
+					maxlength="256"
+					style="width: 100%" />
 			</md-input-container>
 
 			<button md-icon-button (click)="this.sendMessage()">

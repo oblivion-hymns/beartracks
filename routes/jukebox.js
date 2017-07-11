@@ -30,6 +30,10 @@ function loadRecent(req, res)
 			});
 		}
 
+		messages = messages.sort(function(a, b){
+			return a.dateTime - b.dateTime;
+		});
+
 		res.status(200).json({
 			message: 'Success',
 			messages: messages

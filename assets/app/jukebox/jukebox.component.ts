@@ -1,5 +1,5 @@
 import 'rxjs/Rx';
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { JukeboxService } from './jukebox.service';
@@ -26,13 +26,13 @@ import { Message } from './message';
 
 		#JukeboxChat #Messages
 		{
-			background-color: rgba(0, 0, 0, 0.12);
+			background-color: rgba(0, 0, 0, 0.38);
 			border: 1px solid rgba(0, 0, 0, 0.38);
 			border-radius: 2px;
-			box-shadow: inset 1px 1px 2px 2px rgba(0, 0, 0, 0.38);
+			box-shadow: inset 1px 1px 2px 2px rgba(0, 0, 0, 0.20);
 			height: 80%;
 			overflow-y: scroll;
-			padding: 8px;
+			padding: 0px;
 		}
 
 		#JukeboxChat #Messages .message-item
@@ -43,7 +43,7 @@ import { Message } from './message';
 
 		#JukeboxChat #Messages .message-item:nth-child(odd)
 		{
-			background-color: rgba(0, 0, 0, 0.20);
+			background-color: rgba(0, 0, 0, 0.12);
 		}
 
 		#JukeboxChat #Messages .message-item-username
@@ -70,9 +70,10 @@ import { Message } from './message';
 	`],
 	templateUrl: './jukebox.component.html'
 })
-export class JukeboxComponent implements OnInit
+export class JukeboxComponent implements OnInit, AfterViewChecked
 {
 	@Input() message: string = '';
+	@ViewChild('chat') input;
 	username: string = 'User ' + (Math.floor(Math.random() * (1000000 - 0) + 0));
 
 	messages: Message[] = [];
@@ -85,6 +86,16 @@ export class JukeboxComponent implements OnInit
 			(messages: Message[]) => { this.messages = messages; });
 	}
 
+	ngAfterViewChecked()
+	{
+		this.scrollChat();
+	}
+
+	ngAfterViewInit()
+	{
+		this.input.nativeElement.scrollTop = 500;
+	}
+
 	set setMessage(value)
 	{
 		this.message = value;
@@ -93,6 +104,11 @@ export class JukeboxComponent implements OnInit
 	get setMessage()
 	{
 		return this.message;
+	}
+
+	scrollChat()
+	{
+		this.input.nativeElement.scrollTop = this.input.nativeElement.scrollHeight;
 	}
 
 	/**
@@ -106,7 +122,9 @@ export class JukeboxComponent implements OnInit
 			var message = new Message(this.message, this.username);
 			this.jukeboxService.postMessage(message);
 			this.message = '';
-		}
 
+			message.dateTime = new Date();
+			this.messages.push(message);
+		}
 	}
 }
