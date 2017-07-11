@@ -16,7 +16,9 @@
 <div fxLayout='row' *ngIf='filterQuery.length >= 3'>
 	<div fxFlex='98%' fxFlexOffset="2%">
 		<div fxFlex='33%'>
-			<h2>Artists</h2>
+			<h2 style="color: rgba(255, 255, 255, 0.34);">
+				Artists
+			</h2>
 			<div *ngIf="artistsLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 			</div>
@@ -35,7 +37,9 @@
 			</div>
 		</div>
 		<div fxFlex='33%'>
-			<h2>Albums</h2>
+			<h2 style="color: rgba(255, 255, 255, 0.34);">
+				Albums
+			</h2>
 			<div *ngIf="albumsLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 			</div>
@@ -54,7 +58,9 @@
 			</div>
 		</div>
 		<div fxFlex='33%'>
-			<h2>Tracks</h2>
+			<h2 style="color: rgba(255, 255, 255, 0.34);">
+				Tracks
+			</h2>
 			<div *ngIf="tracksLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 			</div>
