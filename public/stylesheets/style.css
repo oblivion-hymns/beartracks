@@ -48,6 +48,11 @@ md-icon.error-icon
 	margin-top: 5px;
 }
 
+.filter-box-top input
+{
+	color: rgba(255, 255, 255, 0.54);
+}
+
 .filter-box-top
 {
 	font-size: 32px;
