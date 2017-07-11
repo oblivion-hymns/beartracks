@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
 	artists: Artist[] = [];
 	albums: Album[] = [];
 	tracks: Track[] = [];
+	numResults: number = 0;
 	filterQuery: string = '';
 
 	constructor(private artistService: ArtistService,
@@ -30,10 +31,25 @@ export class SearchComponent implements OnInit {
 
 	set filterString(value)
 	{
-		var key = value.trim().toLowerCase().replace(/\W/g, '');
-		//Load 10 each of artists, albums & songs using the key
-		//artists (by name key is fine)
-		//albums (by the album's name keyed - NOT the unique name key)
-		//songs (by the song's name keyed - NOT the unique name key)
+		var self = this;
+		var key = value.trim();
+
+		if (key.length > 2)
+		{
+			this.artistService.find(key).subscribe(function(artists){
+				this.artists = artists;
+				this.results = self.artists.length + self.albums.length + self.tracks.length;
+			});
+
+			this.albumService.find(key).subscribe(function(albums){
+				this.albums = albums;
+				this.results = self.artists.length + self.albums.length + self.tracks.length;
+			});
+
+			this.trackService.find(key).subscribe(function(tracks){
+				this.tracks = tracks;
+				this.results = self.artists.length + self.albums.length + self.tracks.length;
+			});
+		}
 	}
 }

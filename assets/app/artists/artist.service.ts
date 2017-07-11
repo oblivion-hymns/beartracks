@@ -13,6 +13,25 @@ export class ArtistService {
 
 	constructor(private http: Http) {}
 
+	find(query)
+	{
+		var getUrl = 'http://bwilbur.com:3000/artists/find?query=' + query;
+		return this.http.get(getUrl)
+			.map((response: Response) => {
+				const data = response.json().artists;
+
+				let artists: Artist[] = [];
+				for (let artistData of data)
+				{
+					var artist = new Artist(artistData.name, artistData.nameKey, artistData.imagePath);
+					artists.push(artist);
+				}
+				this.artists = artists;
+				return artists;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	loadAll()
 	{
 		return this.http.get('http://bwilbur.com/artists/all')

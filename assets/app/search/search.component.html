@@ -2,14 +2,36 @@
 	<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
 </md-input-container>
 
-<div fxLayout='row'>
+<div fxLayout='row' *ngIf='filterQuery.length > 2'>
 	<div fxFlex="70%" fxFlexOffset="15%" style="text-align: center;">
 		<md-icon class="error-icon">
-			warning
+			search
 		</md-icon><br />
 		<div class="error-text">
-			This section is not implemented yet.<br />
-			But I'm beasting it, I promise
+			Start your search by typing above
+		</div>
+	</div>
+</div>
+
+<div fxLayout='row' *ngIf='filterQuery.length < 2'>
+	<div fxFlex='98%' fxFlexOffset="2%" *ngIf="numResults.length > 0">
+		<div fxFlex='33%'>
+			<h2>Artists</h2>
+		</div>
+		<div fxFlex='33%'>
+			<h2>Albums</h2>
+		</div>
+		<div fxFlex='33%'>
+			<h2>Tracks</h2>
+		</div>
+	</div>
+
+	<div fxFlex='98%' fxFlexOffset="2%" style="text-align: center;" *ngIf="numResults.length == 0">
+		<md-icon class="error-icon">
+			search
+		</md-icon><br />
+		<div class="error-text">
+			Start your search by typing above
 		</div>
 	</div>
 </div>
