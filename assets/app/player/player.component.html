@@ -101,6 +101,27 @@
 				play_arrow
 			</md-icon>
 
+			<md-icon
+				class="player-control player-play"
+				*ngIf="playerService.player.volume >= 0.8">
+				volume_up
+			</md-icon>
+			<md-icon
+				class="player-control player-play"
+				*ngIf="playerService.player.volume >= 0.4 && playerService.player.volume < 0.8">
+				volume_down
+			</md-icon>
+			<md-icon
+				class="player-control player-play"
+				*ngIf="playerService.player.volume > 0 && playerService.player.volume < 0.4">
+				volume_mute
+			</md-icon>
+			<md-icon
+				class="player-control player-play"
+				*ngIf="playerService.player.volume == 0">
+				volume_off
+			</md-icon>
+
 			<!-- Volume -->
 			<md-slider min="0" max="100" step="1" value="50" [(ngModel)]="volume" ></md-slider>
 		</div>

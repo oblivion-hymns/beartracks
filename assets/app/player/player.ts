@@ -86,6 +86,7 @@ export class Player implements OnInit
 
 		this.audio = new Audio(track.filePath);
 		this.audio.play();
+		this.audio.volume = this.volume;
 
 		if (!this.elapsedInterval)
 		{
@@ -113,6 +114,7 @@ export class Player implements OnInit
 
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
+		this.audio.volume = this.volume;
 
 		if (!this.elapsedInterval)
 		{
