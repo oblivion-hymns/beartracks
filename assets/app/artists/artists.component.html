@@ -1,16 +1,8 @@
-<div fxLayout='row'>
-	<div fxFlex="70%" fxFlexOffset="15%">
-		<button md-icon-button style="width: 7%;">
-			<md-icon>search</md-icon>
-		</button>
+<md-input-container id="FilterArtists" class="filter-box-top">
+	<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
+</md-input-container>
 
-		<md-input-container id="FilterArtists" class="filter-box-top">
-			<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
-		</md-input-container>
-	</div>
-</div>
-
-<md-grid-list cols="5" *ngIf="displayArtists.length > 0">
+<md-grid-list cols="5" *ngIf="displayArtists.length > 0" style="position: relative; top: -2em;">
 	<md-grid-tile *ngFor="let artist of displayArtists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
 		<md-grid-tile-footer>
 			<strong class="tile-name">
