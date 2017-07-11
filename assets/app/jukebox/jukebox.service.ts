@@ -4,11 +4,27 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Message } from './message';
+import * as io from 'socket.io-client';
 
 @Injectable()
 export class JukeboxService {
 
-	constructor(private http: Http) {}
+	private socket: SocketIOClient.Socket;
+
+	constructor(private http: Http)
+	{
+		this.socket = io();
+	}
+
+	sendSocketMessage(msg: string)
+	{
+		this.socket.emit('sendMessage', msg);
+	}
+
+	getSocketMessage()
+	{
+		//return this.socket.on('sendMessage', );
+	}
 
 	loadRecent()
 	{

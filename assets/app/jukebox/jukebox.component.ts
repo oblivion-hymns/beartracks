@@ -82,8 +82,12 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 
 	ngOnInit()
 	{
-		this.jukeboxService.loadRecent().subscribe(
-			(messages: Message[]) => { this.messages = messages; });
+		this.jukeboxService.sendSocketMessage('sendMessage');
+		console.log('sent');
+		//var message = this.jukeboxService.getSocketMessage();
+		//console.log(message);
+		//this.jukeboxService.loadRecent().subscribe(
+			//(messages: Message[]) => { this.messages = messages; });
 	}
 
 	ngAfterViewChecked()
@@ -106,6 +110,11 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 		return this.message;
 	}
 
+	connectToSocket()
+	{
+
+	}
+
 	scrollChat()
 	{
 		this.input.nativeElement.scrollTop = this.input.nativeElement.scrollHeight;
@@ -124,7 +133,6 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 			this.message = '';
 
 			message.dateTime = new Date();
-			this.messages.push(message);
 		}
 	}
 }

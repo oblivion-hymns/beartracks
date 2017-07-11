@@ -27,9 +27,9 @@ server.on('uncaughtException', function (err) {
 });
 
 server.sockets.on('connection', function(socket){
+	console.log('Someone connected!');
 	socket.on('sendMessage', function(data){
 		console.log('Sent message');
-
 		socket.emit('message', {message: 'Hello world!'});
 	});
 });

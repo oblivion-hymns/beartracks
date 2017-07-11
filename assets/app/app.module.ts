@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { routing } from './app.routing';
 import { HttpModule } from '@angular/http';
-import { SocketIoModule, SocketIoConfig } from 'ng2-socket-io';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 //Material
 import 'hammerjs';
@@ -25,10 +25,7 @@ import { RadioComponent } from './radio/radio.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
 
-const socketIoConfig: SocketIoConfig = {
-	url: 'http://localhost:8988',
-	options: {}
-};
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 //decorator
 @NgModule({
@@ -46,6 +43,7 @@ const socketIoConfig: SocketIoConfig = {
 	],
 	imports: [
 		BrowserModule,
+		SocketIoModule.forRoot(config),
 		FlexLayoutModule,
 		FormsModule,
 		routing,

@@ -47,7 +47,7 @@
     "mp3-length": "^1.0.0",
     "music-metadata": "^0.7.2",
     "musicmetadata": "^2.0.5",
-    "ng2-socket-io": "^0.1.7",
+    "ngx-socket-io": "^1.0.3",
     "node-gyp": "^3.6.2",
     "node-id3": "0.0.9",
     "node-sass": "^4.5.3",
