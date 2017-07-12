@@ -1,4 +1,3 @@
-
 <div id="JukeboxSearch">
 	<md-input-container class="filter-box-top">
 		<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
@@ -25,7 +24,7 @@
 					<md-list-item
 						class="item-line"
 						*ngFor="let track of tracks"
-						(click)="jukeboxService.enqueue(track)">
+						(click)="enqueue(track)">
 						<div md-line>
 							<img src="{{track.album.imagePath}}" />
 							<span class="item-text-single">
@@ -51,7 +50,129 @@
 </div>
 
 <div id="JukeboxQueue" *ngIf="filterQuery.length == 0">
-	Current queue
+
+	<!-- Player -->
+	<div id="Player">
+		<div *ngIf="jukeboxService.currentTrack">
+			<img class="now-playing-art" src="{{jukeboxService.currentTrack.album.imagePath}}" style="float: left;"/>
+
+			<div
+				class="now-playing"
+				*ngIf="jukeboxService.currentTrack">
+				<h3 class="now-playing-field" style="color: rgba(255, 255, 255, 0.87);">
+					{{jukeboxService.currentTrack.name}}
+				</h3>
+				<em class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
+					<md-icon style="font-size: 14px; height: 18px; width: 18px;">
+						album
+					</md-icon>
+					{{jukeboxService.currentTrack.album.name}} ({{jukeboxService.currentTrack.album.year}})
+				</em><br />
+				<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
+					<md-icon style="font-size: 14px; height: 18px; width: 18px;">
+						person
+					</md-icon>
+					{{jukeboxService.currentTrack.album.artist.name}}
+				</span><br />
+				<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.36);">
+					<md-icon style="font-size: 14px; height: 18px; width: 18px;">
+						receipt
+					</md-icon>
+					<em>
+						{{jukeboxService.currentTrack.genre}}
+					</em>
+				</span>
+			</div>
+
+			<div style="width: 100%;">
+				<div style="float: left; font-size: 46px;">
+					<md-icon
+						class="player-control player-play"
+						*ngIf="jukeboxService.volume >= 0.8">
+						volume_up
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						*ngIf="jukeboxService.volume >= 0.4 && jukeboxService.volume < 0.8">
+						volume_down
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						*ngIf="jukeboxService.volume > 0 && jukeboxService.volume < 0.4">
+						volume_mute
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						*ngIf="jukeboxService.volume == 0">
+						volume_off
+					</md-icon>
+
+					<!-- Volume -->
+					<md-slider min="0" max="100" step="1" value="50" [(ngModel)]="volume" ></md-slider>
+				</div>
+
+				<div style="float: right;">
+					<div class="now-playing-elapsed" style="margin-top: 24px;">
+						{{jukeboxService.elapsed}} / {{jukeboxService.currentTrack.lengthFormatted}}
+					</div>
+				</div>
+			</div>
+
+			<md-progress-bar
+				class="now-playing-progress"
+				[mode]="determinate"
+				[value]="jukeboxService.elapsedPercent">
+			</md-progress-bar>
+		</div>
+	</div>
+
+	<div class="queue-list" *ngIf="jukeboxService.queue.length">
+		<div
+			class="queue-item"
+			*ngFor="let track of jukeboxService.queue; let i = index"
+			[style.backgroundColor]="jukeboxService.queuePosition == i ? 'rgba(0, 0, 0, 0.13)' : null">
+
+			<span style="float: left;" *ngIf="jukeboxService.queuePosition == i">
+				<md-icon
+					class="player-control player-pause"
+					 *ngIf="!jukeboxService.audio.paused"
+					(click)="jukeboxService.pause()">
+					pause
+				</md-icon>
+				<md-icon
+					class="player-control player-play"
+					 *ngIf="jukeboxService.audio.paused"
+					(click)="jukeboxService.resume()" >
+					play_arrow
+				</md-icon>
+			</span>
+
+			<span style="float: left;" *ngIf="jukeboxService.queuePosition != i">
+				<md-icon
+					class="player-control player-play"
+					(click)="jukeboxService.playPosition(i)" >
+					play_arrow
+				</md-icon>
+			</span>
+
+			<span class="queue-item-field">
+				<span class="queue-item-field-text">
+					{{i+1}}. {{ track.name }}
+				</span>
+				<span style="float: right; padding-top: 1px; color: rgba(255, 255, 255, 0.34);">
+					{{track.lengthFormatted}}
+				</span>
+			</span>
+		</div>
+	</div>
+	<div class="queue-list" *ngIf="jukeboxService.queue.length == 0" style="text-align: center;">
+		<md-icon class="error-icon">
+			queue_music
+		</md-icon><br />
+		<div class="error-text">
+			No music queued
+		</div>
+	</div>
 </div>
 
 

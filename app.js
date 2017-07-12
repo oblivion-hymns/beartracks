@@ -43,11 +43,10 @@ io.sockets.on('connection', function(client){
 		var queue = data.queue;
 		var queueLength = queue.length;
 
-		console.log(queue);
-
 		if (queueLength > 0)
 		{
 			//just update queue
+			queue.push(track);
 			io.emit('updateQueue', queue);
 		}
 		else

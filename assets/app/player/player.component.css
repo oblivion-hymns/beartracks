@@ -30,13 +30,13 @@
 	margin: 0px;
 }
 
-#Player .now-playing .now-playing-field
+.now-playing .now-playing-field
 {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-#Player img.now-playing-art
+img.now-playing-art
 {
 	border: 1px solid rgba(0, 0, 0, 0.54);
 	float: left;
@@ -45,7 +45,7 @@
 	width: 96px;
 }
 
-#Player .now-playing-elapsed
+.now-playing-elapsed
 {
 	color:rgba(255, 255, 255, 0.54);
 	margin-bottom: 5px;
@@ -124,7 +124,7 @@
 	margin: 8px;
 }
 
-#Queue .queue-list
+.queue-list
 {
 	padding: 8px;
 	overflow-y: auto;
@@ -134,7 +134,7 @@
 	max-height: 65%;
 }
 
-#Queue .queue-item
+.queue-item
 {
 	box-sizing: border-box;
 	overflow-x: hidden;
@@ -144,7 +144,7 @@
 	width: 100%;
 }
 
-#Queue .queue-item md-icon
+.queue-item md-icon
 {
 	font-size: 19px;
 	height: 19px;
@@ -152,19 +152,19 @@
 	width: 19px;
 }
 
-#Queue .queue-item:hover
+.queue-item:hover
 {
 	background-color: rgba(0, 0, 0, 0.13);
 	cursor: pointer;
 }
 
-#Queue .queue-item .queue-item-field
+.queue-item .queue-item-field
 {
 	vertical-align: top;
 	width: 100%;
 }
 
-#Queue .queue-item .queue-item-field .queue-item-field-text
+.queue-item .queue-item-field .queue-item-field-text
 {
 	overflow-x: hidden;
 	text-overflow: ellipsis;
