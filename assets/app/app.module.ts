@@ -24,8 +24,9 @@ import { AlbumsComponent } from './albums/albums.component';
 import { RadioComponent } from './radio/radio.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
+import { JukeboxService } from './jukebox/jukebox.service';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { };
 
 //decorator
 @NgModule({
@@ -61,7 +62,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 		MdSidenavModule,
 		MdTabsModule
 	],
-	providers: [],
+	providers: [
+		JukeboxService
+	],
 	bootstrap: [
 		AppComponent
 	]

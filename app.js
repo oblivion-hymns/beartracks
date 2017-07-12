@@ -2,8 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
-var io = require('socket.io');
 var logger = require('morgan');
+var io = require('socket.io');
 var mongoose = require('mongoose');
 var path = require('path');
 var timeout = require('connect-timeout');
@@ -17,25 +17,7 @@ var jukeboxRoutes = require('./routes/jukebox');
 mongoose.connect('localhost:27017/beartracks');
 
 var app = express();
-http = require('http').createServer(app);
-var server = io.listen(http);
-
-
-
-
-/*var server = app.listen(app.get('port'), function(){
-	console.log('listening');
-});*/
-
-server.timeout = 60000;
-server.on('connection', function(socket){
-	console.log('aye, connection');
-	socket.on('sendMessage', function(data){
-		console.log('Sent message');
-
-		socket.emit('message', {message: 'Hello world!'});
-	});
-});
+app.timeout = 60000;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -68,8 +50,10 @@ app.use(function (req, res, next) {
 	return res.render('index');
 });
 
-http.listen(app.get('port'), '127.0.0.1', function(){
-	console.log('Have no need to fear, listening is here!');
+var socket = io.listen(3000);
+socket.on('connection', function(socket){
+	console.log('aye, connection');
 });
+
 
 module.exports = app;

@@ -4,30 +4,25 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Message } from './message';
-import * as io from 'socket.io-client';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable()
 export class JukeboxService {
 
-	private socket: SocketIOClient.Socket;
-
-	constructor(private http: Http)
+	constructor(private http: Http, private socket: Socket)
 	{
 		console.log('Jukebox service constructor');
-		var socket = io.connect('http://localhost:3000');
-		socket.on('connect', function(){
-			console.log('lol wut?');
-		});
+		this.socket.emit('sendMessage', 'hello world!');
 	}
 
 	sendSocketMessage(msg: string)
 	{
-		//this.socket.emit('sendMessage', msg);
+
 	}
 
 	getSocketMessage()
 	{
-		//return this.socket.on('sendMessage', );
+
 	}
 
 	loadRecent()
