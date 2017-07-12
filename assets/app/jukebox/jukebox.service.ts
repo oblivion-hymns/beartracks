@@ -14,7 +14,14 @@ import * as io from 'socket.io-client';
 
 @Injectable()
 export class JukeboxService {
-	queue: Track[] = [];
+	public queue: Track[] = [];
+	private audio;
+	public volume: number = 0.5;
+
+	public elapsedInterval;
+	public elapsed = '0:00';
+	public elapsedPercent = 0;
+
 	private socket;
 	messages: Message[] = [];
 
@@ -22,24 +29,149 @@ export class JukeboxService {
 	{
 		//Initialize w/recent chat messages
 		this.loadRecent();
+		this.initSockets();
+	}
 
+	initSockets()
+	{
 		var self = this;
 		this.socket = io('http://bwilbur.com:4000');
+
+		//Get new chat messages emitted from server
 		this.socket.on('receiveMessage', function(receivedMessage){
 			var message = new Message(receivedMessage.text, receivedMessage.username, receivedMessage.dateTime, receivedMessage.system);
 			self.messages.push(message);
 		});
 
-		this.socket.on('receiveQueue', function(receivedQueue){
-			this.queue = receivedQueue;
+		this.socket.on('initializeQueue', function(receivedData){
+			var queue = receivedData.queue;
+			var elapsed = receivedData.elapsed;
+		})
+
+		this.socket.on('updateQueue', function(queue){
+			self.queue = queue;
+			console.log('queue updated', self.queue);
+		});
+
+		this.socket.on('enqueueAndPlay', function(track){
+			self.queue = [track];
+			console.log('enqueue and play', self.queue);
 		});
 	}
 
+	/**
+	 * When a user enqueues a track
+	 */
+	enqueue(track)
+	{
+		this.socket.emit('enqueue', {track: track, queue: this.queue});
+	}
+
+	/**
+	 * Set volume on player
+	 */
+	setVolume(value)
+	{
+		this.volume = value/100;
+		this.audio.volume = this.volume;
+	}
+
+	/*getElapsed()
+	{
+		if (this.currentTrack)
+		{
+			var tempLength = parseInt(this.audio.currentTime);
+			var length_h = 0;
+			var length_m;
+			var length_s;
+
+			//Hours
+			while (tempLength >= 3600)
+			{
+				length_h += 1;
+				tempLength -= 3600;
+			}
+
+			//Minutes
+			length_m = 0;
+			while (tempLength >= 60)
+			{
+				length_m += 1;
+				tempLength -= 60;
+			}
+			if (length_m == 0)
+			{
+				length_m = '0';
+			}
+			else if (length_m < 10 && length_h > 0)
+			{
+				length_m = '0' + length_m;
+			}
+
+			length_s = tempLength;
+			if (length_s < 10)
+			{
+				length_s = '0' + length_s;
+			}
+
+			var elapsed = '';
+			if (length_h > 0)
+			{
+				elapsed = '' + length_h + ':' + length_m + ':' + length_s;
+			}
+			else
+			{
+				elapsed = '' + length_m + ':' + length_s;
+			}
+
+			this.elapsed = elapsed;
+		}
+		else
+		{
+			this.elapsed = '0:00';
+		}
+	}
+
+	getElapsedPercent()
+	{
+		if (this.currentTrack)
+		{
+			this.elapsedPercent = (this.audio.currentTime / parseInt(this.currentTrack.length)) * 100;
+		}
+		else
+		{
+			this.elapsedPercent = 0;
+		}
+
+		if (this.elapsedPercent >= 100)
+		{
+			this.elapsedPercent = 0;
+			this.elapsed = '0:00';
+			if (this.queue[this.queuePosition] + 1)
+			{
+				this.playPosition(this.queuePosition + 1);
+			}
+			else
+			{
+				this.pause();
+			}
+		}
+	}*/
+
+
+
+
+	/**
+	 * Join room
+	 */
 	join(username)
 	{
 		this.socket.emit('join', username);
 	}
 
+	/**
+	 * Load recent chat messages (on initial load)
+	 */
 	loadRecent()
 	{
 		var request = this.http.get('http://bwilbur.com/jukebox/load-recent').map((response: Response) => {
@@ -59,6 +191,9 @@ export class JukeboxService {
 		});
 	}
 
+	/**
+	 * Send chat message to server
+	 */
 	postMessage(msg: Message)
 	{
 		var url = 'http://bwilbur.com:3000/jukebox/send-message';

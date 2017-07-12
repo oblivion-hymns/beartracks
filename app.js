@@ -23,6 +23,8 @@ var io = require('socket.io')(server);
 server.listen(4000);
 
 io.sockets.on('connection', function(client){
+
+	//Client joins rooms
 	client.on('join', function(username){
 		var botUsername = 'Jukebot';
 		var bodyText = username + ' has joined the chat'
@@ -35,6 +37,27 @@ io.sockets.on('connection', function(client){
 		io.emit('receiveMessage', message);
 	});
 
+	//Client queues a track
+	client.on('enqueue', function(data){
+		var track = data.track;
+		var queue = data.queue;
+		var queueLength = queue.length;
+
+		console.log(queue);
+
+		if (queueLength > 0)
+		{
+			//just update queue
+			io.emit('updateQueue', queue);
+		}
+		else
+		{
+			//Enqueue and play
+			io.emit('enqueueAndPlay', track);
+		}
+	});
+
+	//Client sends a chat message
 	client.on('sendMessage', function(message){
 		message.dateTime = new Date();
 		io.emit('receiveMessage', message);

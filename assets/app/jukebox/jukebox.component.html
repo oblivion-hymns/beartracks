@@ -25,7 +25,7 @@
 					<md-list-item
 						class="item-line"
 						*ngFor="let track of tracks"
-						(click)="jukeboxService.jukebox.enqueueOne(track)">
+						(click)="jukeboxService.enqueue(track)">
 						<div md-line>
 							<img src="{{track.album.imagePath}}" />
 							<span class="item-text-single">

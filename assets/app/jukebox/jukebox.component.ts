@@ -180,8 +180,6 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 
 	}
 
-
-
 	ngOnInit()
 	{
 		this.jukeboxService.join(this.username);
