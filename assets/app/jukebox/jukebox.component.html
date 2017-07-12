@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<div id="Send">
-			<md-input-container style="margin-left: 5px; width: 92%;">
+			<md-input-container style="margin-left: 5px; width: 90%;">
 				<input mdInput
 					id="Message"
 					[(ngModel)]="setMessage"
@@ -29,9 +29,10 @@
 					style="width: 100%" />
 			</md-input-container>
 
-			<button md-icon-button (click)="this.sendMessage()">
+			<button md-icon-button (click)="this.sendMessage()" style="width: 5%;">
 				<md-icon>send</md-icon>
 			</button>
+
 		</div>
 	</div>
 </div>
