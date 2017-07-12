@@ -26,7 +26,13 @@ io.sockets.on('connection', function(client){
 	client.on('join', function(username){
 		var botUsername = 'Jukebot';
 		var bodyText = username + ' has joined the chat'
-		io.emit('receiveMessage', {text: bodyText, username: botUsername, dateTime: new Date(), system: true});
+		var message = {
+			text: bodyText,
+			username: botUsername,
+			dateTime: new Date(),
+			system: true
+		};
+		io.emit('receiveMessage', message);
 	});
 
 	client.on('sendMessage', function(message){

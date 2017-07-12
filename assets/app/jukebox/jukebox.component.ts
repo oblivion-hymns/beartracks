@@ -73,6 +73,11 @@ import { Message } from './message';
 		{
 			height: 6%;
 		}
+
+		.greentext
+		{
+			color: rgba(155, 163, 80, 0.87) !important;
+		}
 	`],
 	templateUrl: './jukebox.component.html'
 })

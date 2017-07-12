@@ -13,7 +13,9 @@
 				<div class="message-item-username">
 					{{message.username}}
 				</div>
-				<div class="message-item-text">
+				<div
+					class="message-item-text"
+					[ngClass]="{'greentext': message.text.startsWith('>')}">
 					{{message.text}}
 				</div>
 			</div>

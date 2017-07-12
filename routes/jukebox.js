@@ -68,9 +68,7 @@ function sendMessage(req, res)
 	message.text = messageText;
 	message.username = username;
 
-	message.save(function(error, response){
-		console.log('Message saved', message);
-	});
+	message.save(function(error, response){});
 
 	return res.status(200).json({
 		success: true
