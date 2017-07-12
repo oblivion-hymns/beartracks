@@ -46,6 +46,11 @@ import { Message } from './message';
 			background-color: rgba(0, 0, 0, 0.12);
 		}
 
+		#JukeboxChat #Messages .message-item.message-item-system
+		{
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+
 		#JukeboxChat #Messages .message-item-username
 		{
 			color: rgba(255, 255, 255, 0.54);
@@ -76,14 +81,11 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 	@ViewChild('chat') input;
 	username: string = 'User ' + (Math.floor(Math.random() * (1000000 - 0) + 0));
 
-	messages: Message[] = [];
-
 	constructor(private jukeboxService: JukeboxService) {}
 
 	ngOnInit()
 	{
-		this.jukeboxService.loadRecent().subscribe(
-			(messages: Message[]) => { this.messages = messages; });
+		this.jukeboxService.join(this.username);
 	}
 
 	ngAfterViewChecked()

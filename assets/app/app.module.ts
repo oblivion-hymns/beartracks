@@ -26,8 +26,6 @@ import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
 import { JukeboxService } from './jukebox/jukebox.service';
 
-const config: SocketIoConfig = { };
-
 //decorator
 @NgModule({
 	declarations: [
@@ -44,7 +42,6 @@ const config: SocketIoConfig = { };
 	],
 	imports: [
 		BrowserModule,
-		SocketIoModule.forRoot(config),
 		FlexLayoutModule,
 		FormsModule,
 		routing,
@@ -62,9 +59,7 @@ const config: SocketIoConfig = { };
 		MdSidenavModule,
 		MdTabsModule
 	],
-	providers: [
-		JukeboxService
-	],
+	providers: [],
 	bootstrap: [
 		AppComponent
 	]

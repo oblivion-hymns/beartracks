@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var io = require('socket.io');
 var mongoose = require('mongoose');
 var path = require('path');
 var timeout = require('connect-timeout');
@@ -17,6 +16,25 @@ var jukeboxRoutes = require('./routes/jukebox');
 mongoose.connect('localhost:27017/beartracks');
 
 var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
+//Listening port for socket.io. Server still accessed through 3000
+server.listen(4000);
+
+io.sockets.on('connection', function(client){
+	client.on('join', function(username){
+		var botUsername = 'Jukebot';
+		var bodyText = username + ' has joined the chat'
+		io.emit('receiveMessage', {text: bodyText, username: botUsername, dateTime: new Date(), system: true});
+	});
+
+	client.on('sendMessage', function(message){
+		message.dateTime = new Date();
+		io.emit('receiveMessage', message);
+	});
+});
+
 app.timeout = 60000;
 
 // view engine setup
@@ -49,11 +67,5 @@ app.use('/', appRoutes);
 app.use(function (req, res, next) {
 	return res.render('index');
 });
-
-var socket = io.listen(3000);
-socket.on('connection', function(socket){
-	console.log('aye, connection');
-});
-
 
 module.exports = app;

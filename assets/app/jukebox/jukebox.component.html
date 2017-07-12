@@ -4,7 +4,9 @@
 	</div>
 	<div id="JukeboxChat" fxFlex='35%'>
 		<div id="Messages" #chat>
-			<div class="message-item" *ngFor="let message of messages">
+			<div class="message-item"
+				[ngClass]="{'message-item-system': message.system == 1}"
+				*ngFor="let message of jukeboxService.messages">
 				<div class="message-item-date">
 					{{message.dateTime | date:'MMM dd hh:mm'}}
 				</div>
