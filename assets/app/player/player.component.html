@@ -10,13 +10,107 @@
 	[ngClass]="{'queue-closed': playerService.player.queueOpen == false}">
 	<div style="display: block;">
 		<h3>
-			Queue
+			Now Playing
 			<button md-icon-button id="CloseQueue" (click)="playerService.player.closeQueue()">
 				<md-icon>
 					close
 				</md-icon>
 			</button>
 		</h3>
+	</div>
+
+	<!-- Player -->
+	<div id="Player">
+		<div *ngIf="playerService.player.currentTrack">
+			<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}" style="float: left;"/>
+
+			<div
+				class="now-playing"
+				*ngIf="playerService.player.currentTrack">
+				<h3 class="now-playing-field" style="color: rgba(255, 255, 255, 0.87);">
+					{{playerService.player.currentTrack.name}}
+				</h3>
+				<em class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
+					<md-icon style="font-size: 14px; height: 18px; width: 18px;">
+						album
+					</md-icon>
+					{{playerService.player.currentTrack.album.name}} ({{playerService.player.currentTrack.album.year}})
+				</em><br />
+				<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
+					<md-icon style="font-size: 14px; height: 18px; width: 18px;">
+						person
+					</md-icon>
+					{{playerService.player.currentTrack.album.artist.name}}
+				</span><br />
+				<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.36);">
+					<md-icon style="font-size: 14px; height: 18px; width: 18px;">
+						receipt
+					</md-icon>
+					<em>
+						{{playerService.player.currentTrack.genre}}
+					</em>
+				</span>
+			</div>
+
+			<div style="width: 100%;">
+				<div style="float: left; font-size: 46px;">
+					<md-icon
+						class="player-control player-pause"
+						*ngIf="!playerService.player.audio.paused"
+						(click)="playerService.player.pause()">
+						pause
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						*ngIf="playerService.player.audio.paused"
+						(click)="playerService.player.resume()">
+						play_arrow
+					</md-icon>
+
+					<md-icon
+						class="player-control player-play"
+						*ngIf="playerService.player.volume >= 0.8">
+						volume_up
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						*ngIf="playerService.player.volume >= 0.4 && playerService.player.volume < 0.8">
+						volume_down
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						*ngIf="playerService.player.volume > 0 && playerService.player.volume < 0.4">
+						volume_mute
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						*ngIf="playerService.player.volume == 0">
+						volume_off
+					</md-icon>
+
+					<!-- Volume -->
+					<md-slider min="0" max="100" step="1" value="50" [(ngModel)]="volume" ></md-slider>
+				</div>
+
+				<div style="float: right;">
+					<div class="now-playing-elapsed" style="margin-top: 24px;">
+						{{playerService.player.elapsed}} / {{playerService.player.currentTrack.lengthFormatted}}
+					</div>
+				</div>
+			</div>
+
+
+			<md-progress-bar
+				class="now-playing-progress"
+				[mode]="determinate"
+				[value]="playerService.player.elapsedPercent">
+			</md-progress-bar>
+		</div>
+		<div *ngIf="!playerService.player.currentTrack">
+			<p style="color: rgba(80, 80, 80, 0.87);">
+				Nothing currently playing
+			</p>
+		</div>
 	</div>
 
 	<div class="queue-list" *ngIf="playerService.player.queue.length">
@@ -65,80 +159,5 @@
 		<div class="error-text">
 			No music queued
 		</div>
-	</div>
-</div>
-
-<div id="Player">
-	<div *ngIf="playerService.player.currentTrack">
-		<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}"/>
-
-		<div
-			class="now-playing"
-			*ngIf="playerService.player.currentTrack"
-			style="float: left;">
-			<h3 class="now-playing-field">
-				{{playerService.player.currentTrack.name}}
-			</h3>
-			<em class="now-playing-field" style="color: rgba(255, 255, 255, 0.87);">
-				{{playerService.player.currentTrack.album.name}} ({{playerService.player.currentTrack.album.year}})
-			</em><br />
-			<span class="now-playing-field" style="color: rgba(255, 255, 255, 0.54);">
-				{{playerService.player.currentTrack.album.artist.name}}
-			</span><br />
-		</div>
-		<!-- Toolbar -->
-		<div style="float: right; font-size: 46px;">
-			<md-icon
-				class="player-control player-pause"
-				*ngIf="!playerService.player.audio.paused"
-				(click)="playerService.player.pause()">
-				pause
-			</md-icon>
-			<md-icon
-				class="player-control player-play"
-				*ngIf="playerService.player.audio.paused"
-				(click)="playerService.player.resume()">
-				play_arrow
-			</md-icon>
-
-			<md-icon
-				class="player-control player-play"
-				*ngIf="playerService.player.volume >= 0.8">
-				volume_up
-			</md-icon>
-			<md-icon
-				class="player-control player-play"
-				*ngIf="playerService.player.volume >= 0.4 && playerService.player.volume < 0.8">
-				volume_down
-			</md-icon>
-			<md-icon
-				class="player-control player-play"
-				*ngIf="playerService.player.volume > 0 && playerService.player.volume < 0.4">
-				volume_mute
-			</md-icon>
-			<md-icon
-				class="player-control player-play"
-				*ngIf="playerService.player.volume == 0">
-				volume_off
-			</md-icon>
-
-			<!-- Volume -->
-			<md-slider min="0" max="100" step="1" value="50" [(ngModel)]="volume" ></md-slider>
-		</div>
-
-		<div class="now-playing-elapsed">
-			{{playerService.player.elapsed}} / {{playerService.player.currentTrack.lengthFormatted}}
-		</div>
-
-		<md-progress-bar
-			class="now-playing-progress"
-			[mode]="determinate"
-			[value]="playerService.player.elapsedPercent">
-		</md-progress-bar>
-	</div>
-	<div *ngIf="!playerService.player.currentTrack">
-		<p style="color: rgba(80, 80, 80, 0.87);">
-			Nothing currently playing
-		</p>
 	</div>
 </div>
