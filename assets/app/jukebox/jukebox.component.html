@@ -55,9 +55,7 @@
 	<div *ngIf="jukeboxService.queue[0]">
 		<img class="now-playing-art" src="{{jukeboxService.queue[0].album.imagePath}}" style="float: left;"/>
 
-		<div
-			class="now-playing"
-			*ngIf="jukeboxService.queue[0]">
+		<div class="now-playing">
 			<h3 class="now-playing-field" style="color: rgba(255, 255, 255, 0.87);">
 				{{jukeboxService.queue[0].name}}
 			</h3>
@@ -124,12 +122,16 @@
 		</md-progress-bar>
 	</div>
 
+	<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+		Up Next
+	</h3>
+
 	<!-- Queue -->
 	<div class="queue-list" *ngIf="jukeboxService.displayQueue.length">
 		<div class="queue-item" *ngFor="let track of jukeboxService.displayQueue; let i = index">
 			<span class="queue-item-field">
 				<span class="queue-item-field-text">
-					{{i+1}}. {{ track.name }}
+					{{i+1}}. {{track.album.artist.name}} - "{{ track.name }}"
 				</span>
 				<span style="float: right; padding-top: 1px; color: rgba(255, 255, 255, 0.34);">
 					{{track.lengthFormatted}}

@@ -49,23 +49,18 @@ export class JukeboxService {
 			self.displayQueue = self.queue.slice();
 			self.displayQueue.shift();
 			var elapsed = receivedData.elapsed;
-
-			console.log('queue initialized');
 		})
 
 		this.socket.on('updateQueue', function(queue){
 			self.queue = queue;
 			self.displayQueue = self.queue.slice();
 			self.displayQueue.shift();
-
-			console.log('queue updated', self.queue);
 		});
 
 		this.socket.on('enqueueAndPlay', function(track){
 			self.queue = [track];
 			self.displayQueue = [];
-
-			console.log('enqueue and play', self.queue);
+			self.startPlayback();
 		});
 	}
 
@@ -77,96 +72,123 @@ export class JukeboxService {
 		this.socket.emit('enqueue', {track: track, queue: this.queue});
 	}
 
-	/**
-	 * Set volume on player
-	 */
+	startPlayback(duration?: number)
+	{
+		var track = this.queue[0];
+
+		if (track)
+		{
+			var elapsed = duration | 0;
+			if (this.audio)
+			{
+				this.audio.pause();
+				this.audio.currentTime = 0;
+				this.audio = null;
+			}
+
+			this.audio = new Audio(track.filePath);
+			this.audio.play();
+			this.audio.volume = this.volume;
+
+			if (!this.elapsedInterval)
+			{
+				this.elapsedInterval = setInterval(()=> {
+					this.getElapsed();
+					this.getElapsedPercent();
+				}, 1000);
+			}
+		}
+
+	}
+
 	setVolume(value)
 	{
 		this.volume = value/100;
 		this.audio.volume = this.volume;
+		console.log(this.volume);
 	}
 
-	/*getElapsed()
+	getElapsed()
 	{
-		if (this.currentTrack)
+		if (this.queue[0])
 		{
-			var tempLength = parseInt(this.audio.currentTime);
-			var length_h = 0;
-			var length_m;
-			var length_s;
+			var track = this.queue[0];
+			if (track)
+			{
+				var tempLength = parseInt(this.audio.currentTime);
+				var length_h = 0;
+				var length_m;
+				var length_s;
 
-			//Hours
-			while (tempLength >= 3600)
-			{
-				length_h += 1;
-				tempLength -= 3600;
-			}
+				//Hours
+				while (tempLength >= 3600)
+				{
+					length_h += 1;
+					tempLength -= 3600;
+				}
 
-			//Minutes
-			length_m = 0;
-			while (tempLength >= 60)
-			{
-				length_m += 1;
-				tempLength -= 60;
-			}
-			if (length_m == 0)
-			{
-				length_m = '0';
-			}
-			else if (length_m < 10 && length_h > 0)
-			{
-				length_m = '0' + length_m;
-			}
+				//Minutes
+				length_m = 0;
+				while (tempLength >= 60)
+				{
+					length_m += 1;
+					tempLength -= 60;
+				}
+				if (length_m == 0)
+				{
+					length_m = '0';
+				}
+				else if (length_m < 10 && length_h > 0)
+				{
+					length_m = '0' + length_m;
+				}
 
-			length_s = tempLength;
-			if (length_s < 10)
-			{
-				length_s = '0' + length_s;
-			}
+				length_s = tempLength;
+				if (length_s < 10)
+				{
+					length_s = '0' + length_s;
+				}
 
-			var elapsed = '';
-			if (length_h > 0)
-			{
-				elapsed = '' + length_h + ':' + length_m + ':' + length_s;
+				var elapsed = '';
+				if (length_h > 0)
+				{
+					elapsed = '' + length_h + ':' + length_m + ':' + length_s;
+				}
+				else
+				{
+					elapsed = '' + length_m + ':' + length_s;
+				}
+
+				this.elapsed = elapsed;
 			}
 			else
 			{
-				elapsed = '' + length_m + ':' + length_s;
+				this.elapsed = '0:00';
 			}
-
-			this.elapsed = elapsed;
-		}
-		else
-		{
-			this.elapsed = '0:00';
 		}
 	}
 
 	getElapsedPercent()
 	{
-		if (this.currentTrack)
+		if (this.queue[0])
 		{
-			this.elapsedPercent = (this.audio.currentTime / parseInt(this.currentTrack.length)) * 100;
-		}
-		else
-		{
-			this.elapsedPercent = 0;
-		}
-
-		if (this.elapsedPercent >= 100)
-		{
-			this.elapsedPercent = 0;
-			this.elapsed = '0:00';
-			if (this.queue[this.queuePosition] + 1)
+			var track = this.queue[0];
+			if (track)
 			{
-				this.playPosition(this.queuePosition + 1);
+				this.elapsedPercent = (this.audio.currentTime / parseInt(track.length)) * 100;
 			}
 			else
 			{
-				this.pause();
+				this.elapsedPercent = 0;
+			}
+
+			if (this.elapsedPercent >= 100)
+			{
+				this.elapsedPercent = 0;
+				this.elapsed = '0:00';
 			}
 		}
-	}*/
+	}
 
 
 

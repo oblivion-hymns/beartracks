@@ -96,6 +96,11 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 		return this.message;
 	}
 
+	set volume(value)
+	{
+		this.jukeboxService.setVolume(value);
+	}
+
 	scrollChat()
 	{
 		this.input.nativeElement.scrollTop = this.input.nativeElement.scrollHeight;
