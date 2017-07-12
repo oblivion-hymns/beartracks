@@ -1,14 +1,20 @@
 import 'rxjs/Rx';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { Album } from './../albums/album';
+import { AlbumService } from './../albums/album.service';
+import { Artist } from './../artists/artist';
+import { ArtistService } from './../artists/artist.service';
+import { Track } from './../tracks/track';
+import { TrackService } from './../tracks/track.service';
 import { Message } from './message';
 import * as io from 'socket.io-client';
 
 @Injectable()
 export class JukeboxService {
-
+	queue: Track[] = [];
 	private socket;
 	messages: Message[] = [];
 
@@ -22,6 +28,10 @@ export class JukeboxService {
 		this.socket.on('receiveMessage', function(receivedMessage){
 			var message = new Message(receivedMessage.text, receivedMessage.username, receivedMessage.dateTime, receivedMessage.system);
 			self.messages.push(message);
+		});
+
+		this.socket.on('receiveQueue', function(receivedQueue){
+			this.queue = receivedQueue;
 		});
 	}
 
@@ -59,9 +69,4 @@ export class JukeboxService {
 
 		this.socket.emit('sendMessage', msg);
 	}
-
-	/*getMessage()
-	{
-		return this.socket.fromEvent("message").map(data => data.msg);
-	}*/
 }

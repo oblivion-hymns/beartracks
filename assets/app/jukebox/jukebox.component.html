@@ -1,40 +1,47 @@
-<div fxLayout='row'>
-	<div fxFlex='65%'>
-		content
+<div fxLayout='row' style="min-height: 50%; height: 50%;">
+	<div fxLayout='column' fxFlex='50%'>
+		<!-- queue -->
 	</div>
-	<div id="JukeboxChat" fxFlex='35%'>
-		<div id="Messages" #chat>
-			<div class="message-item"
-				[ngClass]="{'message-item-system': message.system == 1}"
-				*ngFor="let message of jukeboxService.messages">
-				<div class="message-item-date">
-					{{message.dateTime | date:'MMM dd hh:mm'}}
-				</div>
-				<div class="message-item-username">
-					{{message.username}}
-				</div>
-				<div
-					class="message-item-text"
-					[ngClass]="{'greentext': message.text.startsWith('>')}">
-					{{message.text}}
+	<div fxLayout='column' fxFlex='50%'>
+		<!-- Search -->
+	</div>
+</div>
+
+<div fxLayout='row' style='max-height: 50%; height: 50%;'>
+	<div fxLayout='column' fxFlex='50%' fxFlexOffset='50%'>
+		<div id="JukeboxChat">
+			<div id="Messages" #chat>
+				<div class="message-item"
+					[ngClass]="{'message-item-system': message.system == 1}"
+					*ngFor="let message of jukeboxService.messages">
+					<div class="message-item-date">
+						{{message.dateTime | date:'MMM dd hh:mm'}}
+					</div>
+					<div class="message-item-username">
+						{{message.username}}
+					</div>
+					<div
+						class="message-item-text"
+						[ngClass]="{'greentext': message.text.startsWith('>')}">
+						{{message.text}}
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id="Send">
-			<md-input-container style="margin-left: 5px; width: 90%;">
-				<input mdInput
-					id="Message"
-					[(ngModel)]="setMessage"
-					(keyup.enter)="this.sendMessage()"
-					type="text"
-					maxlength="256"
-					style="width: 100%" />
-			</md-input-container>
+			<div id="Send">
+				<md-input-container style="margin-left: 5px; width: 90%;">
+					<input mdInput
+						id="Message"
+						[(ngModel)]="setMessage"
+						(keyup.enter)="this.sendMessage()"
+						type="text"
+						maxlength="256"
+						style="width: 100%" />
+				</md-input-container>
 
-			<button md-icon-button (click)="this.sendMessage()" style="width: 5%;">
-				<md-icon>send</md-icon>
-			</button>
-
+				<button md-icon-button (click)="this.sendMessage()" style="width: 5%;">
+					<md-icon>send</md-icon>
+				</button>
+			</div>
 		</div>
 	</div>
 </div>
