@@ -15,9 +15,20 @@ import { Message } from './message';
 	providers: [JukeboxService, ArtistService, AlbumService, TrackService],
 	selector: 'bt-jukebox',
 	styles: [`
+		#JukeboxSearch, #SearchResults, #JukeboxQueue
+		{
+			width: 50%;
+		}
+
+		#JukeboxSearch
+		{
+			padding-bottom: 0px;
+			height: 64px;
+		}
+
 		.item-line
 		{
-			padding: 5px;
+			margin: 8px;
 			overflow: hidden;
 		}
 
@@ -58,17 +69,21 @@ import { Message } from './message';
 
 
 
+
+
 		#JukeboxChat
 		{
-			background-color: rgb(40, 40, 40);
+			background-color: none;
 			border-left: 1px solid rgba(0, 0, 0, 0.87);
 			border-radius: 5px 0px 0px 0px;
 			box-sizing: border-box;
 			display: block;
-			height: 100%;
+			height: calc(100% - 64px);
 			overflow-y: hidden;
-			padding: 8px;
-			width: 100%;
+			position: absolute;
+			right: 0px;
+			top: 64px;
+			width: 50%;
 		}
 
 		#JukeboxChat #Messages
@@ -81,6 +96,21 @@ import { Message } from './message';
 			height: 90%;
 			overflow-y: scroll;
 			padding: 0px;
+		}
+
+		::-webkit-scrollbar
+		{
+			width: 8px;
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: rgba(60, 60, 60, 0.87);
+			border-radius: 10px;
+		}
+
+		::-webkit-scrollbar-thumb {
+			border-radius: 5px;
+			-webkit-box-shadow: inset 0 0 6px rgba(25, 25, 25, 0.87);
 		}
 
 		#JukeboxChat #Messages .message-item
@@ -119,6 +149,7 @@ import { Message } from './message';
 		#JukeboxChat #Send
 		{
 			height: 6%;
+			box-sizing: border-box;
 		}
 
 		.greentext
