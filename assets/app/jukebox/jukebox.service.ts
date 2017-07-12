@@ -15,6 +15,7 @@ import * as io from 'socket.io-client';
 @Injectable()
 export class JukeboxService {
 	public queue: Track[] = [];
+	public displayQueue: Track[] = [];
 	private audio;
 	public volume: number = 0.5;
 
@@ -44,17 +45,26 @@ export class JukeboxService {
 		});
 
 		this.socket.on('initializeQueue', function(receivedData){
-			var queue = receivedData.queue;
+			self.queue = receivedData.queue;
+			self.displayQueue = self.queue.slice();
+			self.displayQueue.shift();
 			var elapsed = receivedData.elapsed;
+
+			console.log('queue initialized');
 		})
 
 		this.socket.on('updateQueue', function(queue){
 			self.queue = queue;
+			self.displayQueue = self.queue.slice();
+			self.displayQueue.shift();
+
 			console.log('queue updated', self.queue);
 		});
 
 		this.socket.on('enqueueAndPlay', function(track){
 			self.queue = [track];
+			self.displayQueue = [];
+
 			console.log('enqueue and play', self.queue);
 		});
 	}

@@ -72,6 +72,45 @@
 	width: 50%;
 }
 
+/**
+ * Player
+ */
+.now-playing .now-playing-field
+{
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+img.now-playing-art
+{
+	border: 1px solid rgba(0, 0, 0, 0.54);
+	float: left;
+	height: 96px;
+	margin-right: 8px;
+	width: 96px;
+}
+
+.now-playing-elapsed
+{
+	color:rgba(255, 255, 255, 0.54);
+	margin-bottom: 5px;
+}
+
+.player-control
+{
+	color: rgba(255, 255, 255, 0.54);
+	cursor: default;
+}
+
+.player-control:hover
+{
+	color: rgba(255, 255, 255, 0.87);
+	cursor: pointer;
+}
+
+/**
+ * Queue list
+ */
 .queue-list
 {
 	padding: 8px;
