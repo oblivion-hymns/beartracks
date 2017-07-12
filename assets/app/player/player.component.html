@@ -8,8 +8,9 @@
 <div id="Queue"
 	class="queue-closed"
 	[ngClass]="{'queue-closed': playerService.player.queueOpen == false}">
-	<div style="display: block;">
-		<h3>
+
+	<div style="display: block; box-sizing: border-box; height: 5%; min-height: 5%; max-height: 5%;">
+		<h3 style="text-transform: lowercase;">
 			Now Playing
 			<button md-icon-button id="CloseQueue" (click)="playerService.player.closeQueue()">
 				<md-icon>

@@ -81,6 +81,8 @@ export class Player implements OnInit
 		this.audio.play();
 		this.audio.volume = this.volume;
 
+		this.openQueue();
+
 		if (!this.elapsedInterval)
 		{
 			this.elapsedInterval = setInterval(()=> {
