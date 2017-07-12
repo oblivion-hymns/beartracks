@@ -18,7 +18,7 @@ export class JukeboxService {
 		this.loadRecent();
 
 		var self = this;
-		this.socket = io('http://localhost:4000');
+		this.socket = io('http://bwilbur.com:4000');
 		this.socket.on('receiveMessage', function(receivedMessage){
 			var message = new Message(receivedMessage.text, receivedMessage.username, receivedMessage.dateTime, receivedMessage.system);
 			self.messages.push(message);

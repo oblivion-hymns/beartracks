@@ -29,8 +29,9 @@ import { Message } from './message';
 			background-color: rgba(0, 0, 0, 0.38);
 			border: 1px solid rgba(0, 0, 0, 0.38);
 			border-radius: 2px;
+			box-sizing: border-box;
 			box-shadow: inset 1px 1px 2px 2px rgba(0, 0, 0, 0.20);
-			height: 80%;
+			height: 90%;
 			overflow-y: scroll;
 			padding: 0px;
 		}
