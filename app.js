@@ -14,22 +14,25 @@ var albumRoutes = require('./routes/albums');
 var trackRoutes = require('./routes/tracks');
 var jukeboxRoutes = require('./routes/jukebox');
 
-var app = express();
 mongoose.connect('localhost:27017/beartracks');
+
+var app = express();
+http = require('http').createServer(app);
+var server = io.listen(http);
+
+
+
 
 /*var server = app.listen(app.get('port'), function(){
 	console.log('listening');
 });*/
-var server = io.listen(app.listen(app.get('port')));
-server.timeout = 60000;
-server.on('uncaughtException', function (err) {
-	console.log('Caught exception: ' + err);
-});
 
-server.sockets.on('connection', function(socket){
-	console.log('Someone connected!');
+server.timeout = 60000;
+server.on('connection', function(socket){
+	console.log('aye, connection');
 	socket.on('sendMessage', function(data){
 		console.log('Sent message');
+
 		socket.emit('message', {message: 'Hello world!'});
 	});
 });
@@ -63,6 +66,10 @@ app.use('/', appRoutes);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	return res.render('index');
+});
+
+http.listen(app.get('port'), '127.0.0.1', function(){
+	console.log('Have no need to fear, listening is here!');
 });
 
 module.exports = app;

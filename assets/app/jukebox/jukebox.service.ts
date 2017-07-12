@@ -13,12 +13,16 @@ export class JukeboxService {
 
 	constructor(private http: Http)
 	{
-		this.socket = io();
+		console.log('Jukebox service constructor');
+		var socket = io.connect('http://localhost:3000');
+		socket.on('connect', function(){
+			console.log('lol wut?');
+		});
 	}
 
 	sendSocketMessage(msg: string)
 	{
-		this.socket.emit('sendMessage', msg);
+		//this.socket.emit('sendMessage', msg);
 	}
 
 	getSocketMessage()

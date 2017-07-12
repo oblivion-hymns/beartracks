@@ -82,12 +82,8 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 
 	ngOnInit()
 	{
-		this.jukeboxService.sendSocketMessage('sendMessage');
-		console.log('sent');
-		//var message = this.jukeboxService.getSocketMessage();
-		//console.log(message);
-		//this.jukeboxService.loadRecent().subscribe(
-			//(messages: Message[]) => { this.messages = messages; });
+		this.jukeboxService.loadRecent().subscribe(
+			(messages: Message[]) => { this.messages = messages; });
 	}
 
 	ngAfterViewChecked()
