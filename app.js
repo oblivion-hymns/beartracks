@@ -35,6 +35,51 @@ io.sockets.on('connection', function(client){
 			system: true
 		};
 		io.emit('receiveMessage', message);
+
+		//If there's someone else in the room, try to get the current state of the queue
+		var allClients = Object.keys(io.sockets.sockets);
+		if (allClients.length > 1)
+		{
+			var chosenClient = '';
+			for (var i in allClients)
+			{
+				var clientId = allClients[i];
+				if (clientId != client.id)
+				{
+					io.to(clientId).emit('getCurrentQueueState', {socketId: client.id});
+				}
+			}
+		}
+	});
+
+	client.on('getCurrentQueueState', function(data){
+		//If there's someone else in the room, try to get the current state of the queue
+		var allClients = Object.keys(io.sockets.sockets);
+		if (allClients.length > 1)
+		{
+			var chosenClient = '';
+			for (var i in allClients)
+			{
+				var clientId = allClients[i];
+				if (clientId != client.id)
+				{
+					io.to(clientId).emit('getCurrentQueueState', {socketId: client.id});
+				}
+			}
+		}
+	});
+
+	client.on('sendCurrentQueueState', function(data){
+		console.log('Got current queue state', data.elapsed);
+		var queue = data.queue;
+		var elapsed = data.elapsed; //Just to give it a bit of buffer
+		var socketId = data.socketId;
+
+		var data = {
+			queue: queue,
+			elapsed: elapsed
+		};
+		io.to(socketId).emit('initializeQueue', data);
 	});
 
 	//Client queues a track
@@ -54,6 +99,12 @@ io.sockets.on('connection', function(client){
 			//Enqueue and play
 			io.emit('enqueueAndPlay', track);
 		}
+	});
+
+	client.on('songEnded', function(queue){
+		//Song is done, broadcast the new queue back
+		queue.shift();
+		io.emit('updateQueueAndPlay', queue);
 	});
 
 	//Client sends a chat message

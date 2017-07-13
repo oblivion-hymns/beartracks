@@ -1,5 +1,5 @@
 import 'rxjs/Rx';
-import { AfterViewChecked, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Album } from './../albums/album';
@@ -17,7 +17,7 @@ import { Message } from './message';
 	styleUrls: ['./jukebox.component.css'],
 	templateUrl: './jukebox.component.html'
 })
-export class JukeboxComponent implements OnInit, AfterViewChecked
+export class JukeboxComponent implements AfterViewChecked
 {
 	albums: Album[] = [];
 	tracks: Track[] = [];
@@ -34,11 +34,6 @@ export class JukeboxComponent implements OnInit, AfterViewChecked
 		private artistService: ArtistService,
 		private albumService: AlbumService,
 		private trackService: TrackService)
-	{
-
-	}
-
-	ngOnInit()
 	{
 		this.jukeboxService.join(this.username);
 	}

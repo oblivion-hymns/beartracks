@@ -19,9 +19,12 @@ export class JukeboxService {
 	private audio;
 	public volume: number = 0.5;
 
+	public bufferTimer: number = 0.0;
+
 	public elapsedInterval;
 	public elapsed = '0:00';
 	public elapsedPercent = 0;
+	public elapsedSeconds = 0;
 
 	private socket;
 	messages: Message[] = [];
@@ -46,9 +49,13 @@ export class JukeboxService {
 
 		this.socket.on('initializeQueue', function(receivedData){
 			self.queue = receivedData.queue;
-			self.displayQueue = self.queue.slice();
-			self.displayQueue.shift();
-			var elapsed = receivedData.elapsed;
+
+			if (self.queue.length > 0)
+			{
+				self.displayQueue = self.queue.slice();
+				self.displayQueue.shift();
+				self.startPlayback(receivedData.elapsed);
+			}
 		})
 
 		this.socket.on('updateQueue', function(queue){
@@ -57,10 +64,25 @@ export class JukeboxService {
 			self.displayQueue.shift();
 		});
 
+		this.socket.on('updateQueueAndPlay', function(queue){
+			self.queue = queue;
+			self.displayQueue = [];
+			self.startPlayback();
+		});
+
 		this.socket.on('enqueueAndPlay', function(track){
 			self.queue = [track];
 			self.displayQueue = [];
 			self.startPlayback();
+		});
+
+		this.socket.on('getCurrentQueueState', function(data){
+			var sendData = {
+				queue: self.queue,
+				elapsed: self.audio.currentTime | 0,
+				socketId: data.socketId
+			};
+			self.socket.emit('sendCurrentQueueState', sendData);
 		});
 	}
 
@@ -75,6 +97,7 @@ export class JukeboxService {
 	startPlayback(duration?: number)
 	{
 		var track = this.queue[0];
+		var self = this;
 
 		if (track)
 		{
@@ -87,7 +110,26 @@ export class JukeboxService {
 			}
 
 			this.audio = new Audio(track.filePath);
+
+			this.audio.currentTime = elapsed;
 			this.audio.play();
+
+			this.bufferTimer = Math.floor(Date.now() / 1000);
+			this.audio.oncanplay = function(){
+				//If it took longer than 2 seconds to load, get the state again
+				self.bufferTimer = (Math.floor(Date.now() / 1000)) - self.bufferTimer;
+				if (self.bufferTimer > 2)
+				{
+					self.socket.emit('getCurrentQueueState');
+					console.log('Took too long to load audio. Trying again.');
+				}
+			}
+
+			this.audio.onended = function()
+			{
+				self.socket.emit('songEnded', self.queue);
+			}
+
 			this.audio.volume = this.volume;
 
 			if (!this.elapsedInterval)
@@ -105,7 +147,6 @@ export class JukeboxService {
 	{
 		this.volume = value/100;
 		this.audio.volume = this.volume;
-		console.log(this.volume);
 	}
 
 	getElapsed()
