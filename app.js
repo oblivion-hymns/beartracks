@@ -75,6 +75,8 @@ io.sockets.on('connection', function(client){
 		var elapsed = data.elapsed; //Just to give it a bit of buffer
 		var socketId = data.socketId;
 
+		console.log(queue);
+
 		var data = {
 			queue: queue,
 			elapsed: elapsed

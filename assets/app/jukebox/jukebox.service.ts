@@ -66,7 +66,8 @@ export class JukeboxService {
 
 		this.socket.on('updateQueueAndPlay', function(queue){
 			self.queue = queue;
-			self.displayQueue = [];
+			self.displayQueue = queue.slice();
+			self.displayQueue.shift();
 			self.startPlayback();
 		});
 
@@ -115,7 +116,7 @@ export class JukeboxService {
 			this.audio.play();
 
 			this.bufferTimer = Math.floor(Date.now() / 1000);
-			this.audio.oncanplay = function(){
+			this.audio.oncanplaythrough = function(){
 				//If it took longer than 2 seconds to load, get the state again
 				self.bufferTimer = (Math.floor(Date.now() / 1000)) - self.bufferTimer;
 				if (self.bufferTimer > 2)
@@ -123,6 +124,13 @@ export class JukeboxService {
 					self.socket.emit('getCurrentQueueState');
 					console.log('Took too long to load audio. Trying again.');
 				}
+				else
+				{
+					console.log('Good to go!');
+				}
+
+				self.bufferTimer = Math.floor(Date.now() / 1000);
+				return;
 			}
 
 			this.audio.onended = function()

@@ -116,4 +116,12 @@ export class JukeboxComponent implements AfterViewChecked
 			message.dateTime = new Date();
 		}
 	}
+
+	sendThinkingMessage()
+	{
+		var message = new Message(':thinking:', this.username);
+		message.dateTime = new Date();
+		this.jukeboxService.postMessage(message);
+		this.message = '';
+	}
 }

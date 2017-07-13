@@ -14,9 +14,14 @@
 
 .item-line
 {
-	cursor: default;
 	margin: 8px;
 	overflow: hidden;
+}
+
+#SearchResults .item-line:hover
+{
+	background-color: rgba(40, 40, 40, 0.87);
+	cursor: pointer;
 }
 
 .item-line img

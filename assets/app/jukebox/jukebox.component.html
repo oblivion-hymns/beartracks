@@ -163,13 +163,23 @@
 			</div>
 			<div
 				class="message-item-text"
+				*ngIf="message.text.indexOf(':thinking:') > -1"
+				[ngClass]="{'greentext': message.text.startsWith('>')}">
+				<img src="/img/rmmt.png" style="width: 64px; height: 64px;" />
+			</div>
+			<div
+				class="message-item-text"
+				*ngIf="message.text.indexOf(':thinking:') == -1"
 				[ngClass]="{'greentext': message.text.startsWith('>')}">
 				{{message.text}}
 			</div>
 		</div>
 	</div>
 	<div id="Send">
-		<md-input-container style="margin-left: 8px; padding: 8px; box-sizing: border-box; width: 90%;">
+		<button md-icon-button (click)="this.sendThinkingMessage()" style="margin-left: 16px; width: 5%;">
+			<img src="/img/rmmt-icon.png" style="width: 24px; height: 24px; opacity: 0.54;" />
+		</button>
+		<md-input-container style="padding: 8px; box-sizing: border-box; width: 78%;">
 			<input mdInput
 				id="Message"
 				[(ngModel)]="setMessage"

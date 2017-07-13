@@ -56,7 +56,7 @@ function find(req, res)
 				return aDistance - bDistance;
 			});
 
-			tracks = tracks.slice(0, 10);
+			tracks = tracks.slice(0, 15);
 
 			res.status(200).json({
 				message: 'Success',
