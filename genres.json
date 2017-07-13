@@ -3,15 +3,15 @@
 	[
 		{
 			"name": "Acoustic",
-			"related": []
+			"related": ["Acoustic", "Folk"]
 		},
 		{
 			"name": "Alternative Rock",
-			"related": []
+			"related": ["Alternative Rock", "Alternative", "Funk Rock", "Pop Rock", "Pop Punk", "Rock", "Ska"]
 		},
 		{
 			"name": "Alternative",
-			"related": []
+			"related": ["Alterative", "Alternative Rock"]
 		},
 		{
 			"name": "Ambient",
@@ -19,7 +19,7 @@
 		},
 		{
 			"name": "Anti-folk",
-			"related": []
+			"related": ["Folk", "Indie"]
 		},
 		{
 			"name": "Art Rock",
@@ -27,23 +27,23 @@
 		},
 		{
 			"name": "Avant-garde",
-			"related": []
+			"related": ["Avant-garde", "Experimental", "Ambient"]
 		},
 		{
 			"name": "Black Metal",
-			"related": []
+			"related": ["Black Metal"]
 		},
 		{
 			"name": "Blues",
-			"related": []
+			"related": ["Blues"]
 		},
 		{
 			"name": "Bossa Nova",
-			"related": []
+			"related": ["Bossa Nova"]
 		},
 		{
 			"name": "Chillstep",
-			"related": []
+			"related": ["Chillwave", "Trance", "Electronic"]
 		},
 		{
 			"name": "Chillwave",
