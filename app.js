@@ -13,6 +13,7 @@ var albumRoutes = require('./routes/albums');
 var trackRoutes = require('./routes/tracks');
 var jukeboxRoutes = require('./routes/jukebox');
 
+var Message = require('./models/message');
 var UserLookupSchema = require('./models/userlookup');
 
 mongoose.connect('localhost:27017/beartracks');
@@ -38,12 +39,13 @@ io.sockets.on('connection', function(client){
 
 		var botUsername = 'Jukebot';
 		var bodyText = username + ' has joined the chat'
-		var message = {
+		var message = new Message({
 			text: bodyText,
 			username: botUsername,
 			dateTime: new Date(),
 			system: true
-		};
+		});
+		message.save({});
 		io.emit('receiveMessage', message);
 
 		//If there's someone else in the room, try to get the current state of the queue
@@ -125,25 +127,25 @@ io.sockets.on('connection', function(client){
 	client.on('disconnect', function(){
 		console.log(client.id + ' disconnected');
 		UserLookupSchema.find({'clientId': client.id}, function(error, docs){
-			var botUsername = 'Jukebot';
-			var username = docs[0].username;
-			var bodyText = username + ' has left the chat'
-			var message = {
-				text: bodyText,
-				username: botUsername,
-				dateTime: new Date(),
-				system: true
-			};
-			io.emit('receiveMessage', message);
+			if (docs.length > 0)
+			{
+				var botUsername = 'Jukebot';
+				var username = docs[0].username;
+				var bodyText = username + ' has left the chat'
+				var message = new Message({
+					text: bodyText,
+					username: botUsername,
+					dateTime: new Date(),
+					system: true
+				});
+				message.save({});
+				io.emit('receiveMessage', message);
+			}
 
 			UserLookupSchema.remove({'clientId': client.id}, function(error){
 				if (error)
 				{
 					console.error(error);
-				}
-				else
-				{
-					console.log('byeeee');
 				}
 			});
 		});

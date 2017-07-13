@@ -67,6 +67,7 @@ function sendMessage(req, res)
 	var message = new Message();
 	message.text = messageText;
 	message.username = username;
+	message.system = false;
 
 	message.save(function(error, response){});
 

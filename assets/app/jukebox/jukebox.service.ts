@@ -260,7 +260,7 @@ export class JukeboxService {
 			let messages: Message[] = [];
 			for (let messageData of data)
 			{
-				var message = new Message(messageData.text, messageData.username, messageData.dateTime, false);
+				var message = new Message(messageData.text, messageData.username, messageData.dateTime, messageData.system);
 				messages.push(message);
 			}
 
