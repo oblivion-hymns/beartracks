@@ -192,6 +192,19 @@ img.now-playing-art
 	padding: 0px;
 }
 
+#NumUsersOverlay
+{
+	background-color: rgba(0, 0, 0, 0.95);
+	color: rgba(255, 255, 255, 0.54);
+	height: 24px;
+	left: 50%;
+	padding: 8px;
+	position: fixed;
+	top: 64px;
+	width: 50%;
+	z-index: 3;
+}
+
 ::-webkit-scrollbar
 {
 	width: 8px;

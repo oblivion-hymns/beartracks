@@ -149,9 +149,18 @@
 	</div>
 </div>
 
+<div id="NumUsersOverlay">
+	<span *ngIf="jukeboxService.numConnectedUsers == 1">
+		{{jukeboxService.numConnectedUsers}} user connected
+	</span>
+	<span *ngIf="jukeboxService.numConnectedUsers != 1">
+		{{jukeboxService.numConnectedUsers}} users connected
+	</span>
+</div>
 
 <div id="JukeboxChat">
 	<div id="Messages" #chat>
+
 		<div class="message-item"
 			[ngClass]="{'message-item-system': message.system == 1}"
 			*ngFor="let message of jukeboxService.messages">

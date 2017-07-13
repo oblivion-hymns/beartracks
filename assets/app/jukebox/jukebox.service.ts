@@ -18,6 +18,7 @@ export class JukeboxService {
 	public displayQueue: Track[] = [];
 	private audio;
 	public volume: number = 0.5;
+	public numConnectedUsers: number = 0;
 
 	public bufferTimer: number = 0.0;
 
@@ -84,6 +85,11 @@ export class JukeboxService {
 				socketId: data.socketId
 			};
 			self.socket.emit('sendCurrentQueueState', sendData);
+		});
+
+		this.socket.on('updateChatMembers', function(newNum){
+			console.log(newNum);
+			self.numConnectedUsers = newNum;
 		});
 	}
 
