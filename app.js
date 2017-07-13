@@ -62,6 +62,8 @@ io.sockets.on('connection', function(client){
 				}
 			}
 		}
+
+		io.emit('updateChatMembers', allClients.length);
 	});
 
 	client.on('getCurrentQueueState', function(data){
@@ -79,6 +81,8 @@ io.sockets.on('connection', function(client){
 				}
 			}
 		}
+
+		io.emit('updateChatMembers', allClients.length);
 	});
 
 	client.on('sendCurrentQueueState', function(data){
@@ -150,7 +154,8 @@ io.sockets.on('connection', function(client){
 			});
 		});
 
-
+		var allClients = Object.keys(io.sockets.sockets);
+		io.emit('updateChatMembers', allClients.length);
 	});
 });
 
