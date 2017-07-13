@@ -13,6 +13,8 @@ var albumRoutes = require('./routes/albums');
 var trackRoutes = require('./routes/tracks');
 var jukeboxRoutes = require('./routes/jukebox');
 
+var UserLookupSchema = require('./models/userlookup');
+
 mongoose.connect('localhost:27017/beartracks');
 
 var app = express();
@@ -22,10 +24,18 @@ var io = require('socket.io')(server);
 //Listening port for socket.io. Server still accessed through 3000
 server.listen(4000);
 
+var usernames = [];
 io.sockets.on('connection', function(client){
 
 	//Client joins rooms
 	client.on('join', function(username){
+		console.log(client.id + ' connected');
+		var lookup = new UserLookupSchema({
+			username: username,
+			clientId: client.id
+		});
+		lookup.save({});
+
 		var botUsername = 'Jukebot';
 		var bodyText = username + ' has joined the chat'
 		var message = {
@@ -70,12 +80,9 @@ io.sockets.on('connection', function(client){
 	});
 
 	client.on('sendCurrentQueueState', function(data){
-		console.log('Got current queue state', data.elapsed);
 		var queue = data.queue;
 		var elapsed = data.elapsed; //Just to give it a bit of buffer
 		var socketId = data.socketId;
-
-		console.log(queue);
 
 		var data = {
 			queue: queue,
@@ -113,6 +120,35 @@ io.sockets.on('connection', function(client){
 	client.on('sendMessage', function(message){
 		message.dateTime = new Date();
 		io.emit('receiveMessage', message);
+	});
+
+	client.on('disconnect', function(){
+		console.log(client.id + ' disconnected');
+		UserLookupSchema.find({'clientId': client.id}, function(error, docs){
+			var botUsername = 'Jukebot';
+			var username = docs[0].username;
+			var bodyText = username + ' has left the chat'
+			var message = {
+				text: bodyText,
+				username: botUsername,
+				dateTime: new Date(),
+				system: true
+			};
+			io.emit('receiveMessage', message);
+
+			UserLookupSchema.remove({'clientId': client.id}, function(error){
+				if (error)
+				{
+					console.error(error);
+				}
+				else
+				{
+					console.log('byeeee');
+				}
+			});
+		});
+
+
 	});
 });
 
