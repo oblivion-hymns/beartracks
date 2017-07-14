@@ -67,10 +67,6 @@ function determineLengths(req, res)
 					promises.push(lengthAssignedPromise);
 					console.log(progressString + 'Writing length information to file ' + file);
 				}
-				else
-				{
-					console.log(progressString + 'Skipping file with length information.');
-				}
 
 				currentFileCount++;
 				percentFileCount++;
@@ -124,26 +120,19 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFil
 
 	var percentProgressString = '[' + percentProgress + '%] ';
 
-
-
-
+	lengthPromise = getDuration(filePath, readTags, cachePath, cache, encodedFilePath);
+	return lengthPromise;
 
 	//if (!readTags.length) @TODO
-	if (readTags.length)
+	/*if (readTags.length)
 	{
-		lengthPromise = getDuration(filePath, readTags, cachePath, cache, encodedFilePath);
-		return lengthPromise;
+
 	}
 	else
 	{
 		cache.files.push(encodedFilePath);
 		jsonFile.writeFileSync(cachePath, cache);
-	}
-
-
-
-
-
+	}*/
 }
 
 function getDuration(filePath, readTags, cachePath, cache, encodedFilePath)
