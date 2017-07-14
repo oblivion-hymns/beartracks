@@ -25,7 +25,7 @@
 		<md-list *ngIf="artists.length > 0">
 			<md-list-item class="item-line" *ngFor="let artist of artists" (click)="loadAlbums(artist)">
 				<div md-line>
-					<img src="{{artist.imagePath}}" />
+					<img src="{{artist.imagePath}}" style="display: inline-block; object-fit: cover;"/>
 					<span class="item-text">
 						{{artist.name}}
 					</span>
@@ -33,6 +33,7 @@
 			</md-list-item>
 		</md-list>
 	</div>
+
 
 	<!-- Albums -->
 	<div fxLayout="column" fxFlex="33%" style="padding: 16px;">
@@ -61,18 +62,22 @@
 		<!-- List -->
 		<md-list *ngIf="albums.length > 0">
 			<md-list-item class="item-line" *ngFor="let album of albums" (click)="loadTracks(album)">
-				<div md-line>
-					<img src="{{album.imagePath}}" />
-					<span class="item-text">
-						{{album.name}} ({{album.year}})
+				<span md-line class="item-text">
+					<img src="{{album.imagePath}}" style="display: inline-block; float: left; object-fit: cover;"/>
+					<span style="color: rgba(255, 255, 255, 0.36); float: right;">
+						{{album.year}}
 					</span>
-				</div>
-				<div md-line class="item-text">
-					{{album.artist.name}}
-				</div>
+					<em style="color: rgba(255, 255, 255, 0.87);">
+						{{album.name}}
+					</em><br />
+					<span style="color: rgba(255, 255, 255, 0.54);">
+						{{album.artist.name}}
+					</span>
+				</span>
 			</md-list-item>
 		</md-list>
 	</div>
+
 
 	<!-- Tracks -->
 	<div fxLayout="column" fxFlex="33%">
@@ -103,7 +108,7 @@
 			<md-list-item class="item-line" *ngFor="let track of tracks" (click)="playerService.player.playOne(track)">
 				<div md-line>
 					<span class="item-text">
-						{{track.track}}{{track.name}}
+						{{track.trackNum}} {{track.name}}
 					</span>
 				</div>
 				<div md-line class="item-text">

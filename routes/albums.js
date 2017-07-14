@@ -1,17 +1,44 @@
 var express = require('express');
 var Levenshtein = require('levenshtein');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var Artist = require('../models/artist');
 var Album = require('../models/album');
 
 var router = express.Router();
 router.get('/', baseRoute);
+router.get('/loadForArtist', loadForArtist);
 router.get('/all', loadAll);
 router.get('/find', find);
 
 function baseRoute(req, res)
 {
 	res.render('index');
+}
+
+function loadForArtist(req, res)
+{
+	var artistId = req.query.artistId;
+	if (!artistId)
+	{
+		return res.status(500).json({
+			message: 'An error occurred'
+		});
+	}
+
+	Album.find({'artist': new ObjectId(artistId)}).sort('-year').populate('artist').exec(function(error, albums){
+		if (error)
+		{
+			console.log(error);
+			return res.status(500).json({
+				message: 'An error occurred'
+			});
+		}
+
+		res.status(200).json({
+			albums: albums
+		});
+	});
 }
 
 function loadAll(req, res)
