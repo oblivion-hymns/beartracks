@@ -1,18 +1,29 @@
 <div fxLayout="row">
-	<div fxLayout="column" fxFlex="33%">
 
-		<!-- Loading artists -->
-		<div *ngIf="loadingArtists">
+	<!-- Artists -->
+	<div fxLayout="column" fxFlex="33%" style="padding: 16px;">
+		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Artists
+		</h3>
 
+		<!-- Loading -->
+		<div *ngIf="loadingArtists" style="text-align: center;">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 		</div>
 
-		<!-- No artists found -->
-		<div *ngIf="artists.length == 0">
-
+		<!-- None found -->
+		<div *ngIf="artists.length == 0" style="text-align: center;">
+			<md-icon class="error-icon">
+				error_outline
+			</md-icon><br />
+			<div class="error-text">
+				No artists found
+			</div>
 		</div>
 
+		<!-- List -->
 		<md-list *ngIf="artists.length > 0">
-			<md-list-item class="item-line" *ngFor="let artist of artists">
+			<md-list-item class="item-line" *ngFor="let artist of artists" (click)="loadAlbums(artist)">
 				<div md-line>
 					<img src="{{artist.imagePath}}" />
 					<span class="item-text">
@@ -22,11 +33,84 @@
 			</md-list-item>
 		</md-list>
 	</div>
-	<div fxLayout="column" fxFlex="33%" *ngIf="albums.length > 0">
 
+	<!-- Albums -->
+	<div fxLayout="column" fxFlex="33%" style="padding: 16px;">
+		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Albums
+		</h3>
+
+		<!-- Loading -->
+		<div *ngIf="loadingAlbums" style="text-align: center;">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		</div>
+
+		<!-- Display when there are no albums -->
+		<div *ngIf="albums.length == 0" style="text-align: center;">
+			<md-icon class="error-icon">
+				error_outline
+			</md-icon><br />
+			<div class="error-text" *ngIf="artistSelected">
+				No albums found
+			</div>
+			<div class="error-text" *ngIf="!artistSelected">
+				Choose an artist to see albums
+			</div>
+		</div>
+
+		<!-- List -->
+		<md-list *ngIf="albums.length > 0">
+			<md-list-item class="item-line" *ngFor="let album of albums" (click)="loadTracks(album)">
+				<div md-line>
+					<img src="{{album.imagePath}}" />
+					<span class="item-text">
+						{{album.name}} ({{album.year}})
+					</span>
+				</div>
+				<div md-line class="item-text">
+					{{album.artist.name}}
+				</div>
+			</md-list-item>
+		</md-list>
 	</div>
-	<div fxLayout="column" fxFlex="33%" *ngIf="tracks.length > 0">
 
+	<!-- Tracks -->
+	<div fxLayout="column" fxFlex="33%">
+		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Tracks
+		</h3>
+
+		<!-- Loading -->
+		<div *ngIf="loadingTracks" style="text-align: center;">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		</div>
+
+		<!-- Display when there are no tracks -->
+		<div *ngIf="tracks.length == 0" style="text-align: center;">
+			<md-icon class="error-icon">
+				error_outline
+			</md-icon><br />
+			<div class="error-text" *ngIf="albumSelected">
+				No tracks found
+			</div>
+			<div class="error-text" *ngIf="!albumSelected">
+				Choose an album to see tracks
+			</div>
+		</div>
+
+		<!-- List -->
+		<md-list *ngIf="tracks.length > 0">
+			<md-list-item class="item-line" *ngFor="let track of tracks" (click)="playerService.player.playOne(track)">
+				<div md-line>
+					<span class="item-text">
+						{{track.track}}{{track.name}}
+					</span>
+				</div>
+				<div md-line class="item-text">
+					{{track.genre}} ({{track.lengthFormatted}})
+				</div>
+			</md-list-item>
+		</md-list>
 	</div>
 </div>
 
