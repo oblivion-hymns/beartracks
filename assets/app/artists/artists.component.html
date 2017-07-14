@@ -78,9 +78,8 @@
 		</md-list>
 	</div>
 
-
 	<!-- Tracks -->
-	<div fxLayout="column" fxFlex="33%">
+	<div fxLayout="column" fxFlex="33%" style="padding: 16px;">
 		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
 			Tracks
 		</h3>
@@ -106,13 +105,23 @@
 		<!-- List -->
 		<md-list *ngIf="tracks.length > 0">
 			<md-list-item class="item-line" *ngFor="let track of tracks" (click)="playerService.player.playOne(track)">
-				<div md-line>
-					<span class="item-text" style="color: rgba(255, 255, 255, 0.87)">
-						<md-icon>album</md-icon> {{track.discNum}} <md-icon>audiotrack</md-icon> {{track.trackNum}}. {{track.name}}
+				<div md-line class="item-text">
+					<img src="{{track.album.imagePath}}" style="display: inline-block; float: left; object-fit: cover;"/>
+
+					<span style="color: rgba(255, 255, 255, 0.36); float: right;">
+						{{track.lengthFormatted}}
 					</span>
-				</div>
-				<div md-line class="item-text" style="color: rgba(255, 255, 255, 0.54);">
-					{{track.genre}} ({{track.lengthFormatted}})
+
+					<span style="float: left;">
+						<span style="color: rgba(255, 255, 255, 0.87); white-space: nowrap;">
+							{{track.trackNum}}. {{track.name}}
+						</span><br />
+						<span style="color: rgba(255, 255, 255, 0.54);">
+							Disc {{track.discNum}}
+						</span>
+					</span>
+
+					<span style="height: 64px;"></span>
 				</div>
 			</md-list-item>
 		</md-list>

@@ -11,48 +11,7 @@ import { TrackService } from './../tracks/track.service';
 @Component({
 	providers: [ArtistService, AlbumService, TrackService],
 	selector: 'bt-artists',
-	styles: [`
-		.item-line
-		{
-			padding: 5px;
-			overflow: hidden;
-		}
-
-		.item-line:hover
-		{
-			background-color: rgba(40, 40, 40, 0.87);
-			cursor: pointer;
-		}
-
-		.item-line img
-		{
-			float: left;
-			height: 48px;
-			margin-right: 10px;
-			width: 48px;
-		}
-
-		.item-line .item-text
-		{
-			display: block;
-			line-height: 24px;
-			margin-top: 0;
-			white-space: normal;
-		}
-
-		.item-line .item-text-single
-		{
-			display: block;
-			line-height: 24px;
-			text-overflow: ellipsis;
-			overflow-x: hidden;
-		}
-
-		.item-line .item-text-single.item-text-description
-		{
-			color: rgba(255, 255, 255, 0.34);
-		}
-	`],
+	styleUrls: ['./artists.component.css'],
 	templateUrl: './artists.component.html'
 })
 export class ArtistsComponent implements OnInit {
@@ -83,6 +42,8 @@ export class ArtistsComponent implements OnInit {
 	 */
 	loadAlbums(artist: Artist)
 	{
+		this.albums = [];
+		this.tracks = [];
 		this.loadingAlbums = true;
 		this.albumService.loadForArtist(artist).subscribe((albums: Album[]) => {
 			this.albums = albums;
@@ -95,6 +56,7 @@ export class ArtistsComponent implements OnInit {
 	 */
 	loadTracks(album: Album)
 	{
+		this.tracks = [];
 		this.loadingTracks = true;
 		this.trackService.loadForAlbum(album._id).subscribe((tracks: Track[]) => {
 			this.tracks = tracks;
