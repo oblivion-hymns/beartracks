@@ -107,11 +107,11 @@
 		<md-list *ngIf="tracks.length > 0">
 			<md-list-item class="item-line" *ngFor="let track of tracks" (click)="playerService.player.playOne(track)">
 				<div md-line>
-					<span class="item-text">
-						{{track.trackNum}} {{track.name}}
+					<span class="item-text" style="color: rgba(255, 255, 255, 0.87)">
+						<md-icon>album</md-icon> {{track.discNum}} <md-icon>audiotrack</md-icon> {{track.trackNum}}. {{track.name}}
 					</span>
 				</div>
-				<div md-line class="item-text">
+				<div md-line class="item-text" style="color: rgba(255, 255, 255, 0.54);">
 					{{track.genre}} ({{track.lengthFormatted}})
 				</div>
 			</md-list-item>

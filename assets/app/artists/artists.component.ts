@@ -95,6 +95,10 @@ export class ArtistsComponent implements OnInit {
 	 */
 	loadTracks(album: Album)
 	{
-
+		this.loadingTracks = true;
+		this.trackService.loadForAlbum(album._id).subscribe((tracks: Track[]) => {
+			this.tracks = tracks;
+			this.loadingTracks = false;
+		});
 	}
 }
