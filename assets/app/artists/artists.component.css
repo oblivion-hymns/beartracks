@@ -38,3 +38,26 @@
 {
 	color: rgba(255, 255, 255, 0.34);
 }
+
+
+
+.item-track
+{
+	color: rgba(255, 255, 255, 0.87);
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	width: 80%;
+	white-space: nowrap;
+}
+
+.item-track-title
+{
+	color: rgba(255, 255, 255, 0.87);
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.item-track-summary
+{
+	color: rgba(255, 255, 255, 0.54);
+}
