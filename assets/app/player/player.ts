@@ -10,6 +10,7 @@ export class Player implements OnInit
 	private interval;
 	public isPlaying: boolean;
 	public volume: number = 0.5;
+	public oldVolume: number = 0.5;
 
 	public elapsedInterval;
 	public elapsed = '0:00';
@@ -29,19 +30,33 @@ export class Player implements OnInit
 
 	setVolume(value)
 	{
-		this.volume = value/100;
+		this.volume = value;
 		this.audio.volume = this.volume;
+	}
+
+	mute()
+	{
+		this.oldVolume = this.volume;
+		console.log(this.oldVolume);
+		this.setVolume(0);
+	}
+
+	unmute()
+	{
+		console.log(this.oldVolume);
+		this.setVolume(this.oldVolume);
 	}
 
 	enqueueOne(track)
 	{
-		if (this.queue.length == 0)
+		if (!this.currentTrack)
 		{
 			this.playOne(track);
 		}
-
-		this.queue.push(track);
-		this.openQueue();
+		else
+		{
+			this.queue.push(track)
+		}
 	}
 
 	enqueueMany(tracks)

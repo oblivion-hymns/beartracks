@@ -15,14 +15,17 @@ import { TrackService } from './../tracks/track.service';
 	templateUrl: './artists.component.html'
 })
 export class ArtistsComponent implements OnInit {
+	album: Album[] = [];
+	albumSelected: boolean = false;
+	albums: Album[] = [];
+	artist: Artist[] = [];
+	artistSelected: boolean = false;
 	artists: Artist[] = [];
 	displayArtists: Artist[] = [];
-	albums: Album[] = [];
 	tracks: Track[] = [];
-	artistSelected: boolean = false;
-	albumSelected: boolean = false;
-	loadingArtists: boolean = true;
+
 	loadingAlbums: boolean = false;
+	loadingArtists: boolean = true;
 	loadingTracks: boolean = false;
 
 	constructor(private playerService: PlayerService,
@@ -44,6 +47,7 @@ export class ArtistsComponent implements OnInit {
 	 */
 	loadAlbums(artist: Artist)
 	{
+		this.artist = artist;
 		this.albums = [];
 		this.tracks = [];
 		this.loadingAlbums = true;
@@ -58,6 +62,7 @@ export class ArtistsComponent implements OnInit {
 	 */
 	loadTracks(album: Album)
 	{
+		this.album = album;
 		this.tracks = [];
 		this.loadingTracks = true;
 		this.trackService.loadForAlbum(album._id).subscribe((tracks: Track[]) => {

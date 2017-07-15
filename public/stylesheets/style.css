@@ -107,3 +107,11 @@ md-icon.error-icon
 	max-width: 100%;
 	width: 100%;
 }
+
+.tiny-icon
+{
+	font-size: 18px !important;
+	height: 18px !important;
+	line-height: 18px !important;
+	width: 18px !important;
+}

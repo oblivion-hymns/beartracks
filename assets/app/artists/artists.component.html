@@ -101,6 +101,17 @@
 	<div class="item-column">
 		<h3 class="item-column-header">
 			Tracks
+			<span *ngIf="tracks.length > 0">
+				<button md-icon-button
+					class="tiny-icon"
+					mdTooltip="Play album"
+					mdTooltipPosition="below"
+					(click)="playerService.enqueueAlbum(album)">
+					<md-icon class="tiny-icon">
+						play_arrow
+					</md-icon>
+				</button>
+			</span>
 		</h3>
 
 		<!-- Loading -->
@@ -123,11 +134,31 @@
 
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="tracks.length > 0">
-			<md-list-item class="item-line" *ngFor="let track of tracks" (click)="playerService.player.playOne(track)">
+			<md-list-item class="item-line" *ngFor="let track of tracks">
 				<div md-line class="item-text">
-					<img class="item-text" src="{{track.album.imagePath}}" />
-					<span class="item-subtitle">
-						{{track.lengthFormatted}}
+					<img src="{{track.album.imagePath}}" />
+					<span class="item-subtitle" style="float: right; text-align: right;">
+						{{track.lengthFormatted}}<br/>
+
+						<button md-icon-button
+							class="tiny-icon"
+							mdTooltip="Play"
+							mdTooltipPosition="below"
+							(click)="playerService.player.playOne(track)">
+							<md-icon class="tiny-icon">
+								play_arrow
+							</md-icon>
+						</button>
+
+						<button md-icon-button
+							class="tiny-icon"
+							mdTooltip="Queue"
+							mdTooltipPosition="below"
+							(click)="playerService.player.enqueueOne(track)">
+							<md-icon class="tiny-icon">
+								queue
+							</md-icon>
+						</button>
 					</span>
 
 					<span class="item-track" style="float: left;">
