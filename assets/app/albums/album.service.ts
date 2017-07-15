@@ -69,6 +69,32 @@ export class AlbumService
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
+	loadRecent()
+	{
+		return this.http.get('http://bwilbur.com/albums/recent')
+			.map((response: Response) => {
+				const data = response.json().albums;
+
+				let albums: Album[] = [];
+				for (let albumData of data)
+				{
+					var _id = albumData._id;
+					var name = albumData.name;
+					var nameKey = albumData.nameKey;
+					var year = albumData.year;
+					var artist = albumData.artist;
+					var imagePath = albumData.imagePath;
+					imagePath = encodeURI(imagePath);
+
+					var album = new Album(_id, name, nameKey, year, artist, imagePath);
+					albums.push(album);
+				}
+				this.albums = albums;
+				return albums;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	loadAll()
 	{
 		return this.http.get('http://bwilbur.com/albums/all')

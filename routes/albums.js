@@ -8,6 +8,7 @@ var Album = require('../models/album');
 var router = express.Router();
 router.get('/', baseRoute);
 router.get('/loadForArtist', loadForArtist);
+router.get('/recent', loadRecent);
 router.get('/all', loadAll);
 router.get('/find', find);
 
@@ -27,6 +28,23 @@ function loadForArtist(req, res)
 	}
 
 	Album.find({'artist': new ObjectId(artistId)}).sort('-year').populate('artist').exec(function(error, albums){
+		if (error)
+		{
+			console.log(error);
+			return res.status(500).json({
+				message: 'An error occurred'
+			});
+		}
+
+		res.status(200).json({
+			albums: albums
+		});
+	});
+}
+
+function loadRecent(req, res)
+{
+	Album.find({}).sort({_id: -1}).limit(50).populate('artist').exec(function(error, albums){
 		if (error)
 		{
 			console.log(error);
