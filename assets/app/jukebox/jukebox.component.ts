@@ -29,7 +29,6 @@ export class JukeboxComponent implements AfterViewChecked
 	@ViewChild('chat') input;
 	username: string = 'User ' + (Math.floor(Math.random() * (1000000 - 0) + 0));
 
-
 	constructor(private jukeboxService: JukeboxService,
 		private artistService: ArtistService,
 		private albumService: AlbumService,

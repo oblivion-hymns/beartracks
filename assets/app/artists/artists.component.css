@@ -1,7 +1,7 @@
 .item-line
 {
-	padding: 5px;
 	overflow: hidden;
+	padding: 5px;
 }
 
 .item-line:hover
@@ -30,8 +30,8 @@
 {
 	display: block;
 	line-height: 24px;
-	text-overflow: ellipsis;
 	overflow-x: hidden;
+	text-overflow: ellipsis;
 }
 
 .item-line .item-text-single.item-text-description
@@ -41,13 +41,42 @@
 
 
 
+.item-column
+{
+	 padding: 16px;
+	 width: 33%;
+}
+
+.item-column-header
+{
+	color: rgba(255, 255, 255, 0.54);
+	text-transform: lowercase;
+}
+
+.item-column-body
+{
+	height: 100%;
+	max-height: 100%;
+	overflow-y: auto;
+}
+
+.item-column-body-image
+{
+	display: inline-block;
+	float: left;
+	object-fit: cover;
+}
+
+
+
+
 .item-track
 {
 	color: rgba(255, 255, 255, 0.87);
 	overflow-x: hidden;
 	text-overflow: ellipsis;
-	width: 80%;
 	white-space: nowrap;
+	width: 80%;
 }
 
 .item-track-title
@@ -55,6 +84,12 @@
 	color: rgba(255, 255, 255, 0.87);
 	display: inline-block;
 	white-space: nowrap;
+}
+
+.item-track-subtitle
+{
+	color: rgba(255, 255, 255, 0.36);
+	float: right;
 }
 
 .item-track-summary
