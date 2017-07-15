@@ -129,6 +129,8 @@ export class JukeboxComponent implements AfterViewChecked
 	 */
 	surpriseMe()
 	{
-
+		this.trackService.loadRandom().subscribe((track: Track[]) => {
+			this.enqueue(track);
+		});
 	}
 }
