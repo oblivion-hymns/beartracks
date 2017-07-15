@@ -6,6 +6,24 @@
 			Artists
 		</h3>
 
+		<div>
+			<button md-icon-button
+				style="position: absolute;">
+				<md-icon>search</md-icon>
+			</button>
+			<md-input-container
+				class="filter-box-top"
+				style="width: 100%; font-size: 24px;">
+				<input mdInput
+					maxlength="32"
+					type="text"
+					style="padding-left: 32px;"
+					[(ngModel)]="filterString"
+					autofocus/>
+			</md-input-container>
+		</div>
+
+
 		<!-- Loading -->
 		<div *ngIf="loadingArtists" style="text-align: center;">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
