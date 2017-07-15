@@ -70,27 +70,31 @@
 
 					<md-icon
 						class="player-control player-play"
-						*ngIf="playerService.player.volume >= 0.8">
+						*ngIf="playerService.player.volume >= 0.8"
+						(click)="playerService.player.mute()">
 						volume_up
 					</md-icon>
 					<md-icon
 						class="player-control player-play"
-						*ngIf="playerService.player.volume >= 0.4 && playerService.player.volume < 0.8">
+						*ngIf="playerService.player.volume >= 0.4 && playerService.player.volume < 0.8"
+						(click)="playerService.player.mute()">
 						volume_down
 					</md-icon>
 					<md-icon
 						class="player-control player-play"
-						*ngIf="playerService.player.volume > 0 && playerService.player.volume < 0.4">
+						*ngIf="playerService.player.volume > 0 && playerService.player.volume < 0.4"
+						(click)="playerService.player.mute()">
 						volume_mute
 					</md-icon>
 					<md-icon
 						class="player-control player-play"
-						*ngIf="playerService.player.volume == 0">
+						*ngIf="playerService.player.volume == 0"
+						(click)="playerService.player.unmute()">
 						volume_off
 					</md-icon>
 
 					<!-- Volume -->
-					<md-slider min="0" max="100" step="1" value="50" [(ngModel)]="volume" ></md-slider>
+					<md-slider min="0.0" max="1.0" step="0.05" value="0.5" [(ngModel)]="volume" ></md-slider>
 				</div>
 
 				<div style="float: right;">
@@ -114,7 +118,15 @@
 		</div>
 	</div>
 
+	<div style="float: right; margin-right: 6px;">
+		<button md-icon-button
+			(click)="surpriseMe()">
+			<md-icon>casino</md-icon>
+		</button>
+	</div>
+
 	<div class="queue-list" *ngIf="playerService.player.queue.length">
+
 		<div
 			class="queue-item"
 			*ngFor="let track of playerService.player.queue; let i = index"

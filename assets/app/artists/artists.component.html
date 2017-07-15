@@ -1,20 +1,35 @@
-<md-input-container id="FilterArtists" class="filter-box-top">
-	<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
-</md-input-container>
+<div fxLayout="row" style="height: calc(100% - 64px); box-sizing: border-box;">
 
-<md-grid-list cols="8" *ngIf="displayArtists.length > 0" style="position: relative; top: -2em;">
-	<md-grid-tile *ngFor="let artist of displayArtists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
-		<md-grid-tile-footer>
-			<strong class="tile-name">
-				{{artist.name}}
-			</strong>
-		</md-grid-tile-footer>
-	</md-grid-tile>
-</md-grid-list>
+	<!-- Artists -->
+	<div class="item-column" style="padding-top: 0px;">
+		<h3 class="item-column-header">
+			Artists
+		</h3>
 
-<div fxLayout='row' *ngIf="displayArtists.length == 0">
-	<div fxFlex="70%" fxFlexOffset="15%" style="text-align: center;">
-		<div *ngIf="filterQuery.length >= 3">
+		<div>
+			<button md-icon-button
+				style="position: absolute;">
+				<md-icon>search</md-icon>
+			</button>
+			<md-input-container
+				class="filter-box-top"
+				style="width: 100%; font-size: 24px; padding: 0px;">
+				<input mdInput
+					maxlength="32"
+					type="text"
+					style="padding-left: 32px;"
+					[(ngModel)]="filterString"
+					autofocus/>
+			</md-input-container>
+		</div>
+
+		<!-- Loading -->
+		<div *ngIf="loadingArtists" style="text-align: center;">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		</div>
+
+		<!-- None found -->
+		<div *ngIf="artists.length == 0" style="text-align: center;">
 			<md-icon class="error-icon">
 				error_outline
 			</md-icon><br />
@@ -23,17 +38,151 @@
 			</div>
 		</div>
 
-		<div *ngIf="filterQuery.length < 3">
+		<!-- List -->
+		<md-list class="item-column-body" *ngIf="artists.length > 0" style="padding-top: 0px;">
+			<md-list-item class="item-line" *ngFor="let artist of displayArtists" (click)="loadAlbums(artist)">
+				<div md-line>
+					<img src="{{artist.imagePath}}" style="display: inline-block; object-fit: cover;"/>
+					<span class="item-text">
+						{{artist.name}}
+					</span>
+				</div>
+			</md-list-item>
+		</md-list>
+	</div>
+
+	<!-- Albums -->
+	<div class="item-column">
+		<h3 class="item-column-header">
+			Albums
+		</h3>
+
+		<!-- Loading -->
+		<div *ngIf="loadingAlbums" style="text-align: center;">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		</div>
+
+		<!-- Display when there are no albums -->
+		<div *ngIf="albums.length == 0" style="text-align: center;">
 			<md-icon class="error-icon">
-				search
+				error_outline
 			</md-icon><br />
-			<div class="error-text">
-				Type in the box to find artists
+			<div class="error-text" *ngIf="artistSelected">
+				No albums found
+			</div>
+			<div class="error-text" *ngIf="!artistSelected">
+				Choose an artist to see albums
 			</div>
 		</div>
 
-		<div class="error-hint-text">
-			Type an asterisk (*) to see all
+		<!-- List -->
+		<md-list class="item-column-body" *ngIf="albums.length > 0">
+			<md-list-item class="item-line" *ngFor="let album of albums" (click)="loadTracks(album)">
+				<span md-line class="item-text">
+					<img src="{{album.imagePath}}" class="item-text"/>
+					<span class="item-track-subtitle">
+						{{album.year}}
+					</span>
+
+					<span class="item-track" style="float: left">
+						<em class="item-track-title">
+							{{album.name}}
+						</em><br />
+						<span class="item-track-summary">
+							{{album.artist.name}}
+						</span>
+					</span>
+				</span>
+			</md-list-item>
+		</md-list>
+	</div>
+
+	<!-- Tracks -->
+	<div class="item-column">
+		<h3 class="item-column-header">
+			Tracks
+			<span *ngIf="tracks.length > 0">
+				<button md-icon-button
+					class="tiny-icon"
+					mdTooltip="Play album"
+					mdTooltipPosition="below"
+					(click)="playerService.enqueueAlbum(album)">
+					<md-icon class="tiny-icon">
+						play_arrow
+					</md-icon>
+				</button>
+			</span>
+		</h3>
+
+		<!-- Loading -->
+		<div *ngIf="loadingTracks" style="text-align: center;">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 		</div>
+
+		<!-- Display when there are no tracks -->
+		<div *ngIf="tracks.length == 0" style="text-align: center;">
+			<md-icon class="error-icon">
+				error_outline
+			</md-icon><br />
+			<div class="error-text" *ngIf="albumSelected">
+				No tracks found
+			</div>
+			<div class="error-text" *ngIf="!albumSelected">
+				Choose an album to see tracks
+			</div>
+		</div>
+
+		<!-- List -->
+		<md-list class="item-column-body" *ngIf="tracks.length > 0">
+			<md-list-item class="item-line" *ngFor="let track of tracks">
+				<div md-line class="item-text">
+					<img src="{{track.album.imagePath}}" />
+					<span class="item-subtitle" style="float: right; text-align: right;">
+						{{track.lengthFormatted}}<br/>
+
+						<button md-icon-button
+							class="tiny-icon"
+							mdTooltip="Play"
+							mdTooltipPosition="below"
+							(click)="playerService.player.playOne(track)">
+							<md-icon class="tiny-icon">
+								play_arrow
+							</md-icon>
+						</button>
+
+						<button md-icon-button
+							class="tiny-icon"
+							mdTooltip="Queue"
+							mdTooltipPosition="below"
+							(click)="playerService.player.enqueueOne(track)">
+							<md-icon class="tiny-icon">
+								queue
+							</md-icon>
+						</button>
+					</span>
+
+					<span class="item-track" style="float: left;">
+						<span class="item-track-title">
+							{{track.trackNum}}. {{track.name}}
+						</span><br />
+						<span class="item-track-summary">
+							Disc {{track.discNum}}
+						</span>
+					</span>
+				</div>
+			</md-list-item>
+		</md-list>
 	</div>
 </div>
+
+
+
+<!-- <md-grid-list cols="4" rowHeight="256" *ngIf="artists.length > 0">
+	<md-grid-tile *ngFor="let artist of artists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
+		<md-grid-tile-footer>
+			<strong class="tile-name">
+				{{artist.name}}
+			</strong>
+		</md-grid-tile-footer>
+	</md-grid-tile>
+</md-grid-list> -->

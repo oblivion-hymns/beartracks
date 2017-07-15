@@ -1,4 +1,10 @@
 <div id="JukeboxSearch">
+	<button md-icon-button
+		(click)="surpriseMe()"
+		style="position: absolute; right: 50%; z-index: 2; cursor: pointer; top: 67px;">
+		<md-icon>casino</md-icon>
+	</button>
+
 	<md-input-container class="filter-box-top">
 		<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
 	</md-input-container>

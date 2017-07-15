@@ -131,6 +131,11 @@ io.sockets.on('connection', function(client){
 	client.on('disconnect', function(){
 		console.log(client.id + ' disconnected');
 		UserLookupSchema.find({'clientId': client.id}, function(error, docs){
+			if (error)
+			{
+				console.error(error);
+			}
+
 			if (docs.length > 0)
 			{
 				var botUsername = 'Jukebot';

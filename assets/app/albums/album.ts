@@ -1,7 +1,7 @@
 import { Artist } from '../artists/artist';
 
 export class Album {
-	constructor(public _id,
+	constructor(public _id: string,
 				public name: string,
 				public nameKey: string,
 				public year: string,

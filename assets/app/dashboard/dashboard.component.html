@@ -1,11 +1,34 @@
 <div fxLayout='row'>
-	<div fxFlex="50" fxFlexOffset="25">
-		<h1>Beartracks</h1>
-		<p>
-			For now, click the tabs above to browse.
-		</p>
-		<p>
-			(Nothing actually works though.)
-		</p>
+	<div fxFlex="30%">
+
+	</div>
+	<div fxFlex="40%">
+		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Recently Added
+		</h3>
+
+		<div *ngIf="albumsLoading">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		</div>
+
+		<md-list *ngIf="!albumsLoading">
+			<md-list-item
+				class="item-line"
+				*ngFor="let album of albums"
+				(click)="playerService.enqueueAlbum(album)">
+				<div md-line style="padding: 0px;">
+					<img src="{{album.imagePath}}"/>
+					<span class="item-text-single">
+						{{album.name}}
+					</span>
+					<span class="item-text-single item-text-description">
+						{{album.artist.name}}, {{album.year}}
+					</span>
+				</div>
+			</md-list-item>
+		</md-list>
+	</div>
+	<div fxFlex="30%" fxFlexOffset="10%">
+
 	</div>
 </div>

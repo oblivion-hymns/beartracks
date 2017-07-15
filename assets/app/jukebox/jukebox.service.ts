@@ -88,7 +88,6 @@ export class JukeboxService {
 		});
 
 		this.socket.on('updateChatMembers', function(newNum){
-			console.log(newNum);
 			self.numConnectedUsers = newNum;
 		});
 	}
@@ -128,11 +127,6 @@ export class JukeboxService {
 				if (self.bufferTimer > 2)
 				{
 					self.socket.emit('getCurrentQueueState');
-					console.log('Took too long to load audio. Trying again.');
-				}
-				else
-				{
-					console.log('Good to go!');
 				}
 
 				self.bufferTimer = Math.floor(Date.now() / 1000);

@@ -5,7 +5,15 @@ body, html {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	overflow: hidden;
 	width: 100%;
+}
+
+#Container
+{
+	height: calc(100% - 64px);
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 ::-webkit-scrollbar
@@ -20,7 +28,7 @@ body, html {
 
 ::-webkit-scrollbar-thumb {
 	border-radius: 5px;
-	background-color: rgba(0, 0, 0, 0.36);
+	background-color: rgba(255, 255, 255, 0.36);
 }
 
 .mat-input-ripple {
@@ -98,4 +106,12 @@ md-icon.error-icon
 	white-space: nowrap;
 	max-width: 100%;
 	width: 100%;
+}
+
+.tiny-icon
+{
+	font-size: 18px !important;
+	height: 18px !important;
+	line-height: 18px !important;
+	width: 18px !important;
 }

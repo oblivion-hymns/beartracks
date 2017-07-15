@@ -41,6 +41,28 @@ export class TrackService
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
+	/**
+	 * Loads and returns a random track
+	 */
+	loadRandom()
+	{
+		return this.http.get('http://bwilbur.com/tracks/random')
+			.map((response: Response) => {
+				const trackData = response.json().track;
+				var name = trackData.name;
+				var nameKey = trackData.nameKey;
+				var album = trackData.album;
+				var discNum = trackData.discNum;
+				var trackNum = trackData.trackNum;
+				var genre = trackData.genre;
+				var length = trackData.length;
+				var filePath = trackData.filePath;
+				var track = new Track(name, nameKey, album, discNum, trackNum, genre, length, filePath);
+				return track;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	loadForAlbum(albumId)
 	{
 		const body = JSON.stringify({albumId: albumId});

@@ -23,7 +23,7 @@ export class ArtistService {
 				let artists: Artist[] = [];
 				for (let artistData of data)
 				{
-					var artist = new Artist(artistData.name, artistData.nameKey, artistData.imagePath);
+					var artist = new Artist(artistData._id, artistData.name, artistData.nameKey, artistData.imagePath);
 					artists.push(artist);
 				}
 				this.artists = artists;
@@ -41,7 +41,7 @@ export class ArtistService {
 				let artists: Artist[] = [];
 				for (let artistData of data)
 				{
-					var artist = new Artist(artistData.name, artistData.nameKey, artistData.imagePath);
+					var artist = new Artist(artistData._id, artistData.name, artistData.nameKey, artistData.imagePath);
 					artists.push(artist);
 				}
 				this.artists = artists;

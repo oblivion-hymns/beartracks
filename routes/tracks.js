@@ -9,6 +9,7 @@ var Track = require('../models/track');
 
 var router = express.Router();
 router.get('/', baseRoute);
+router.get('/random', loadRandom);
 router.get('/all', loadAll);
 router.get('/find', find);
 router.post('/album', loadAlbum);
@@ -16,6 +17,37 @@ router.post('/album', loadAlbum);
 function baseRoute(req, res)
 {
 	res.render('index');
+}
+
+function loadRandom(req, res)
+{
+	Track.count().exec(function(error, count){
+		var random = Math.floor(Math.random() * count);
+
+		Track.findOne()
+			.skip(random)
+			.populate('album')
+			.populate({
+				path: 'album',
+				populate: {
+					path: 'artist',
+					model: 'Artist'
+				}
+			})
+			.exec(function(error, track){
+				if (error)
+				{
+					console.log(error);
+					return res.status(500).json({
+						message: 'An error occurred'
+					});
+				}
+
+				res.status(200).json({
+					track: track
+				});
+		});
+	});
 }
 
 /**

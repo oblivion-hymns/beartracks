@@ -7,11 +7,11 @@
 		<h3>Search</h3>
 	</button>
 	<button md-button [routerLink]="['/artists']" routerLinkActive="active">
-		<h3>Artists</h3>
+		<h3>Browse</h3>
 	</button>
-	<button md-button [routerLink]="['/albums']" routerLinkActive="active">
+	<!-- <button md-button [routerLink]="['/albums']" routerLinkActive="active">
 		<h3>Albums</h3>
-	</button>
+	</button> -->
 	<button md-button [routerLink]="['/radio']" routerLinkActive="active">
 		<h3>Radio</h3>
 	</button>
@@ -23,6 +23,8 @@
 	</button>
 </md-toolbar>
 
-<router-outlet></router-outlet>
+<div id="Container">
+	<router-outlet></router-outlet>
+</div>
 
 <bt-player></bt-player>
