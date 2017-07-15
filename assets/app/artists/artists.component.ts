@@ -73,7 +73,7 @@ export class ArtistsComponent implements OnInit {
 		value = value.trim().toLowerCase().replace(/\W/g, '');
 		if (value.length > 0)
 		{
-			this.displayArtists = this.artists.filter(artist => artist.name.includes(value));
+			this.displayArtists = this.artists.filter(artist => artist.nameKey.includes(value));
 		}
 	}
 }

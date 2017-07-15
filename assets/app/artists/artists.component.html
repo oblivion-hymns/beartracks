@@ -1,7 +1,7 @@
 <div fxLayout="row" style="height: calc(100% - 64px); box-sizing: border-box;">
 
 	<!-- Artists -->
-	<div class="item-column">
+	<div class="item-column" style="padding-top: 0px;">
 		<h3 class="item-column-header">
 			Artists
 		</h3>
@@ -39,7 +39,7 @@
 		</div>
 
 		<!-- List -->
-		<md-list class="item-column-body" *ngIf="artists.length > 0">
+		<md-list class="item-column-body" *ngIf="artists.length > 0" style="padding-top: 0px;">
 			<md-list-item class="item-line" *ngFor="let artist of displayArtists" (click)="loadAlbums(artist)">
 				<div md-line>
 					<img src="{{artist.imagePath}}" style="display: inline-block; object-fit: cover;"/>
