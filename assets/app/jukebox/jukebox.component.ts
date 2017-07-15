@@ -123,4 +123,12 @@ export class JukeboxComponent implements AfterViewChecked
 		this.jukeboxService.postMessage(message);
 		this.message = '';
 	}
+
+	/**
+	 *
+	 */
+	surpriseMe()
+	{
+
+	}
 }
