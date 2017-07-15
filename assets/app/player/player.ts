@@ -37,13 +37,11 @@ export class Player implements OnInit
 	mute()
 	{
 		this.oldVolume = this.volume;
-		console.log(this.oldVolume);
 		this.setVolume(0);
 	}
 
 	unmute()
 	{
-		console.log(this.oldVolume);
 		this.setVolume(this.oldVolume);
 	}
 

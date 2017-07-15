@@ -136,8 +136,6 @@ io.sockets.on('connection', function(client){
 				console.error(error);
 			}
 
-			console.log(docs);
-
 			if (docs.length > 0)
 			{
 				var botUsername = 'Jukebot';
