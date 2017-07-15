@@ -114,7 +114,15 @@
 		</div>
 	</div>
 
+	<div style="float: right; margin-right: 6px;">
+		<button md-icon-button
+			(click)="surpriseMe()">
+			<md-icon>casino</md-icon>
+		</button>
+	</div>
+
 	<div class="queue-list" *ngIf="playerService.player.queue.length">
+
 		<div
 			class="queue-item"
 			*ngFor="let track of playerService.player.queue; let i = index"

@@ -35,6 +35,11 @@ export class Player implements OnInit
 
 	enqueueOne(track)
 	{
+		if (this.queue.length == 0)
+		{
+			this.playOne(track);
+		}
+
 		this.queue.push(track);
 		this.openQueue();
 	}
