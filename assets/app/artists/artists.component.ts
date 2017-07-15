@@ -16,6 +16,7 @@ import { TrackService } from './../tracks/track.service';
 })
 export class ArtistsComponent implements OnInit {
 	artists: Artist[] = [];
+	displayArtists: Artist[] = [];
 	albums: Album[] = [];
 	tracks: Track[] = [];
 	artistSelected: boolean = false;
@@ -33,6 +34,7 @@ export class ArtistsComponent implements OnInit {
 	{
 		this.artistService.loadAll().subscribe((artists: Artist[]) => {
 			this.artists = artists;
+			this.displayArtists = artists.slice();
 			this.loadingArtists = false;
 		});
 	}
@@ -62,5 +64,16 @@ export class ArtistsComponent implements OnInit {
 			this.tracks = tracks;
 			this.loadingTracks = false;
 		});
+	}
+
+	set filterString(value)
+	{
+		this.displayArtists = this.artists.slice();
+
+		value = value.trim().toLowerCase().replace(/\W/g, '');
+		if (value.length > 0)
+		{
+			this.displayArtists = this.artists.filter(artist => artist.name.includes(value));
+		}
 	}
 }

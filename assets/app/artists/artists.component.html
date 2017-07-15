@@ -13,7 +13,7 @@
 			</button>
 			<md-input-container
 				class="filter-box-top"
-				style="width: 100%; font-size: 24px;">
+				style="width: 100%; font-size: 24px; padding: 0px;">
 				<input mdInput
 					maxlength="32"
 					type="text"
@@ -22,7 +22,6 @@
 					autofocus/>
 			</md-input-container>
 		</div>
-
 
 		<!-- Loading -->
 		<div *ngIf="loadingArtists" style="text-align: center;">
@@ -41,7 +40,7 @@
 
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="artists.length > 0">
-			<md-list-item class="item-line" *ngFor="let artist of artists" (click)="loadAlbums(artist)">
+			<md-list-item class="item-line" *ngFor="let artist of displayArtists" (click)="loadAlbums(artist)">
 				<div md-line>
 					<img src="{{artist.imagePath}}" style="display: inline-block; object-fit: cover;"/>
 					<span class="item-text">
