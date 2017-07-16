@@ -9,7 +9,7 @@ import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
 
 const APP_ROUTES: Routes = [
-	{ path: '', redirectTo: '/search', pathMatch: 'full' },
+	{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'search', component: SearchComponent },
 	{ path: 'artists', component: ArtistsComponent },

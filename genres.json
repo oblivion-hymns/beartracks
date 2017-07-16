@@ -11,11 +11,11 @@
 		},
 		{
 			"name": "Alternative",
-			"related": ["Alterative", "Alternative Rock"]
+			"related": ["Alterative", "Alternative Rock", "Spoken Word"]
 		},
 		{
 			"name": "Ambient",
-			"related": []
+			"related": ["Ambient", "Chillwave", "Dream Pop", "Modern Classical", "Neo-classical", "New Age", "Shoegaze"]
 		},
 		{
 			"name": "Anti-folk",
@@ -23,7 +23,7 @@
 		},
 		{
 			"name": "Art Rock",
-			"related": []
+			"related": ["Art Rock", "Experimental", "New Age", "Progressive Metal", "Progressive Rock"]
 		},
 		{
 			"name": "Avant-garde",
@@ -31,7 +31,7 @@
 		},
 		{
 			"name": "Black Metal",
-			"related": ["Black Metal"]
+			"related": ["Black Metal", "Metal", "Metalcore"]
 		},
 		{
 			"name": "Blues",
@@ -183,7 +183,7 @@
 		},
 		{
 			"name": "Metalcore",
-			"related": []
+			"related": ["Metal", "Melodic Hardcore", "Post-hardcore", "Post-black Metal"]
 		},
 		{
 			"name": "Modern Classical",
@@ -219,7 +219,7 @@
 		},
 		{
 			"name": "Post-black Metal",
-			"related": []
+			"related": ["Metalcore", "Black Metal"]
 		},
 		{
 			"name": "Post-classical",
