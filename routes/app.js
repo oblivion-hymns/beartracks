@@ -28,7 +28,8 @@ function baseRoute(req, res)
 function determineLengths(req, res)
 {
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/media/brian/The/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 
 	var cachePath = musicRoot + '/.bearcache-durations.json';
@@ -122,17 +123,6 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFil
 
 	lengthPromise = getDuration(filePath, readTags, cachePath, cache, encodedFilePath);
 	return lengthPromise;
-
-	//if (!readTags.length) @TODO
-	/*if (readTags.length)
-	{
-
-	}
-	else
-	{
-		cache.files.push(encodedFilePath);
-		jsonFile.writeFileSync(cachePath, cache);
-	}*/
 }
 
 function getDuration(filePath, readTags, cachePath, cache, encodedFilePath)
@@ -351,7 +341,8 @@ function sync(req, res)
 	console.log('Syncing...');
 
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
-	var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
+	var musicRoot = '/media/brian/The/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
