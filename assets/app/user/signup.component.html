@@ -1,12 +1,22 @@
 <div fxLayout='row'>
-	<div fxLayout='column' fxFlex='50%' fxFlexOffset='25%'>
+	<div fxLayout='column' fxFlex='30%' fxFlexOffset='35%'>
+		<h2 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Create User
+		</h2>
+
 		<form [formGroup]="form" (ngSubmit)="onSubmit()">
-			<md-input-container>
-				<input mdInput placeholder="username" maxlength="16"/>
+			<md-input-container style="width: 100%;">
+				<input mdInput placeholder="username" maxlength="16" formControlName="username"/>
+			</md-input-container><br />
+			<md-input-container style="width: 100%;">
+				<input mdInput placeholder="password" maxlength="16" type="password" formControlName="password" />
 			</md-input-container>
-			<md-input-container>
-				<input mdInput placeholder="password" maxlength="16" type="password" />
-			</md-input-container>
+
+			<div style="text-align: right;">
+				<button md-raised-button type="submit" [disabled]="!form.valid">
+					Create
+				</button>
+			</div>
 		</form>
 	</div>
 </div>
