@@ -1,49 +1,55 @@
 //Basic
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { routing } from './app.routing';
-import { HttpModule } from '@angular/http';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 //Material
 import 'hammerjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@angular/material';
 import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIconModule,
 		MdMenuModule, MdProgressBarModule, MdSidenavModule, MdTabsModule } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 //App-specific
-import { PlayerComponent } from './player/player.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { SearchComponent } from './search/search.component';
-import { ArtistsComponent } from './artists/artists.component';
 import { AlbumsComponent } from './albums/albums.component';
-import { RadioComponent } from './radio/radio.component';
+import { ArtistsComponent } from './artists/artists.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
-import { JukeboxService } from './jukebox/jukebox.service';
+import { PlayerComponent } from './player/player.component';
+import { RadioComponent } from './radio/radio.component';
+import { SearchComponent } from './search/search.component';
+import { SignupComponent } from './user/signup.component';
+
+//Services
+import { UserService } from './user/user.service';
 
 //decorator
 @NgModule({
+	providers: [UserService],
 	declarations: [
 		AppComponent,
 
-		PlayerComponent,
-		SearchComponent,
-		DashboardComponent,
-		ArtistsComponent,
 		AlbumsComponent,
-		RadioComponent,
+		ArtistsComponent,
+		DashboardComponent,
 		DiscoveryComponent,
-		JukeboxComponent
+		JukeboxComponent,
+		PlayerComponent,
+		RadioComponent,
+		SearchComponent,
+		SignupComponent,
 	],
 	imports: [
 		BrowserModule,
 		FlexLayoutModule,
 		FormsModule,
+		ReactiveFormsModule,
 		routing,
 		HttpModule,
 
@@ -59,7 +65,6 @@ import { JukeboxService } from './jukebox/jukebox.service';
 		MdSidenavModule,
 		MdTabsModule
 	],
-	providers: [],
 	bootstrap: [
 		AppComponent
 	]

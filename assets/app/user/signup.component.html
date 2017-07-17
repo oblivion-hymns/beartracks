@@ -1,0 +1,12 @@
+<div fxLayout='row'>
+	<div fxLayout='column' fxFlex='50%' fxFlexOffset='25%'>
+		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+			<md-input-container>
+				<input mdInput placeholder="username" maxlength="16"/>
+			</md-input-container>
+			<md-input-container>
+				<input mdInput placeholder="password" maxlength="16" type="password" />
+			</md-input-container>
+		</form>
+	</div>
+</div>
