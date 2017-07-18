@@ -239,15 +239,17 @@ export class JukeboxService {
 		}
 	}
 
-
-
-
 	/**
 	 * Join room
 	 */
 	join(username)
 	{
 		this.socket.emit('join', username);
+	}
+
+	leave()
+	{
+		this.socket.disconnect();
 	}
 
 	/**

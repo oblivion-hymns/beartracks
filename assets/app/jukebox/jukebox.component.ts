@@ -1,5 +1,5 @@
 import 'rxjs/Rx';
-import { AfterViewChecked, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Album } from './../albums/album';
@@ -46,6 +46,11 @@ export class JukeboxComponent implements AfterViewChecked
 			this.username = username;
 			this.jukeboxService.join(username);
 		});
+	}
+
+	ngOnDestroy()
+	{
+		this.jukeboxService.leave();
 	}
 
 	ngAfterViewChecked()
