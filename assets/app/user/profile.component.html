@@ -1,5 +1,5 @@
 <div fxLayout='row'>
-	<div fxLayout='column' fxFlex='30%' fxFlexOffset='35%'>
+	<div fxLayout='column' fxFlex='30%' fxFlexOffset='35%' *ngIf="!userService.isLoggedIn()">
 		<h2 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
 			Log in
 		</h2>
@@ -26,5 +26,17 @@
 				</button>
 			</div>
 		</form>
+	</div>
+
+	<div fxLayout="column" fxFlex="30%" fxFlexOffset="35%" *ngIf="userService.isLoggedIn()">
+		<h2 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Logged in as {{username}}
+		</h2>
+
+		<div style="text-align: right;">
+			<button md-raised-button (click)="userService.logout()">
+				Log out
+			</button>
+		</div>
 	</div>
 </div>

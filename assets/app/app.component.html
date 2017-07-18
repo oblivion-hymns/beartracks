@@ -3,29 +3,23 @@
 		style="width: 5%;">
 		<md-icon>pets</md-icon>
 	</button>
+	<button md-button [routerLink]="['/profile']" routerLinkActive="active">
+		<h3>me</h3>
+	</button>
+	<!-- <button md-button *ngIf="userService.isLoggedIn()" (click)="userService.logout()">
+		<h3>Logout</h3>
+	</button> -->
 	<button md-button [routerLink]="['/search']" routerLinkActive="active">
 		<h3>Search</h3>
 	</button>
 	<button md-button [routerLink]="['/artists']" routerLinkActive="active">
 		<h3>Browse</h3>
 	</button>
-	<!-- <button md-button [routerLink]="['/albums']" routerLinkActive="active">
-		<h3>Albums</h3>
-	</button>
-	<button md-button [routerLink]="['/radio']" routerLinkActive="active">
-		<h3>Radio</h3>
-	</button> -->
 	<button md-button [routerLink]="['/discovery']" routerLinkActive="active">
 		<h3>Discover</h3>
 	</button>
 	<button md-button [routerLink]="['/jukebox']" routerLinkActive="active">
 		<h3>Socialize</h3>
-	</button>
-	<button md-button [routerLink]="['/login']" routerLinkActive="active" *ngIf="!userService.isLoggedIn()">
-		<h3>Login</h3>
-	</button>
-	<button md-button *ngIf="userService.isLoggedIn()" (click)="userService.logout()">
-		<h3>Logout</h3>
 	</button>
 </md-toolbar>
 

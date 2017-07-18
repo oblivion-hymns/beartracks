@@ -5,14 +5,15 @@ import { User } from './user';
 import { UserService } from './user.service';
 
 @Component({
-	selector: 'bt-login',
-	templateUrl: './login.component.html'
+	selector: 'bt-profile',
+	templateUrl: './profile.component.html'
 })
-export class LoginComponent implements OnInit
+export class ProfileComponent implements OnInit
 {
 	form: FormGroup;
 	errorMessage: string = '';
 	successMessage: string = '';
+	username: string = '';
 
 	constructor(private router: Router, private userService: UserService) {}
 
@@ -21,6 +22,13 @@ export class LoginComponent implements OnInit
 		this.form = new FormGroup({
 			username: new FormControl(null, Validators.required),
 			password: new FormControl(null, Validators.required)
+		});
+
+		this.userService.getLoggedInUser().subscribe(data => {
+			if (data.username)
+			{
+				this.username = data.username;
+			}
 		});
 	}
 
@@ -36,6 +44,7 @@ export class LoginComponent implements OnInit
 				localStorage.setItem('token', data.token);
 				localStorage.setItem('userId', data.userId);
 				localStorage.setItem('username', data.username);
+				this.username = data.username;
 				this.router.navigateByUrl('/');
 			},
 			error => {
