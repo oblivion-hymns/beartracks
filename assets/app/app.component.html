@@ -21,8 +21,11 @@
 	<button md-button [routerLink]="['/jukebox']" routerLinkActive="active">
 		<h3>Socialize</h3>
 	</button>
-	<button md-button *ngIf="!userService.isLoggedIn()">
+	<button md-button [routerLink]="['/login']" routerLinkActive="active" *ngIf="!userService.isLoggedIn()">
 		<h3>Login</h3>
+	</button>
+	<button md-button *ngIf="userService.isLoggedIn()">
+		<h3>Logout</h3>
 	</button>
 </md-toolbar>
 

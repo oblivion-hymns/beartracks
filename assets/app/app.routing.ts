@@ -5,12 +5,14 @@ import { ArtistsComponent } from './artists/artists.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
+import { LoginComponent } from './user/login.component';
 import { RadioComponent } from './radio/radio.component';
 import { SearchComponent } from './search/search.component';
 import { SignupComponent } from './user/signup.component';
 
 const APP_ROUTES: Routes = [
 	{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+	{ path: 'login', component: LoginComponent },
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'search', component: SearchComponent },

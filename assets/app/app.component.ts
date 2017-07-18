@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { PlayerService } from './player/player.service';
 import { TrackService } from './tracks/track.service';
+import { UserService } from './user/user.service';
 
 @Component({
 	providers: [PlayerService, TrackService],
@@ -11,5 +12,7 @@ import { TrackService } from './tracks/track.service';
 })
 export class AppComponent
 {
-	constructor(private playerService: PlayerService, private trackService: TrackService){}
+	constructor(private userService: UserService,
+				private playerService: PlayerService,
+				private trackService: TrackService){}
 }

@@ -21,6 +21,7 @@ import { ArtistsComponent } from './artists/artists.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DiscoveryComponent } from './discovery/discovery.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
+import { LoginComponent } from './user/login.component';
 import { PlayerComponent } from './player/player.component';
 import { RadioComponent } from './radio/radio.component';
 import { SearchComponent } from './search/search.component';
@@ -40,6 +41,7 @@ import { UserService } from './user/user.service';
 		DashboardComponent,
 		DiscoveryComponent,
 		JukeboxComponent,
+		LoginComponent,
 		PlayerComponent,
 		RadioComponent,
 		SearchComponent,
