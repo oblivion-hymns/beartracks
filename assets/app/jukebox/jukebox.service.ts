@@ -250,6 +250,15 @@ export class JukeboxService {
 	leave()
 	{
 		this.socket.disconnect();
+		this.queue = [];
+		this.displayQueue = [];
+
+		if (this.audio)
+		{
+			this.audio.pause();
+			this.audio.currentTime = 0;
+			this.audio = null;
+		}
 	}
 
 	/**
