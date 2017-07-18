@@ -21,6 +21,8 @@ export class Player implements OnInit
 	public queuePosition = 0;
 	public queueOpen: boolean = false;
 
+	public visible: boolean = true;
+
 	constructor() { }
 
 	ngOnInit()
@@ -152,6 +154,16 @@ export class Player implements OnInit
 		{
 			this.audio.play();
 		}
+	}
+
+	hide()
+	{
+		this.visible = false;
+	}
+
+	show()
+	{
+		this.visible = true;
 	}
 
 	getElapsed()

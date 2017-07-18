@@ -1,5 +1,6 @@
 <div id="OpenQueue"
-	(click)="playerService.player.openQueue()">
+	(click)="playerService.player.openQueue()"
+	*ngIf="playerService.player.visible">
 	<md-icon>
 		queue_music
 	</md-icon>

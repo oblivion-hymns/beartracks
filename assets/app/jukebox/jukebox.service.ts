@@ -7,9 +7,10 @@ import { Album } from './../albums/album';
 import { AlbumService } from './../albums/album.service';
 import { Artist } from './../artists/artist';
 import { ArtistService } from './../artists/artist.service';
+import { Message } from './message';
+import { PlayerService } from './../player/player.service';
 import { Track } from './../tracks/track';
 import { TrackService } from './../tracks/track.service';
-import { Message } from './message';
 import * as io from 'socket.io-client';
 
 @Injectable()
@@ -30,7 +31,7 @@ export class JukeboxService {
 	private socket;
 	messages: Message[] = [];
 
-	constructor(private http: Http)
+	constructor(private http: Http, private playerService: PlayerService)
 	{
 		//Initialize w/recent chat messages
 		this.loadRecent();
@@ -245,6 +246,8 @@ export class JukeboxService {
 	join(username)
 	{
 		this.socket.emit('join', username);
+		this.playerService.player.pause();
+		this.playerService.player.hide();
 	}
 
 	leave()
@@ -259,6 +262,8 @@ export class JukeboxService {
 			this.audio.currentTime = 0;
 			this.audio = null;
 		}
+
+		this.playerService.player.show();
 	}
 
 	/**
