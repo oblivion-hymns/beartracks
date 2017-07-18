@@ -28,6 +28,20 @@ export class UserService
 						.catch((error: Response) => {return Observable.throw(error)});
 	}
 
+	changePassword(userId: string, currentPass: string, newPass: string, newPassVerify: string)
+	{
+		const body = JSON.stringify({
+			userId: userId,
+			currentPassword: currentPass,
+			newPassword: newPass,
+			newPasswordVerify: newPassVerify
+		});
+		const headers = new Headers({'Content-Type': 'application/json'});
+		return this.http.post('http://bwilbur.com:3000/user/login', body, {headers: headers})
+						.map((response: Response) => response.json())
+						.catch((error: Response) => {return Observable.throw(error)});
+	}
+
 	getLoggedInUser()
 	{
 		var userId = localStorage.getItem('userId');

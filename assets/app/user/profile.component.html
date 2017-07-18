@@ -1,10 +1,10 @@
-<div fxLayout='row'>
-	<div fxLayout='column' fxFlex='30%' fxFlexOffset='35%' *ngIf="!userService.isLoggedIn()">
+<div fxLayout='row' *ngIf="!userService.isLoggedIn()">
+	<div fxFlex='30%' fxFlexOffset='35%'>
 		<h2 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
 			Log in
 		</h2>
 
-		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+		<form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
 			<md-input-container style="width: 100%;">
 				<input mdInput placeholder="username" maxlength="16" formControlName="username" autofocus/>
 			</md-input-container><br />
@@ -21,14 +21,16 @@
 			</div>
 
 			<div style="text-align: right;">
-				<button md-raised-button type="submit" [disabled]="!form.valid">
+				<button md-raised-button type="submit" [disabled]="!loginForm.valid">
 					Log in
 				</button>
 			</div>
 		</form>
 	</div>
+</div>
 
-	<div fxLayout="column" fxFlex="30%" fxFlexOffset="35%" *ngIf="userService.isLoggedIn()">
+<div fxLayout="row" *ngIf="userService.isLoggedIn()">
+	<div fxFlex="30%" fxFlexOffset="35%">
 		<h2 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
 			Logged in as {{username}}
 		</h2>
@@ -38,5 +40,39 @@
 				Log out
 			</button>
 		</div>
+	</div>
+</div>
+
+<div fxLayout="row" *ngIf="userService.isLoggedIn()">
+	<div fxFlex="30%" fxFlexOffset="35%">
+		<h2 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Change Password
+		</h2>
+
+		<form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+			<md-input-container style="width: 100%;">
+				<input mdInput placeholder="current password" maxlength="24" formControlName="currentPassword"/>
+			</md-input-container><br />
+			<md-input-container style="width: 100%;">
+				<input mdInput placeholder="new password" maxlength="24" formControlName="newPassword"/>
+			</md-input-container><br />
+			<md-input-container style="width: 100%;">
+				<input mdInput placeholder="new password (again)" maxlength="24" formControlName="newPasswordVerify"/>
+			</md-input-container>
+
+			<div>
+				{{successMessage}}
+			</div>
+
+			<div class="warn" style="margin-bottom: 8px;">
+				{{errorMessage}}
+			</div>
+
+			<div style="text-align: right;">
+				<button md-raised-button type="submit" [disabled]="!passwordForm.valid">
+					Save
+				</button>
+			</div>
+		</form>
 	</div>
 </div>

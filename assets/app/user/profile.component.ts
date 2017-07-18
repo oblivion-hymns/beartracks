@@ -10,7 +10,9 @@ import { UserService } from './user.service';
 })
 export class ProfileComponent implements OnInit
 {
-	form: FormGroup;
+	loginForm: FormGroup;
+	passwordForm: FormGroup;
+
 	errorMessage: string = '';
 	successMessage: string = '';
 	username: string = '';
@@ -19,9 +21,15 @@ export class ProfileComponent implements OnInit
 
 	ngOnInit()
 	{
-		this.form = new FormGroup({
+		this.loginForm = new FormGroup({
 			username: new FormControl(null, Validators.required),
 			password: new FormControl(null, Validators.required)
+		});
+
+		this.passwordForm = new FormGroup({
+			currentPassword: new FormControl(null, Validators.required),
+			newPassword: new FormControl(null, Validators.required),
+			newPasswordVerify: new FormControl(null, Validators.required)
 		});
 
 		this.userService.getLoggedInUser().subscribe(data => {
@@ -32,9 +40,9 @@ export class ProfileComponent implements OnInit
 		});
 	}
 
-	onSubmit()
+	onSubmitLogin()
 	{
-		var form = this.form.value;
+		var form = this.loginForm.value;
 		var user = new User(form.username, form.password);
 		this.errorMessage = '';
 		this.successMessage = '';
@@ -51,6 +59,32 @@ export class ProfileComponent implements OnInit
 				var json = JSON.parse(error._body);
 				var errorMessage = json.message;
 				this.errorMessage = errorMessage;
+			}
+		);
+	}
+
+	onSubmitPasswordChange()
+	{
+		var form = this.passwordForm.value;
+
+		var userId = localStorage.getItem('userId');
+		var currentPassword = form.currentPassword;
+		var newPassword = form.newPassword;
+		var newPasswordVerify = form.newPasswordVerify;
+
+		this.errorMessage = '';
+		this.successMessage = '';
+
+		this.userService.changePassword(userId, currentPassword, newPassword, newPasswordVerify).subscribe(
+			data => {
+				this.successMessage = 'Successfully changed';
+				this.passwordForm.reset();
+			},
+			error => {
+				var json = JSON.parse(error._body);
+				var errorMessage = json.message;
+				this.errorMessage = errorMessage;
+				this.passwordForm.reset();
 			}
 		);
 	}
