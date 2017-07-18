@@ -1,0 +1,30 @@
+<div fxLayout='row'>
+	<div fxLayout='column' fxFlex='30%' fxFlexOffset='35%'>
+		<h2 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Log in
+		</h2>
+
+		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+			<md-input-container style="width: 100%;">
+				<input mdInput placeholder="username" maxlength="16" formControlName="username" autofocus/>
+			</md-input-container><br />
+			<md-input-container style="width: 100%;">
+				<input mdInput placeholder="password" maxlength="24" type="password" formControlName="password" />
+			</md-input-container>
+
+			<div>
+				{{successMessage}}
+			</div>
+
+			<div class="warn" style="margin-bottom: 8px;">
+				{{errorMessage}}
+			</div>
+
+			<div style="text-align: right;">
+				<button md-raised-button type="submit" [disabled]="!form.valid">
+					Log in
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

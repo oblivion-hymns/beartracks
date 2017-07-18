@@ -1,5 +1,6 @@
 var bcrypt = require('bcryptjs');
 var express = require('express');
+var jwt = require('jsonwebtoken');
 
 var ObjectId = require('mongoose').Types.ObjectId;
 var User = require('../models/user');
@@ -99,7 +100,41 @@ function create(req, res)
 
 function login(req, res)
 {
+	var username = req.body.username.trim();
+	var password = req.body.password.trim();
+	User.findOne({username: username}, function(error, user){
+		if (error)
+		{
+			return res.status(500).json({
+				success: false,
+				message: 'Incorrect username or password'
+			});
+		}
 
+		if (!user)
+		{
+			return res.status(500).json({
+				success: false,
+				message: 'Incorrect username or password'
+			});
+		}
+
+		var validPassword = bcrypt.compareSync(password, user.password);
+		if (!validPassword)
+		{
+			return res.status(401).json({
+				title: 'Login failed',
+				message: 'Incorrect username or password'
+			});
+		}
+
+		var token = jwt.sign({user: user}, 'btsecret', {expiresIn: 604800});
+		return res.status(200).json({
+			message: 'Successfully logged in',
+			token: token,
+			userId: user._id
+		});
+	})
 }
 
 module.exports = router;

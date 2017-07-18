@@ -11,15 +11,18 @@
 	</button>
 	<!-- <button md-button [routerLink]="['/albums']" routerLinkActive="active">
 		<h3>Albums</h3>
-	</button> -->
+	</button>
 	<button md-button [routerLink]="['/radio']" routerLinkActive="active">
 		<h3>Radio</h3>
-	</button>
+	</button> -->
 	<button md-button [routerLink]="['/discovery']" routerLinkActive="active">
 		<h3>Discover</h3>
 	</button>
 	<button md-button [routerLink]="['/jukebox']" routerLinkActive="active">
 		<h3>Socialize</h3>
+	</button>
+	<button md-button *ngIf="!userService.isLoggedIn()">
+		<h3>Login</h3>
 	</button>
 </md-toolbar>
 
