@@ -63,7 +63,7 @@ export class ProfileComponent implements OnInit
 		);
 	}
 
-	onSubmitPasswordChange()
+	onPasswordChangeSubmit()
 	{
 		var form = this.passwordForm.value;
 

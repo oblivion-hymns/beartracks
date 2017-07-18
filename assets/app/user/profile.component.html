@@ -49,15 +49,15 @@
 			Change Password
 		</h2>
 
-		<form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+		<form [formGroup]="passwordForm" (ngSubmit)="onPasswordChangeSubmit()">
 			<md-input-container style="width: 100%;">
-				<input mdInput placeholder="current password" maxlength="24" formControlName="currentPassword"/>
+				<input mdInput placeholder="current password" type="password" maxlength="24" formControlName="currentPassword"/>
 			</md-input-container><br />
 			<md-input-container style="width: 100%;">
-				<input mdInput placeholder="new password" maxlength="24" formControlName="newPassword"/>
+				<input mdInput placeholder="new password" type="password" maxlength="24" formControlName="newPassword"/>
 			</md-input-container><br />
 			<md-input-container style="width: 100%;">
-				<input mdInput placeholder="new password (again)" maxlength="24" formControlName="newPasswordVerify"/>
+				<input mdInput placeholder="new password (again)" type="password" maxlength="24" formControlName="newPasswordVerify"/>
 			</md-input-container>
 
 			<div>

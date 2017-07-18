@@ -9,6 +9,7 @@ var router = express.Router();
 router.post('/create', create);
 router.post('/login', login);
 router.post('/load', loadUser);
+router.post('/change-password', changePassword);
 
 /**
  * Creates a new user
@@ -136,7 +137,7 @@ function login(req, res)
 			userId: user._id,
 			username: user.username
 		});
-	})
+	});
 }
 
 function loadUser(req, res, next)
@@ -163,6 +164,72 @@ function loadUser(req, res, next)
 			success: true,
 			username: user.username
 		});
+	});
+}
+
+function changePassword(req, res, next)
+{
+	var userId = req.body.userId;
+	var password = req.body.currentPassword;
+	var newPass = req.body.newPassword.trim();
+	var newPassVerify = req.body.newPasswordVerify.trim();
+
+	if (newPass != newPassVerify)
+	{
+		return res.status(400).json({
+			success: false,
+			message: 'New passwords do not match. Please re-enter'
+		});
+	}
+
+	User.findById(userId, function(error, user){
+		if (error || !user)
+		{
+			return res.status(500).json({
+				success: false,
+				message: 'Something went wrong. Try again in a bit'
+			});
+		}
+
+		var validPassword = bcrypt.compareSync(password, user.password);
+		if (!validPassword)
+		{
+			return res.status(401).json({
+				title: 'Login failed',
+				message: 'The current password you entered is incorrect'
+			});
+		}
+
+		if (newPass.length < 8)
+		{
+			return res.status(400).json({
+				success: false,
+				message: 'New password must be at least 8 characters long'
+			});
+		}
+
+		if (newPass.length > 24)
+		{
+			return res.status(400).json({
+				success: false,
+				message: 'New password must be 24 or fewer characters long'
+			});
+		}
+
+		var newPassword = bcrypt.hashSync(newPass, 10);
+		User.update({_id: userId}, { $set: {password: newPassword } }, function(error, data){
+			if (error)
+			{
+				return res.status(500).json({
+					success: false,
+					message: 'Something went wrong. Try again in a bit'
+				});
+			}
+
+			return res.status(200).json({
+				message: 'Password changed successfully'
+			});
+		})
 	});
 }
 
