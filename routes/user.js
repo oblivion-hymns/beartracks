@@ -41,11 +41,11 @@ function create(req, res)
 		});
 	}
 
-	if (username.length > 16)
+	if (username.length > 24)
 	{
 		return res.status(400).json({
 			success: false,
-			message: 'Usernames must be 16 or fewer characters long'
+			message: 'Usernames must be 24 or fewer characters long'
 		});
 	}
 
@@ -68,11 +68,11 @@ function create(req, res)
 		});
 	}
 
-	if (password.length > 16)
+	if (password.length > 24)
 	{
 		return res.status(400).json({
 			success: false,
-			message: 'Password must be 16 or fewer characters long'
+			message: 'Password must be 24 or fewer characters long'
 		});
 	}
 

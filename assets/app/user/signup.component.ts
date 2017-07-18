@@ -11,6 +11,7 @@ export class SignupComponent implements OnInit
 {
 	form: FormGroup;
 	errorMessage: string = '';
+	successMessage: string = '';
 
 	constructor(private userService: UserService) {}
 
@@ -26,9 +27,13 @@ export class SignupComponent implements OnInit
 	{
 		var form = this.form.value;
 		var user = new User(form.username, form.password);
-		this.form.reset();
+		this.errorMessage = '';
+		this.successMessage = '';
 		this.userService.signup(user).subscribe(
-			data => console.log(data),
+			data => {
+				this.form.reset();
+				this.successMessage = 'Saved successfully'
+			},
 			error => {
 				var json = JSON.parse(error._body);
 				var errorMessage = json.message;

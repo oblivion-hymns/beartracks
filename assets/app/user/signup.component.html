@@ -6,11 +6,15 @@
 
 		<form [formGroup]="form" (ngSubmit)="onSubmit()">
 			<md-input-container style="width: 100%;">
-				<input mdInput placeholder="username" maxlength="16" formControlName="username"/>
+				<input mdInput placeholder="username" maxlength="16" formControlName="username" autofocus/>
 			</md-input-container><br />
 			<md-input-container style="width: 100%;">
-				<input mdInput placeholder="password" maxlength="16" type="password" formControlName="password" />
+				<input mdInput placeholder="password" maxlength="24" type="password" formControlName="password" />
 			</md-input-container>
+
+			<div>
+				{{successMessage}}
+			</div>
 
 			<div class="warn" style="margin-bottom: 8px;">
 				{{errorMessage}}
