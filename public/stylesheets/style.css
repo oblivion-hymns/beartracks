@@ -115,3 +115,8 @@ md-icon.error-icon
 	line-height: 18px !important;
 	width: 18px !important;
 }
+
+.warn
+{
+	color: rgba(244, 67, 54, 0.87) !important;
+}

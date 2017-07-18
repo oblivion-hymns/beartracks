@@ -12,6 +12,10 @@
 				<input mdInput placeholder="password" maxlength="16" type="password" formControlName="password" />
 			</md-input-container>
 
+			<div class="warn" style="margin-bottom: 8px;">
+				{{errorMessage}}
+			</div>
+
 			<div style="text-align: right;">
 				<button md-raised-button type="submit" [disabled]="!form.valid">
 					Create

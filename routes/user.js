@@ -9,20 +9,12 @@ router.post('/create', create);
 router.post('/login', login);
 
 /**
- * Validates the given username
- * @return boolean
- */
-function isUsernameValid(username)
-{
-	return username.match(/^[A-Za-z0-9\.\-\_]{2,16}$/);
-}
-
-/**
  * Creates a new user
  * @return Response
  */
 function create(req, res)
 {
+	//Validate username
 	var username = req.body.username;
 	if (!username)
 	{
@@ -31,16 +23,33 @@ function create(req, res)
 			message: 'Must provide a username'
 		});
 	}
-	username = username.trim().toLowerCase();;
+	username = username.trim().toLowerCase();
 
-	if (!isUsernameValid(username))
+	if (!username.match(/^[A-Za-z0-9\.\-\_]*$/))
 	{
 		return res.status(400).json({
 			success: false,
-			message: 'Usernames may only consist of alphanumerics (A-Z, 0-9) and the period (.), dash (-) and underline (_) characters'
+			message: 'Usernames must only consist of letters, numbers, and the symbols .-_'
 		});
 	}
 
+	if (username.length < 3)
+	{
+		return res.status(400).json({
+			success: false,
+			message: 'Usernames must be at least 3 characters long'
+		});
+	}
+
+	if (username.length > 16)
+	{
+		return res.status(400).json({
+			success: false,
+			message: 'Usernames must be 16 or fewer characters long'
+		});
+	}
+
+	//Validate password
 	var password = req.body.password;
 	if (!password)
 	{
@@ -56,6 +65,14 @@ function create(req, res)
 		return res.status(400).json({
 			success: false,
 			message: 'Password must be at least 8 characters long'
+		});
+	}
+
+	if (password.length > 16)
+	{
+		return res.status(400).json({
+			success: false,
+			message: 'Password must be 16 or fewer characters long'
 		});
 	}
 
