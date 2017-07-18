@@ -24,7 +24,7 @@
 	<button md-button [routerLink]="['/login']" routerLinkActive="active" *ngIf="!userService.isLoggedIn()">
 		<h3>Login</h3>
 	</button>
-	<button md-button *ngIf="userService.isLoggedIn()">
+	<button md-button *ngIf="userService.isLoggedIn()" (click)="userService.logout()">
 		<h3>Logout</h3>
 	</button>
 </md-toolbar>
