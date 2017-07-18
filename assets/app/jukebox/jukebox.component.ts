@@ -7,12 +7,13 @@ import { AlbumService } from './../albums/album.service';
 import { Artist } from './../artists/artist';
 import { ArtistService } from './../artists/artist.service';
 import { JukeboxService } from './jukebox.service';
+import { Message } from './message';
 import { Track } from './../tracks/track';
 import { TrackService } from './../tracks/track.service';
-import { Message } from './message';
+import { UserService } from './../user/user.service';
 
 @Component({
-	providers: [JukeboxService, ArtistService, AlbumService, TrackService],
+	providers: [JukeboxService, ArtistService, AlbumService, TrackService, UserService],
 	selector: 'bt-jukebox',
 	styleUrls: ['./jukebox.component.css'],
 	templateUrl: './jukebox.component.html'
@@ -27,14 +28,24 @@ export class JukeboxComponent implements AfterViewChecked
 
 	@Input() message: string = '';
 	@ViewChild('chat') input;
-	username: string = 'User ' + (Math.floor(Math.random() * (1000000 - 0) + 0));
+	username: string = '';
 
 	constructor(private jukeboxService: JukeboxService,
 		private artistService: ArtistService,
 		private albumService: AlbumService,
-		private trackService: TrackService)
+		private trackService: TrackService,
+		private userService: UserService)
 	{
-		this.jukeboxService.join(this.username);
+		this.userService.getLoggedInUser().subscribe(data => {
+			var username = data.username;
+			if (!username || username.length == 0)
+			{
+				username = 'user.' + (Math.floor(Math.random() * (10000000 - 0) + 0));
+			}
+
+			this.username = username;
+			this.jukeboxService.join(username);
+		});
 	}
 
 	ngAfterViewChecked()

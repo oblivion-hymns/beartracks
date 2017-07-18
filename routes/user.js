@@ -8,6 +8,7 @@ var User = require('../models/user');
 var router = express.Router();
 router.post('/create', create);
 router.post('/login', login);
+router.post('/load', loadUser);
 
 /**
  * Creates a new user
@@ -132,9 +133,37 @@ function login(req, res)
 		return res.status(200).json({
 			message: 'Successfully logged in',
 			token: token,
-			userId: user._id
+			userId: user._id,
+			username: user.username
 		});
 	})
+}
+
+function loadUser(req, res, next)
+{
+	var userId = req.body.userId;
+	User.findById(userId, function(error, user){
+		if (error)
+		{
+			return res.status(500).json({
+				success: false,
+				message: 'User is not logged in'
+			});
+		}
+
+		if (!user)
+		{
+			return res.status(200).json({
+				success: true,
+				username: null
+			});
+		}
+
+		return res.status(200).json({
+			success: true,
+			username: user.username
+		});
+	});
 }
 
 module.exports = router;
