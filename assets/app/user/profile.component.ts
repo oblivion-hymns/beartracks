@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit
 				localStorage.setItem('userId', data.userId);
 				localStorage.setItem('username', data.username);
 				this.username = data.username;
-				this.router.navigateByUrl('/');
+				this.router.navigateByUrl('/profile');
 			},
 			error => {
 				var json = JSON.parse(error._body);
