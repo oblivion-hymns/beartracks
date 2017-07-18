@@ -17,7 +17,7 @@ md-toolbar [md-button] {
 	color: rgba(255, 255, 255, 0.54);
 	height: 100%;
 	padding: 16px 32px;
-	width: 16%;
+	width: 19%;
 }
 
 md-toolbar [md-button].active {
