@@ -9,7 +9,8 @@ var schema = new Schema({
 	trackNum: {type: Number, required: true},
 	genre: {type: String, required: true},
 	filePath: {type: String, required: true},
-	length: {type: String}
+	length: {type: String},
+	playCount: {type: Number, required: true, default: 0}
 });
 
 module.exports = mongoose.model('Track', schema);

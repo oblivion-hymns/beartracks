@@ -18,7 +18,7 @@ export class PlayerService
 
 	constructor(private trackService: TrackService, private http: Http)
 	{
-		this.player = new Player(http);
+		this.player = new Player(this.http);
 	}
 
 	enqueueAlbum(album)

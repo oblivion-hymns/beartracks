@@ -187,13 +187,11 @@ function incrementSong(req, res)
 	Track.findByIdAndUpdate(req.query.trackId, {$inc: {playCount: 1}}, function(error, data){
 		if (error)
 		{
-			console.log(error);
+			console.error(error);
 			return res.status(500).json({
 				message: 'An error occurred'
 			});
 		}
-
-		console.log(data);
 
 		return res.status(200).json({});
 	});

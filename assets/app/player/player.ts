@@ -244,7 +244,7 @@ export class Player implements OnInit
 
 			//Increment play count
 			var finishedTrack = this.currentTrack;
-			this.http.get('http://bwilbur.com/tracks/increment-song?trackId=' + finishedTrack._id);
+			this.http.get('http://bwilbur.com:3000/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
 
 			if (this.queue[this.queuePosition] + 1)
 			{
@@ -254,6 +254,8 @@ export class Player implements OnInit
 			{
 				this.pause();
 			}
+
+			this.currentTrack = null;
 		}
 	}
 
