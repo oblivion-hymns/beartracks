@@ -36,6 +36,7 @@ export class JukeboxService {
 		//Initialize w/recent chat messages
 		this.loadRecent();
 		this.initSockets();
+		this.playerService.player.hide();
 	}
 
 	initSockets()
@@ -247,7 +248,6 @@ export class JukeboxService {
 	{
 		this.socket.emit('join', username);
 		this.playerService.player.pause();
-		this.playerService.player.hide();
 	}
 
 	leave()
