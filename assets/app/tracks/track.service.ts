@@ -32,8 +32,9 @@ export class TrackService
 					var genre = trackData.genre;
 					var length = trackData.length;
 					var filePath = trackData.filePath;
+					var playCount = trackData.playCount;
 
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
 					tracks.push(track);
 				}
 
@@ -60,7 +61,8 @@ export class TrackService
 				var genre = trackData.genre;
 				var length = trackData.length;
 				var filePath = trackData.filePath;
-				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
+				var playCount = trackData.playCount;
+				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
 				return track;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
@@ -87,8 +89,9 @@ export class TrackService
 					var genre = trackData.genre;
 					var length = trackData.length;
 					var filePath = trackData.filePath;
+					var playCount = trackData.playCount;
 
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
 					tracks.push(track);
 				}
 
@@ -115,8 +118,9 @@ export class TrackService
 					var genre = trackData.genre;
 					var length = trackData.length;
 					var filePath = trackData.filePath;
+					var playCount = trackData.playCount;
 
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
 					tracks.push(track);
 				}
 				this.tracks = tracks;
@@ -143,8 +147,9 @@ export class TrackService
 					var genre = trackData.genre;
 					var length = trackData.length;
 					var filePath = trackData.filePath;
+					var playCount = trackData.playCount;
 
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
 					tracks.push(track);
 				}
 				this.tracks = tracks;

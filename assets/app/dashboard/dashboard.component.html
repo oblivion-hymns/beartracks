@@ -39,11 +39,17 @@
 			<md-list-item
 				class="item-line"
 				*ngFor="let track of recentTracks"
-				(click)="playerService.enqueueTrack(track)">
+				(click)="playerService.player.enqueueOne(track)">
 				<div md-line style="padding: 0px;">
 					<img src="{{track.album.imagePath}}"/>
 					<span class="item-text-single">
 						{{track.name}}
+
+						<span style="color: rgba(255, 255, 255, 0.54); float: right;">
+							<md-icon class="tiny-icon">
+								confirmation_number
+							</md-icon> {{track.playCount}}
+						</span>
 					</span>
 					<span class="item-text-single item-text-description">
 						{{track.album.artist.name}} &ndash; {{track.genre}}

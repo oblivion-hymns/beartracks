@@ -12,7 +12,8 @@ export class Track
 				public trackNum: number,
 				public genre: string,
 				public length: string,
-				public filePath: string) {
+				public filePath: string,
+				public playCount: string) {
 					var tempLength = parseInt(this.length);
 					var length_h = null;
 					var length_m = null;
