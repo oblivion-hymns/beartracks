@@ -13,6 +13,7 @@ router.get('/random', loadRandom);
 router.get('/all', loadAll);
 router.get('/find', find);
 router.post('/album', loadAlbum);
+router.get('/increment-song', incrementSong);
 
 function baseRoute(req, res)
 {
@@ -175,6 +176,26 @@ function loadAll(req, res)
 			res.status(200).json({
 				tracks: tracks
 			});
+	});
+}
+
+/**
+ * Increases the play count of a track by track ID
+ */
+function incrementSong(req, res)
+{
+	Track.findByIdAndUpdate(req.query.trackId, {$inc: {playCount: 1}}, function(error, data){
+		if (error)
+		{
+			console.log(error);
+			return res.status(500).json({
+				message: 'An error occurred'
+			});
+		}
+
+		console.log(data);
+
+		return res.status(200).json({});
 	});
 }
 

@@ -1,7 +1,8 @@
+import { Http, Response, Headers } from '@angular/http';
 import { OnInit } from '@angular/core';
 
-import { Artist } from '../artists/artist';
 import { Album } from '../albums/album';
+import { Artist } from '../artists/artist';
 import { Track } from '../tracks/track';
 
 export class Player implements OnInit
@@ -20,10 +21,13 @@ export class Player implements OnInit
 	public queue = [];
 	public queuePosition = 0;
 	public queueOpen: boolean = false;
-
 	public visible: boolean = true;
+	private http: Http;
 
-	constructor() { }
+	constructor(http: Http)
+	{
+		this.http = http;
+	}
 
 	ngOnInit()
 	{
@@ -237,6 +241,11 @@ export class Player implements OnInit
 		{
 			this.elapsedPercent = 0;
 			this.elapsed = '0:00';
+
+			//Increment play count
+			var finishedTrack = this.currentTrack;
+			this.http.get('http://bwilbur.com/tracks/increment-song?trackId=' + finishedTrack._id);
+
 			if (this.queue[this.queuePosition] + 1)
 			{
 				this.playPosition(this.queuePosition + 1);

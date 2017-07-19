@@ -23,6 +23,7 @@ export class TrackService
 				let tracks: Track[] = [];
 				for (let trackData of data)
 				{
+					var id = trackData._id;
 					var name = trackData.name;
 					var nameKey = trackData.nameKey;
 					var album = trackData.album;
@@ -32,7 +33,7 @@ export class TrackService
 					var length = trackData.length;
 					var filePath = trackData.filePath;
 
-					var track = new Track(name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
 					tracks.push(track);
 				}
 
@@ -49,6 +50,8 @@ export class TrackService
 		return this.http.get('http://bwilbur.com/tracks/random')
 			.map((response: Response) => {
 				const trackData = response.json().track;
+
+				var id = trackData._id;
 				var name = trackData.name;
 				var nameKey = trackData.nameKey;
 				var album = trackData.album;
@@ -57,7 +60,7 @@ export class TrackService
 				var genre = trackData.genre;
 				var length = trackData.length;
 				var filePath = trackData.filePath;
-				var track = new Track(name, nameKey, album, discNum, trackNum, genre, length, filePath);
+				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
 				return track;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
@@ -75,6 +78,7 @@ export class TrackService
 				let tracks: Track[] = [];
 				for (let trackData of data)
 				{
+					var id = trackData._id;
 					var name = trackData.name;
 					var nameKey = trackData.nameKey;
 					var album = trackData.album;
@@ -84,7 +88,7 @@ export class TrackService
 					var length = trackData.length;
 					var filePath = trackData.filePath;
 
-					var track = new Track(name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
 					tracks.push(track);
 				}
 
@@ -102,6 +106,7 @@ export class TrackService
 				let tracks: Track[] = [];
 				for (let trackData of data)
 				{
+					var id = trackData._id;
 					var name = trackData.name;
 					var nameKey = trackData.nameKey;
 					var album = trackData.album;
@@ -111,7 +116,7 @@ export class TrackService
 					var length = trackData.length;
 					var filePath = trackData.filePath;
 
-					var track = new Track(name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
 					tracks.push(track);
 				}
 				this.tracks = tracks;

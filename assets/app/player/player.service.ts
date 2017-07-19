@@ -1,3 +1,4 @@
+import { Http, Response, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 import 'rxjs/Rx';
@@ -15,9 +16,9 @@ export class PlayerService
 	player: Player;
 	public isPlaying: boolean;
 
-	constructor(private trackService: TrackService)
+	constructor(private trackService: TrackService, private http: Http)
 	{
-		this.player = new Player();
+		this.player = new Player(http);
 	}
 
 	enqueueAlbum(album)
