@@ -97,6 +97,34 @@ export class TrackService
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
+	loadRecentlyPlayed()
+	{
+		return this.http.get('http://bwilbur.com/tracks/recent')
+			.map((response: Response) => {
+				const data = response.json().tracks;
+
+				let tracks: Track[] = [];
+				for (let trackData of data)
+				{
+					var id = trackData._id;
+					var name = trackData.name;
+					var nameKey = trackData.nameKey;
+					var album = trackData.album;
+					var discNum = trackData.discNum;
+					var trackNum = trackData.trackNum;
+					var genre = trackData.genre;
+					var length = trackData.length;
+					var filePath = trackData.filePath;
+
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath);
+					tracks.push(track);
+				}
+				this.tracks = tracks;
+				return tracks;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	loadAll()
 	{
 		return this.http.get('http://bwilbur.com/tracks/all')

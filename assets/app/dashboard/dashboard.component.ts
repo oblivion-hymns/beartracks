@@ -3,9 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Album } from './../albums/album';
 import { AlbumService } from './../albums/album.service';
 import { PlayerService } from '../player/player.service';
+import { Track } from './../tracks/track';
+import { TrackService } from './../tracks/track.service';
 
 @Component({
-	providers: [AlbumService],
+	providers: [AlbumService, TrackService],
 	selector: 'bt-dashboard',
 	styles: [`
 		.item-line
@@ -54,16 +56,25 @@ import { PlayerService } from '../player/player.service';
 export class DashboardComponent implements OnInit
 {
 	albums: Album[] = [];
+	recentTracks: Track[] = [];
 	loadingAlbums: boolean = true;
+	loadingRecent: boolean = true;
 
 	constructor(private playerService: PlayerService,
-				private albumService: AlbumService) {}
+				private albumService: AlbumService,
+				private trackService: TrackService) {}
 
 	ngOnInit()
 	{
 		this.albumService.loadRecent().subscribe((albums: Album[]) => {
 			this.albums = albums;
 			this.loadingAlbums = false;
+		});
+
+		this.trackService.loadRecentlyPlayed().subscribe((tracks: Track[]) => {
+			console.log(tracks);
+			this.recentTracks = tracks;
+			this.loadingRecent = false;
 		});
 	}
 }

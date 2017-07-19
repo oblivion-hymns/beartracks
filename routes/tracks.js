@@ -14,6 +14,7 @@ router.get('/all', loadAll);
 router.get('/find', find);
 router.post('/album', loadAlbum);
 router.get('/increment-song', incrementSong);
+router.get('/recent', loadRecentlyPlayed);
 
 function baseRoute(req, res)
 {
@@ -194,6 +195,34 @@ function incrementSong(req, res)
 		}
 
 		return res.status(200).json({});
+	});
+}
+
+function loadRecentlyPlayed(req, res)
+{
+	Track.find({playCount: {$gt: 0}})
+		.populate('album')
+		.populate({
+			path: 'album',
+			populate: {
+				path: 'artist',
+				model: 'Artist'
+			}
+		})
+		.sort('-updatedAt')
+		.limit(100)
+		.exec(function(error, tracks){
+			if (error)
+			{
+				console.log(error);
+				return res.status(500).json({
+					message: 'An error occurred'
+				});
+			}
+
+			res.status(200).json({
+				tracks: tracks
+			});
 	});
 }
 

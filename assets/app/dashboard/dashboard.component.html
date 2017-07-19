@@ -1,17 +1,14 @@
 <div fxLayout='row'>
-	<div fxFlex="30%">
-
-	</div>
-	<div fxFlex="40%">
+	<div fxFlex="40%" fxFlexOffset="10%">
 		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
 			Recently Added
 		</h3>
 
-		<div *ngIf="albumsLoading">
+		<div *ngIf="loadingAlbums">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 		</div>
 
-		<md-list *ngIf="!albumsLoading">
+		<md-list *ngIf="!loadingAlbums">
 			<md-list-item
 				class="item-line"
 				*ngFor="let album of albums"
@@ -28,7 +25,31 @@
 			</md-list-item>
 		</md-list>
 	</div>
-	<div fxFlex="30%" fxFlexOffset="10%">
 
+	<div fxFlex="40%">
+		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
+			Recently Played
+		</h3>
+
+		<div *ngIf="loadingRecent">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		</div>
+
+		<md-list *ngIf="!loadingRecent">
+			<md-list-item
+				class="item-line"
+				*ngFor="let track of recentTracks"
+				(click)="playerService.enqueueTrack(track)">
+				<div md-line style="padding: 0px;">
+					<img src="{{track.album.imagePath}}"/>
+					<span class="item-text-single">
+						{{track.name}}
+					</span>
+					<span class="item-text-single item-text-description">
+						{{track.album.artist.name}} &ndash; {{track.genre}}
+					</span>
+				</div>
+			</md-list-item>
+		</md-list>
 	</div>
 </div>
