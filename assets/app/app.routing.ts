@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { ArtistsComponent } from './artists/artists.component';
+import { BrowseComponent } from './browse/browse.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
 import { ProfileComponent } from './user/profile.component';
@@ -14,7 +14,7 @@ const APP_ROUTES: Routes = [
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'search', component: SearchComponent },
-	{ path: 'artists', component: ArtistsComponent },
+	{ path: 'browse', component: BrowseComponent },
 	{ path: 'radio', component: RadioComponent },
 	{ path: 'jukebox', component: JukeboxComponent }
 ];

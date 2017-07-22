@@ -16,7 +16,7 @@ import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIco
 		MdMenuModule, MdProgressBarModule, MdSidenavModule, MdTabsModule } from '@angular/material';
 
 //App-specific
-import { ArtistsComponent } from './artists/artists.component';
+import { BrowseComponent } from './browse/browse.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { JukeboxComponent } from './jukebox/jukebox.component';
 import { PlayerComponent } from './player/player.component';
@@ -33,10 +33,8 @@ import { UserService } from './user/user.service';
 	providers: [UserService],
 	declarations: [
 		AppComponent,
-
-		ArtistsComponent,
+		BrowseComponent,
 		DashboardComponent,
-		DiscoveryComponent,
 		JukeboxComponent,
 		PlayerComponent,
 		ProfileComponent,

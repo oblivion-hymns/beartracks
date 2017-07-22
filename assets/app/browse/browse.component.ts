@@ -2,19 +2,19 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Album } from './../albums/album';
 import { AlbumService } from './../albums/album.service';
-import { Artist } from './artist';
-import { ArtistService } from './artist.service';
+import { Artist } from './../artists/artist';
+import { ArtistService } from './../artists/artist.service';
 import { PlayerService } from './../player/player.service';
 import { Track } from './../tracks/track';
 import { TrackService } from './../tracks/track.service';
 
 @Component({
 	providers: [ArtistService, AlbumService, TrackService],
-	selector: 'bt-artists',
-	styleUrls: ['./artists.component.css'],
-	templateUrl: './artists.component.html'
+	selector: 'bt-browse',
+	styleUrls: ['./browse.component.css'],
+	templateUrl: './browse.component.html'
 })
-export class ArtistsComponent implements OnInit {
+export class BrowseComponent implements OnInit {
 	album: Album[] = [];
 	albumSelected: boolean = false;
 	albums: Album[] = [];
