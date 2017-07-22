@@ -40,7 +40,7 @@ import { UserService } from './user/user.service';
 		ProfileComponent,
 		RadioComponent,
 		SearchComponent,
-		SignupComponent,
+		SignupComponent
 	],
 	imports: [
 		BrowserModule,

@@ -8,7 +8,7 @@ import { TrackService } from './../tracks/track.service';
 import { UserService } from './../user/user.service';
 
 @Component({
-	providers: [AlbumService, TrackService, UserService],
+	providers: [AlbumService, PlayerService, TrackService, UserService],
 	selector: 'bt-dashboard',
 	templateUrl: './dashboard.component.html'
 })
@@ -20,9 +20,9 @@ export class DashboardComponent implements OnInit
 	loadingRecent: boolean = true;
 
 	constructor(private playerService: PlayerService,
+				private userService: UserService,
 				private albumService: AlbumService,
-				private trackService: TrackService,
-				private userService: UserService) {}
+				private trackService: TrackService) { }
 
 	ngOnInit()
 	{
@@ -32,10 +32,11 @@ export class DashboardComponent implements OnInit
 		});
 
 		this.trackService.loadRecentlyPlayed().subscribe((tracks: Track[]) => {
-			console.log(tracks);
 			this.recentTracks = tracks;
 			this.loadingRecent = false;
 		});
+
+		console.log(this.userService.isLoggedIn());
 	}
 
 	translateDate(date)
