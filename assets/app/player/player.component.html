@@ -12,7 +12,7 @@
 	*ngIf="playerService.player.visible">
 
 	<div style="display: block; box-sizing: border-box; height: 5%; min-height: 5%; max-height: 5%;">
-		<h3 style="text-transform: lowercase;">
+		<h3 class="sad-header">
 			Now Playing
 			<button md-icon-button id="CloseQueue" (click)="playerService.player.closeQueue()">
 				<md-icon>
@@ -120,12 +120,18 @@
 		</div>
 	</div>
 
-	<div style="float: right; margin-right: 6px;">
+	<h3 class="sad-header">
+		Queue
+
 		<button md-icon-button
-			(click)="surpriseMe()">
+			class="text-hint tiny-icon"
+			mdTooltip="Surprise me!"
+			mdTooltipPosition="below"
+			(click)="surpriseMe()"
+			style="margin-left: 8px;">
 			<md-icon>casino</md-icon>
 		</button>
-	</div>
+	</h3>
 
 	<div class="queue-list" *ngIf="playerService.player.queue.length">
 
