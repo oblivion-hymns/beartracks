@@ -43,9 +43,7 @@
 
 	<!-- Recently Played Tracks -->
 	<div fxFlex="40%">
-		<h3 style="color: rgba(255, 255, 255, 0.54); text-transform: lowercase;">
-			Recently Played
-		</h3>
+		<h3 class="sad-header">Recently Played</h3>
 
 		<div *ngIf="loadingRecent">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
@@ -85,30 +83,5 @@
 				</div>
 			</md-list-item>
 		</md-list>
-
-		<!-- <md-list *ngIf="!loadingRecent">
-			<md-list-item
-				class="item-line"
-				*ngFor="let track of recentTracks"
-				(click)="playerService.player.enqueueOne(track)">
-				<div md-line style="padding: 0px;">
-					<img src="{{track.album.imagePath}}"/>
-					<span class="item-text-single">
-						{{track.name}}
-
-						<span style="color: rgba(255, 255, 255, 0.38); float: right;">
-							{{track.genre}}
-						</span>
-					</span>
-					<span class="item-text-single item-text-description">
-						{{track.album.artist.name}}
-
-						<span style="color: rgba(255, 255, 255, 0.38); float: right;">
-							{{track.playCount}} plays
-						</span>
-					</span>
-				</div>
-			</md-list-item>
-		</md-list> -->
 	</div>
 </div>

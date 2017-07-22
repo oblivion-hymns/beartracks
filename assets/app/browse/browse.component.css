@@ -4,12 +4,6 @@
 	 width: 33%;
 }
 
-.item-column-header
-{
-	color: rgba(255, 255, 255, 0.54);
-	text-transform: lowercase;
-}
-
 .item-column-body
 {
 	height: calc(100% - 73px);
