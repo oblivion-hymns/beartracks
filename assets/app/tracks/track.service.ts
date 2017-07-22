@@ -6,6 +6,7 @@ import * as fileSaver from 'file-saver';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs';
 
+import { Album } from './../albums/album';
 import { Track } from './track';
 
 @Injectable()
@@ -28,6 +29,21 @@ export class TrackService
 		}).subscribe(res => {
 			//For now...
 			fileSaver.saveAs(res, track.nameKey + '.mp3');
+		});
+	}
+
+	/**
+	 * Downloads the tracks from the given album
+	 * @param Album album
+	 */
+	downloadAlbum(album)
+	{
+		this.loadForAlbum(album._id).subscribe(tracks => {
+			for (var i = 0; i < tracks.length; i++)
+			{
+				var track = tracks[i];
+				this.download(track);
+			}
 		});
 	}
 
