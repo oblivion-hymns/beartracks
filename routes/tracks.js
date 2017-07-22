@@ -210,7 +210,7 @@ function loadRecentlyPlayed(req, res)
 			}
 		})
 		.sort('-updatedAt')
-		.limit(100)
+		.limit(50)
 		.exec(function(error, tracks){
 			if (error)
 			{
