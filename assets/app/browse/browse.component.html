@@ -123,7 +123,7 @@
 		<md-list class="item-column-body" *ngIf="tracks.length > 0">
 			<md-list-item class="item-line-image" *ngFor="let track of tracks">
 				<span md-line class="item-body" (click)="playerService.player.playOne(track)">
-					<img src="{{album.imagePath}}"/>
+					<img src="{{track.album.imagePath}}"/>
 					<em class="item-title text-primary">
 						<span class="text-hint" style="margin-right: 5px; font-style: normal;">
 							{{track.discNum}}-{{track.trackNum}}

@@ -27,6 +27,15 @@
 }
 
 /**
+ * Generic classes
+ */
+h3.sad-header
+{
+	color: rgba(255, 255, 255, 0.54);
+	text-transform: lowercase;
+}
+
+/**
  * Alignment
  */
 .text-center

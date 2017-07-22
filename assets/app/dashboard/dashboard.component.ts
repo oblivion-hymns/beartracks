@@ -77,4 +77,30 @@ export class DashboardComponent implements OnInit
 			this.loadingRecent = false;
 		});
 	}
+
+	translateDate(date)
+	{
+		var now = new Date();
+		var year = now.getFullYear();
+		var month = now.getMonth() + 1;
+		var day = now.getDate();
+		var todayString = year + '-' + month + '-' + day;
+		var today = new Date(todayString);
+
+		var day = now.getDate() - 1;
+		var yesterdayString = year + '-' + month + '-' + day;
+		var yesterday = new Date(yesterdayString);
+
+		var inputDate = new Date(date);
+		if (inputDate.getDate() >= today.getDate())
+		{
+			return "Today";
+		}
+		else if (inputDate.getDate() >= yesterday.getDate())
+		{
+			return "Yesterday";
+		}
+
+
+	}
 }

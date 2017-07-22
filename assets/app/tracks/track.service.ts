@@ -33,8 +33,8 @@ export class TrackService
 					var length = trackData.length;
 					var filePath = trackData.filePath;
 					var playCount = trackData.playCount;
-
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
+					var updatedAt = trackData.updatedAt;
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
 					tracks.push(track);
 				}
 
@@ -62,7 +62,8 @@ export class TrackService
 				var length = trackData.length;
 				var filePath = trackData.filePath;
 				var playCount = trackData.playCount;
-				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
+				var updatedAt = trackData.updatedAt;
+				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
 				return track;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
@@ -90,8 +91,8 @@ export class TrackService
 					var length = trackData.length;
 					var filePath = trackData.filePath;
 					var playCount = trackData.playCount;
-
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
+					var updatedAt = trackData.updatedAt;
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
 					tracks.push(track);
 				}
 
@@ -119,8 +120,8 @@ export class TrackService
 					var length = trackData.length;
 					var filePath = trackData.filePath;
 					var playCount = trackData.playCount;
-
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
+					var updatedAt = trackData.updatedAt;
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
 					tracks.push(track);
 				}
 				this.tracks = tracks;
@@ -148,8 +149,8 @@ export class TrackService
 					var length = trackData.length;
 					var filePath = trackData.filePath;
 					var playCount = trackData.playCount;
-
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount);
+					var updatedAt = trackData.updatedAt;
+					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
 					tracks.push(track);
 				}
 				this.tracks = tracks;

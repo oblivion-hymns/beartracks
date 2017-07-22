@@ -42,7 +42,7 @@ md-list-item.item-line-image [md-line].item-body
 	display: block;
 	float: left;
 	line-height: 24px;
-	margin-top: 8px;
+	margin-top: 6px;
 }
 
 md-list-item.item-line-image .item-body img
