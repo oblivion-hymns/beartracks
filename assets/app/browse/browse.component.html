@@ -56,7 +56,7 @@
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="albums.length > 0">
 			<md-list-item class="item-line-image" *ngFor="let album of albums">
-				<span md-line class="item-body" (click)="loadTracks(album)" style="margin-top: 8px;">
+				<span md-line class="item-body" (click)="loadTracks(album)">
 					<img src="{{album.imagePath}}"/>
 					<em class="item-title text-primary">
 						{{album.name}}
@@ -86,30 +86,21 @@
 		</md-list>
 	</div>
 
+
+
 	<!-- Tracks -->
 	<div class="item-column">
 		<h3 class="item-column-header">
 			Tracks
-			<span *ngIf="tracks.length > 0">
-				<button md-icon-button
-					class="tiny-icon"
-					mdTooltip="Play album"
-					mdTooltipPosition="below"
-					(click)="playerService.enqueueAlbum(album)">
-					<md-icon class="tiny-icon">
-						play_arrow
-					</md-icon>
-				</button>
-			</span>
 		</h3>
 
 		<!-- Loading -->
-		<div *ngIf="loadingTracks" style="text-align: center;">
+		<div class="text-center" *ngIf="loadingTracks">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- Display when there are no tracks -->
-		<div *ngIf="tracks.length == 0" style="text-align: center;">
+		<div class="text-center" *ngIf="albums.length == 0">
 			<md-icon class="error-icon">
 				error_outline
 			</md-icon><br />
@@ -123,42 +114,37 @@
 
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="tracks.length > 0">
-			<md-list-item class="item-line" *ngFor="let track of tracks">
-				<div md-line class="item-text">
-					<img src="{{track.album.imagePath}}" />
-					<span class="item-subtitle" style="float: right; text-align: right;">
-
-						<button md-icon-button
-							class="tiny-icon"
-							mdTooltip="Play"
-							mdTooltipPosition="below"
-							(click)="playerService.player.playOne(track)">
-							<md-icon class="tiny-icon">
-								play_arrow
-							</md-icon>
+			<md-list-item class="item-line-image" *ngFor="let track of tracks">
+				<span md-line class="item-body" (click)="playerService.player.playOne(track)">
+					<img src="{{album.imagePath}}"/>
+					<em class="item-title text-primary">
+						<span class="text-hint" style="margin-right: 5px; font-style: normal;">
+							{{track.discNum}}-{{track.trackNum}}
+						</span> {{track.name}}
+					</em><br />
+					<div class="item-subtitle">
+						<div class="text-secondary">
+							{{track.genre}} &ndash; {{track.lengthFormatted}}
+						</div>
+					</div>
+				</span>
+				<div class="item-menu">
+					<md-menu #appMenu="mdMenu">
+						<button md-menu-item (click)="playerService.player.playOne(track)">
+							<md-icon>play_arrow</md-icon>
+							<span>play track</span>
 						</button>
-
-						<button md-icon-button
-							class="tiny-icon"
-							mdTooltip="Queue"
-							mdTooltipPosition="below"
-							(click)="playerService.player.enqueueOne(track)">
-							<md-icon class="tiny-icon">
-								queue
-							</md-icon>
+						<button md-menu-item (click)="playerService.player.enqueueOne(track)">
+							<md-icon>queue_music</md-icon>
+							<span>add to queue</span>
 						</button>
-					</span>
-
-					<span class="item-track" style="float: left;">
-						<span class="item-track-title">
-							{{track.trackNum}}. {{track.name}}
-						</span><br />
-						<span class="item-track-summary">
-							Disc {{track.discNum}}
-						</span>
-					</span>
+					</md-menu>
+					<button md-icon-button [mdMenuTriggerFor]="appMenu">
+						<md-icon>more_vert</md-icon>
+					</button>
 				</div>
 			</md-list-item>
 		</md-list>
 	</div>
+
 </div>
