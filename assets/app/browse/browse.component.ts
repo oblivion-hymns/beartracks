@@ -7,9 +7,10 @@ import { ArtistService } from './../artists/artist.service';
 import { PlayerService } from './../player/player.service';
 import { Track } from './../tracks/track';
 import { TrackService } from './../tracks/track.service';
+import { UserService } from './../user/user.service';
 
 @Component({
-	providers: [ArtistService, AlbumService, TrackService],
+	providers: [ArtistService, AlbumService, TrackService, UserService],
 	selector: 'bt-browse',
 	styleUrls: ['./browse.component.css'],
 	templateUrl: './browse.component.html'
@@ -31,7 +32,8 @@ export class BrowseComponent implements OnInit {
 	constructor(private playerService: PlayerService,
 				private artistService: ArtistService,
 				private albumService: AlbumService,
-				private trackService: TrackService) {}
+				private trackService: TrackService,
+				private userService: UserService) {}
 
 	ngOnInit()
 	{

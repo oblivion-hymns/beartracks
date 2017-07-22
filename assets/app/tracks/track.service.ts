@@ -1,5 +1,7 @@
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, ResponseContentType } from '@angular/http';
 import { Injectable } from '@angular/core';
+
+import * as fileSaver from 'file-saver';
 
 import 'rxjs/Rx';
 import { Observable } from 'rxjs';
@@ -13,6 +15,25 @@ export class TrackService
 
 	constructor(private http: Http) {}
 
+	/**
+	 * Downloads the given track.
+	 * @param Track track
+	 */
+	download(track)
+	{
+		return this.http.get('http://bwilbur.com:3000' + track.filePath, {
+			responseType: ResponseContentType.Blob
+		}).map((res) => {
+			return new Blob([res.blob()], { type: 'audio/mpeg' });
+		}).subscribe(res => {
+			//For now...
+			fileSaver.saveAs(res, track.nameKey + '.mp3');
+		});
+	}
+
+	/**
+	 * Finds tracks based on the given query
+	 */
 	find(query)
 	{
 		var getUrl = 'http://bwilbur.com:3000/tracks/find?query=' + query;
