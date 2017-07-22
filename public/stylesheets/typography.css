@@ -27,6 +27,14 @@
 }
 
 /**
+ * Alignment
+ */
+.text-center
+{
+	text-align: center;
+}
+
+/**
  * Pseudo-character md-icon
  */
 .tiny-icon

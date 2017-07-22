@@ -1,18 +1,18 @@
-<div fxLayout="row" style="height: calc(100% - 64px); box-sizing: border-box;">
+<div class="container" fxLayout="row">
 
 	<!-- Artists -->
-	<div class="item-column" style="padding-top: 0px;">
+	<div class="item-column">
 		<h3 class="item-column-header">
 			Artists
 		</h3>
 
 		<!-- Loading -->
-		<div *ngIf="loadingArtists" style="text-align: center;">
+		<div class="text-center" *ngIf="loadingArtists">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- None found -->
-		<div *ngIf="artists.length == 0" style="text-align: center;">
+		<div class="text-center" *ngIf="artists.length == 0">
 			<md-icon class="error-icon">
 				error_outline
 			</md-icon><br />
@@ -22,14 +22,9 @@
 		</div>
 
 		<!-- List -->
-		<md-list class="item-column-body" *ngIf="artists.length > 0" style="padding-top: 0px;">
-			<md-list-item class="item-line" *ngFor="let artist of displayArtists" (click)="loadAlbums(artist)">
-				<div md-line>
-					<!-- img src="{{artist.imagePath}}" style="display: inline-block; object-fit: cover;"/> -->
-					<span class="item-text">
-						{{artist.name}}
-					</span>
-				</div>
+		<md-list class="item-column-body" *ngIf="artists.length > 0">
+			<md-list-item class="item-line-single" *ngFor="let artist of displayArtists" (click)="loadAlbums(artist)">
+				<div md-line>{{artist.name}}</div>
 			</md-list-item>
 		</md-list>
 	</div>
@@ -60,21 +55,18 @@
 
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="albums.length > 0">
-			<md-list-item class="item-line" *ngFor="let album of albums" (click)="loadTracks(album)">
-				<span md-line class="item-text">
-					<img src="{{album.imagePath}}" class="item-text"/>
-					<span class="item-track-subtitle">
-						{{album.year}}
-					</span>
-
-					<span class="item-track" style="float: left">
-						<em class="item-track-title">
-							{{album.name}}
-						</em><br />
-						<span class="item-track-summary">
+			<md-list-item class="item-line-image" *ngFor="let album of albums" (click)="loadTracks(album)">
+				<span md-line class="item-body">
+					<img src="{{album.imagePath}}"/>
+					<em class="item-title text-primary">
+						{{album.name}}
+					</em><br />
+					<div class="item-subtitle">
+						<div class="text-secondary">
 							{{album.artist.name}}
-						</span>
-					</span>
+						</div>
+
+					</div>
 				</span>
 			</md-list-item>
 		</md-list>

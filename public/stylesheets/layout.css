@@ -1,3 +1,96 @@
+/**
+ * Outer container to match doc height
+ */
+.container
+{
+	box-sizing: border-box;
+	height: 100%;
+}
+
+
+
+/**
+ * List item with single line of text
+ */
+md-list-item.item-line-single
+{
+	overflow: hidden;
+}
+
+md-list-item.item-line-single:hover
+{
+	background-color: rgba(40, 40, 40, 0.87);
+	cursor: pointer;
+}
+
+/**
+ * List item with two lines of text & an image
+ */
+md-list-item.item-line-image
+{
+	overflow: hidden;
+	padding: 5px;
+}
+
+md-list-item.item-line-image:hover
+{
+	background-color: rgba(40, 40, 40, 0.87);
+	cursor: pointer;
+}
+
+md-list-item.item-line-image .item-body
+{
+	display: block;
+	line-height: 24px;
+	margin-top: 0;
+}
+
+md-list-item.item-line-image .item-body img
+{
+	float: left;
+	height: 48px;
+	margin-right: 10px;
+	width: 48px;
+}
+
+md-list-item.item-line-image .item-body .item-text
+{
+	width: 80%;
+}
+
+md-list-item.item-line-image .item-body .item-title
+{
+	overflow-x: hidden;
+}
+
+md-list-item.item-line-image .item-body .item-title>.text-primary
+{
+	display: inline-block;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+}
+
+md-list-item.item-line-image .item-body .item-subtitle
+{
+	overflow-x: hidden;
+}
+
+md-list-item.item-line-image .item-body .item-subtitle>.text-secondary
+{
+	display: inline-block;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+}
+
+
+
+/**
+ * Topmost search/filter box
+ */
 .filter-box-top input
 {
 	color: rgba(255, 255, 255, 0.54);
