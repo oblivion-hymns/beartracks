@@ -55,19 +55,33 @@
 
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="albums.length > 0">
-			<md-list-item class="item-line-image" *ngFor="let album of albums" (click)="loadTracks(album)">
-				<span md-line class="item-body">
+			<md-list-item class="item-line-image" *ngFor="let album of albums">
+				<span md-line class="item-body" (click)="loadTracks(album)">
 					<img src="{{album.imagePath}}"/>
 					<em class="item-title text-primary">
 						{{album.name}}
 					</em><br />
 					<div class="item-subtitle">
 						<div class="text-secondary">
-							{{album.artist.name}}
+							{{album.artist.name}} &ndash; {{album.year}}
 						</div>
-
 					</div>
 				</span>
+				<div class="item-menu">
+					<md-menu #appMenu="mdMenu">
+						<button md-menu-item (click)="playerService.playAlbum(album)">
+							<md-icon>play_arrow</md-icon>
+							<span>play album</span>
+						</button>
+						<button md-menu-item (click)="playerService.enqueueAlbum(album)">
+							<md-icon>queue_music</md-icon>
+							<span>add to queue</span>
+						</button>
+					</md-menu>
+					<button md-icon-button [mdMenuTriggerFor]="appMenu">
+						<md-icon>more_vert</md-icon>
+					</button>
+				</div>
 			</md-list-item>
 		</md-list>
 	</div>
@@ -113,7 +127,6 @@
 				<div md-line class="item-text">
 					<img src="{{track.album.imagePath}}" />
 					<span class="item-subtitle" style="float: right; text-align: right;">
-						{{track.lengthFormatted}}<br/>
 
 						<button md-icon-button
 							class="tiny-icon"

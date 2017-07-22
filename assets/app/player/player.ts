@@ -34,116 +34,164 @@ export class Player implements OnInit
 
 	}
 
+	/**
+	 * Sets the volume to the given value (between 0.0 and 1.0)
+	 * @param number value
+	 */
 	setVolume(value)
 	{
 		this.volume = value;
 		this.audio.volume = this.volume;
 	}
 
+	/**
+	 * Turns off the player's volume. Holds on to the old volume value for unmuting
+	 */
 	mute()
 	{
 		this.oldVolume = this.volume;
 		this.setVolume(0);
 	}
 
+	/**
+	 * Returns the player from a muted state to its prior volume
+	 */
 	unmute()
 	{
 		this.setVolume(this.oldVolume);
 	}
 
-	enqueueOne(track)
+	/**
+	 * Completely resets the audio object if it exists
+	 */
+	resetAudio()
 	{
-		if (!this.currentTrack)
-		{
-			this.playOne(track);
-		}
-		else
-		{
-			this.queue.push(track);
-		}
-	}
-
-	enqueueMany(tracks)
-	{
-		this.queue = [];
 		if (this.audio)
 		{
 			this.audio.pause();
 			this.audio.currentTime = 0;
 			this.audio = null;
 		}
+	}
 
+	/**
+	 * Resets all properties of the player (as in, starting a new song).
+	 * Returns the state of the player to completely fresh -- no track, no queue, no song playing
+	 */
+	resetPlayer()
+	{
+		this.resetAudio();
+
+		//Reset queue
+		this.queue = [];
+		this.queuePosition = -1;
+		this.currentTrack = null;
+
+		//Reset time elapsed
+		this.elapsedPercent = 0;
+		this.elapsed = '0:00';
+	}
+
+	/**
+	 * Ensures that "Time elapsed" tracking is happening
+	 */
+	checkTimeInterval()
+	{
+		if (!this.elapsedInterval)
+		{
+			this.elapsedInterval = setInterval(()=> {
+				this.getElapsed();
+				this.getElapsedPercent();
+			}, 1000);
+		}
+	}
+
+
+
+	/**
+	 * Replaces the queue with a single track and plays that track
+	 * @param Track track
+	 */
+	playOne(track)
+	{
+		this.resetPlayer();
+		this.queue.push(track);
+		this.playFromBeginning();
+	}
+
+	/**
+	 * Replaces the queue with a list of tracks and begins playing the first track
+	 * @param Track[] tracks
+	 */
+	playMany(tracks)
+	{
+		this.resetPlayer();
+		for (var i = 0; i < tracks.length; i++)
+		{
+			this.queue.push(tracks[i]);
+		}
+		this.playFromBeginning();
+	}
+
+	/**
+	 * Plays the current queue starting from the beginning.
+	 */
+	playFromBeginning()
+	{
+		this.queuePosition = 0;
+		this.currentTrack = this.queue[this.queuePosition];
+		this.audio = new Audio(this.currentTrack.filePath);
+		this.audio.play();
+		this.audio.volume = this.volume;
+		this.checkTimeInterval();
+		this.openQueue();
+	}
+
+	/**
+	 * Plays a single track at a single position in the queue. Does not modify the queue
+	 * @param int index - The 0-indexed key for the track to play
+	 */
+	playPosition(index)
+	{
+		this.resetAudio();
+		this.queuePosition = index;
+		this.currentTrack = this.queue[this.queuePosition];
+		this.audio = new Audio(this.currentTrack.filePath);
+		this.audio.play();
+		this.audio.volume = this.volume;
+		this.openQueue();
+
+		this.checkTimeInterval();
+	}
+
+	/**
+	 * Adds the given track to the end of the current queue
+	 * @param Track track
+	 */
+	enqueueOne(track)
+	{
+		this.queue.push(track);
+		this.openQueue();
+	}
+
+	/**
+	 * Adds the given list of tracks to the end of the current queue
+	 */
+	enqueueMany(tracks)
+	{
 		for (var i in tracks)
 		{
 			this.queue.push(tracks[i]);
 		}
 
-		this.playPosition(0);
 		this.openQueue();
 	}
+
+
 
 	/**
-	 * Plays a single track.
+	 * Temporarily pauses audio playback
 	 */
-	playOne(track)
-	{
-		this.elapsedPercent = 0;
-		this.elapsed = '0:00';
-
-		this.queue = [];
-		this.queuePosition = -1;
-		this.currentTrack = track;
-
-		if (this.audio)
-		{
-			this.audio.pause();
-			this.audio.currentTime = 0;
-			this.audio = null;
-		}
-
-		this.audio = new Audio(track.filePath);
-		this.audio.play();
-		this.audio.volume = this.volume;
-
-		this.openQueue();
-
-		if (!this.elapsedInterval)
-		{
-			this.elapsedInterval = setInterval(()=> {
-				this.getElapsed();
-				this.getElapsedPercent();
-			}, 1000);
-		}
-	}
-
-	playPosition(index)
-	{
-		this.elapsedPercent = 0;
-		this.elapsed = '0:00';
-
-		this.queuePosition = index;
-		this.currentTrack = this.queue[this.queuePosition];
-
-		if (this.audio)
-		{
-			this.audio.pause();
-			this.audio.currentTime = 0;
-			this.audio = null;
-		}
-
-		this.audio = new Audio(this.currentTrack.filePath);
-		this.audio.play();
-		this.audio.volume = this.volume;
-
-		if (!this.elapsedInterval)
-		{
-			this.elapsedInterval = setInterval(()=> {
-				this.getElapsed();
-				this.getElapsedPercent();
-			}, 1000);
-		}
-	}
-
 	pause()
 	{
 		if (this.audio)
@@ -152,6 +200,9 @@ export class Player implements OnInit
 		}
 	}
 
+	/**
+	 * Resumes audio playback from a paused state
+	 */
 	resume()
 	{
 		if (this.audio)
@@ -160,16 +211,25 @@ export class Player implements OnInit
 		}
 	}
 
+	/**
+	 * Completely hides the player from the screen (i.e. no clickable tab or interaction possible)
+	 */
 	hide()
 	{
 		this.visible = false;
 	}
 
+	/**
+	 * Returns the player from its completely invisible state
+	 */
 	show()
 	{
 		this.visible = true;
 	}
 
+	/**
+	 * Calculates the elapsed time of the current track
+	 */
 	getElapsed()
 	{
 		if (this.currentTrack)

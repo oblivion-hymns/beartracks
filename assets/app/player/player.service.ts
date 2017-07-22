@@ -21,6 +21,27 @@ export class PlayerService
 		this.player = new Player(this.http);
 	}
 
+	/**
+	 * Replaces the queue with the given album
+	 */
+	playAlbum(album)
+	{
+		this.trackService.loadForAlbum(album._id).subscribe(
+			(tracks: Track[]) => {
+				var allTracks = [];
+				for (var i in tracks)
+				{
+					allTracks.push(tracks[i]);
+				}
+
+				this.player.playMany(allTracks);
+			}
+		)
+	}
+
+	/**
+	 * Appends the given album to the end of the current queue
+	 */
 	enqueueAlbum(album)
 	{
 		this.trackService.loadForAlbum(album._id).subscribe(
