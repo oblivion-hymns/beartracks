@@ -5,52 +5,11 @@ import { AlbumService } from './../albums/album.service';
 import { PlayerService } from '../player/player.service';
 import { Track } from './../tracks/track';
 import { TrackService } from './../tracks/track.service';
+import { UserService } from './../user/user.service';
 
 @Component({
-	providers: [AlbumService, TrackService],
+	providers: [AlbumService, TrackService, UserService],
 	selector: 'bt-dashboard',
-	styles: [`
-		.item-line
-		{
-			padding: 5px;
-			overflow: hidden;
-		}
-
-		.item-line:hover
-		{
-			background-color: rgba(40, 40, 40, 0.87);
-			cursor: pointer;
-		}
-
-		.item-line img
-		{
-			float: left;
-			height: 48px;
-			margin-right: 10px;
-			width: 48px;
-		}
-
-		.item-line .item-text
-		{
-			display: block;
-			line-height: 24px;
-			margin-top: 0;
-			white-space: normal;
-		}
-
-		.item-line .item-text-single
-		{
-			display: block;
-			line-height: 24px;
-			text-overflow: ellipsis;
-			overflow-x: hidden;
-		}
-
-		.item-line .item-text-single.item-text-description
-		{
-			color: rgba(255, 255, 255, 0.34);
-		}
-	`],
 	templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit
@@ -62,7 +21,8 @@ export class DashboardComponent implements OnInit
 
 	constructor(private playerService: PlayerService,
 				private albumService: AlbumService,
-				private trackService: TrackService) {}
+				private trackService: TrackService,
+				private userService: UserService) {}
 
 	ngOnInit()
 	{
@@ -100,7 +60,5 @@ export class DashboardComponent implements OnInit
 		{
 			return "Yesterday";
 		}
-
-
 	}
 }

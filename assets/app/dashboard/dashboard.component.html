@@ -9,7 +9,7 @@
 		</div>
 
 		<!-- List -->
-		<md-list *ngIf="albums.length > 0 && !loadingAlbums">
+		<md-list *ngIf="!loadingAlbums">
 			<md-list-item class="item-line-image" *ngFor="let album of albums">
 				<span md-line class="item-body" (click)="playerService.playAlbum(album)">
 					<img src="{{album.imagePath}}"/>
@@ -32,6 +32,10 @@
 							<md-icon>queue_music</md-icon>
 							<span>add to queue</span>
 						</button>
+						<button md-menu-item (click)="trackService.downloadAlbum(album)" *ngIf="userService.isLoggedIn()">
+							<md-icon>file_download</md-icon>
+							<span>download all tracks</span>
+						</button>
 					</md-menu>
 					<button md-icon-button [mdMenuTriggerFor]="appMenu">
 						<md-icon>more_vert</md-icon>
@@ -50,7 +54,7 @@
 		</div>
 
 		<!-- List -->
-		<md-list *ngIf="!loadingRecent && recentTracks.length > 0">
+		<md-list *ngIf="!loadingRecent">
 			<md-list-item class="item-line-image" *ngFor="let track of recentTracks">
 				<span md-line class="item-body" (click)="playerService.player.playOne(track)">
 					<img src="{{track.album.imagePath}}"/>
@@ -75,6 +79,10 @@
 						<button md-menu-item (click)="playerService.player.enqueueOne(track)">
 							<md-icon>queue_music</md-icon>
 							<span>add to queue</span>
+						</button>
+						<button md-menu-item (click)="trackService.download(track)" *ngIf="userService.isLoggedIn()">
+							<md-icon>file_download</md-icon>
+							<span>download track</span>
 						</button>
 					</md-menu>
 					<button md-icon-button [mdMenuTriggerFor]="appMenu">
