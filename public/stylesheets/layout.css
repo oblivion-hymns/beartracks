@@ -1,0 +1,25 @@
+.filter-box-top input
+{
+	color: rgba(255, 255, 255, 0.54);
+}
+
+.filter-box-top
+{
+	font-size: 32px;
+	margin-top: 0px;
+	width: 100%;
+}
+
+.filter-box-top .mat-input-infix
+{
+	background-color: rgba(0, 0, 0, 0.18);
+	border-top: 0px;
+	margin-top: 0px;
+	padding: 7px;
+}
+
+.filter-box-top .mat-input-placeholder-wrapper
+{
+	margin-top: 0px;
+	padding-top: 0px;
+}

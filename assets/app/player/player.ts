@@ -19,7 +19,7 @@ export class Player implements OnInit
 
 	public currentTrack: Track;
 	public queue = [];
-	public queuePosition = 0;
+	public queuePosition = -1;
 	public queueOpen: boolean = false;
 	public visible: boolean = true;
 	private http: Http;
@@ -59,7 +59,7 @@ export class Player implements OnInit
 		}
 		else
 		{
-			this.queue.push(track)
+			this.queue.push(track);
 		}
 	}
 
@@ -91,7 +91,7 @@ export class Player implements OnInit
 		this.elapsed = '0:00';
 
 		this.queue = [];
-		this.queuePosition = 0;
+		this.queuePosition = -1;
 		this.currentTrack = track;
 
 		if (this.audio)
@@ -246,7 +246,7 @@ export class Player implements OnInit
 			var finishedTrack = this.currentTrack;
 			this.http.get('http://bwilbur.com:3000/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
 
-			if (this.queue[this.queuePosition] + 1)
+			if (this.queue[this.queuePosition + 1])
 			{
 				this.playPosition(this.queuePosition + 1);
 			}
@@ -255,7 +255,7 @@ export class Player implements OnInit
 				this.pause();
 			}
 
-			this.currentTrack = null;
+			//this.currentTrack = null;
 		}
 	}
 

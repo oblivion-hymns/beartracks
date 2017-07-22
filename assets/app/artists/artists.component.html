@@ -6,23 +6,6 @@
 			Artists
 		</h3>
 
-		<div>
-			<button md-icon-button
-				style="position: absolute;">
-				<md-icon>search</md-icon>
-			</button>
-			<md-input-container
-				class="filter-box-top"
-				style="width: 100%; font-size: 24px; padding: 0px;">
-				<input mdInput
-					maxlength="32"
-					type="text"
-					style="padding-left: 32px;"
-					[(ngModel)]="filterString"
-					autofocus/>
-			</md-input-container>
-		</div>
-
 		<!-- Loading -->
 		<div *ngIf="loadingArtists" style="text-align: center;">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
@@ -42,7 +25,7 @@
 		<md-list class="item-column-body" *ngIf="artists.length > 0" style="padding-top: 0px;">
 			<md-list-item class="item-line" *ngFor="let artist of displayArtists" (click)="loadAlbums(artist)">
 				<div md-line>
-					<img src="{{artist.imagePath}}" style="display: inline-block; object-fit: cover;"/>
+					<!-- img src="{{artist.imagePath}}" style="display: inline-block; object-fit: cover;"/> -->
 					<span class="item-text">
 						{{artist.name}}
 					</span>
@@ -174,15 +157,3 @@
 		</md-list>
 	</div>
 </div>
-
-
-
-<!-- <md-grid-list cols="4" rowHeight="256" *ngIf="artists.length > 0">
-	<md-grid-tile *ngFor="let artist of artists" [ngStyle]="{'background-image': 'url(' + artist.imagePath + ')'}">
-		<md-grid-tile-footer>
-			<strong class="tile-name">
-				{{artist.name}}
-			</strong>
-		</md-grid-tile-footer>
-	</md-grid-tile>
-</md-grid-list> -->
