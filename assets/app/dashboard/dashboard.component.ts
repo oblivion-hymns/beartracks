@@ -54,8 +54,6 @@ export class DashboardComponent implements OnInit
 		var yesterdayString = year + '-' + month + '-' + day;
 		var yesterday = new Date(yesterdayString);
 
-		var inputDate = new Date(date);
-		return dateformat(inputDate, 'mmm d, h:MMtt');
 		if (inputDate.getDate() >= today.getDate())
 		{
 			return "Today";
@@ -65,6 +63,7 @@ export class DashboardComponent implements OnInit
 			return "Yesterday";
 		}
 
-
+		var inputDate = new Date(date);
+		return dateformat(inputDate, 'mmm d, h:MMtt');
 	}
 }
