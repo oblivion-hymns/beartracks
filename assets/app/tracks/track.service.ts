@@ -221,4 +221,17 @@ export class TrackService
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
+
+	/**
+	 * Returns the complete genre map
+	 */
+	loadGenres()
+	{
+		return this.http.get('http://bwilbur.com/tracks/genre-map')
+			.map((response: Response) => {
+				const genres = response.json().genres;
+				return genres;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
 }

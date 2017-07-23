@@ -1,4 +1,6 @@
 <div class="container">
+
+	<!-- Intro -->
 	<div fxLayout="row">
 		<div fxLayout="column" fxFlex="50%" fxFlexOffset="25%">
 			<h3 class="sad-header">Radio</h3>
@@ -12,20 +14,58 @@
 			</p>
 		</div>
 	</div>
-	<div fxLayout="row">
 
-		<div class="text-center"
-			fxLayout="column"
-			fxFlex="50%"
-			fxFlexOffset="25%"
-			*ngIf="!playerService.player.isRadio">
-			<button md-button (click)="playerService.enableRadio()">
-				<h1 class="enable-radio">
-					<md-icon>radio</md-icon> enable radio
-				</h1>
+	<!-- Enable/Disable -->
+	<div fxLayout="row" style="margin-top: 16px;">
+		<!-- Enable -->
+		<div class="text-center" fxLayout="column" fxFlex="20" fxFlexOffset="40%" *ngIf="!playerService.player.isRadio">
+			<button md-raised-button (click)="playerService.enableRadio();"
+				style="padding: 8px;">
+				<md-icon class="tiny-icon">radio</md-icon> enable radio
 			</button>
-
 		</div>
 
+		<!-- Disable -->
+		<div class="text-center" fxLayout="column" fxFlex="20" fxFlexOffset="40%" *ngIf="playerService.player.isRadio">
+			<button md-button (click)="playerService.disableRadio();"
+				style="padding: 8px;">
+				<md-icon class="tiny-icon text-blue">radio</md-icon> disable radio
+			</button>
+		</div>
+	</div>
+
+	<!-- Config -->
+	<div fxLayout="row" style="margin-top: 16px;" *ngIf="playerService.player.isRadio">
+		<div fxLayout="column" fxFlex="20%" fxFlexOffset="40%">
+			<h3 class="sad-header">Configure</h3>
+			<p class="text-hint">
+				Choose your genre &amp; how adventurous you want to be. Beartracks does the rest.
+			</p>
+
+			<!-- Genre -->
+			<md-select placeholder="Genre" style="margin-top: 32px;">
+				<md-option *ngFor="let genre of genres" [value]="genre.name">
+					{{genre.name}}
+				</md-option>
+			</md-select>
+
+			<!-- Degree of Relevancy -->
+			<div style="margin-top: 32px;">
+				<label class="text-hint" style="text-transform: lowercase;">
+					How adventurous are you feeling?
+				</label><br />
+
+				<div style="float: left; width: 50%;">
+					<md-slider min="0" max="5" step="1" value="1" tickInterval="1"
+						[(ngModel)]="setDegree" style='width: 100%'>
+					</md-slider>
+				</div>
+				<div style="float: right; margin-top: 14px; width: 50%; box-sizing: border-box; padding-left: 16px;">
+					{{degreeString}}
+				</div>
+
+			</div>
+
+		</div>
 	</div>
 </div>
