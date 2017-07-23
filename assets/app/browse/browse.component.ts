@@ -15,7 +15,8 @@ import { UserService } from './../user/user.service';
 	styleUrls: ['./browse.component.css'],
 	templateUrl: './browse.component.html'
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit
+{
 	album: Album[] = [];
 	albumSelected: boolean = false;
 	albums: Album[] = [];

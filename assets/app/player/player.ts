@@ -157,6 +157,7 @@ export class Player implements OnInit
 	{
 		this.queuePosition = 0;
 		this.currentTrack = this.queue[this.queuePosition];
+		console.log(this.currentTrack);
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
 		this.audio.volume = this.volume;

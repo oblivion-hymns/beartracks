@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { Album } from './../albums/album';
 import { AlbumService } from './../albums/album.service';
-import { PlayerService } from '../player/player.service';
+import { Artist } from './../artists/artist';
+import { ArtistService } from './../artists/artist.service';
+import { PlayerService } from './../player/player.service';
 import { Track } from './../tracks/track';
 import { TrackService } from './../tracks/track.service';
 import { UserService } from './../user/user.service';
@@ -10,7 +12,7 @@ import { UserService } from './../user/user.service';
 import * as dateformat from 'dateformat';
 
 @Component({
-	providers: [AlbumService, PlayerService, TrackService, UserService],
+	providers: [ArtistService, AlbumService, TrackService, UserService],
 	selector: 'bt-dashboard',
 	templateUrl: './dashboard.component.html'
 })
@@ -22,9 +24,10 @@ export class DashboardComponent implements OnInit
 	loadingRecent: boolean = true;
 
 	constructor(private playerService: PlayerService,
-				private userService: UserService,
+				private artistService: ArtistService,
 				private albumService: AlbumService,
-				private trackService: TrackService) { }
+				private trackService: TrackService,
+				private userService: UserService) {}
 
 	ngOnInit()
 	{
