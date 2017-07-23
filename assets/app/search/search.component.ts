@@ -7,6 +7,7 @@ import { PlayerService } from '../player/player.service';
 import { ArtistService } from './../artists/artist.service';
 import { AlbumService } from './../albums/album.service';
 import { TrackService } from './../tracks/track.service';
+import { UserService } from './../user/user.service';
 
 @Component({
 	providers: [ArtistService, AlbumService, TrackService],
@@ -65,6 +66,7 @@ export class SearchComponent implements OnInit {
 	@Input() filterQuery: string = '';
 
 	constructor(private playerService: PlayerService,
+				private userService: UserService,
 				private artistService: ArtistService,
 				private albumService: AlbumService,
 				private trackService: TrackService) {}

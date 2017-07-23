@@ -1,4 +1,4 @@
-<md-input-container id="Filter" class="filter-box-top">
+<md-input-container class="filter-box-top">
 	<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
 </md-input-container>
 
@@ -16,9 +16,7 @@
 <div fxLayout='row' *ngIf='filterQuery.length >= 3'>
 	<div fxFlex='98%' fxFlexOffset="2%">
 		<div fxFlex='33%'>
-			<h2 style="color: rgba(255, 255, 255, 0.34);">
-				Artists
-			</h2>
+			<h3 class="sad-header">Artists</h3>
 			<div *ngIf="artistsLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 			</div>
@@ -45,32 +43,59 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Albums -->
 		<div fxFlex='33%'>
-			<h2 style="color: rgba(255, 255, 255, 0.34);">
-				Albums
-			</h2>
+			<h3 class="sad-header">Albums</h3>
 			<div *ngIf="albumsLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 			</div>
 			<div *ngIf="!albumsLoading">
+
+				<!-- Album results -->
 				<div *ngIf="albums.length > 0">
-					<md-list>
-						<md-list-item
-							class="item-line"
-							*ngFor="let album of albums"
-							(click)="playerService.enqueueAlbum(album)">
-							<div md-line style="padding: 0px;">
+					<!-- List -->
+					<md-list class="item-column-body" *ngIf="albums.length > 0">
+						<md-list-item class="item-line-image" *ngFor="let album of albums">
+							<span md-line class="item-body" (click)="loadTracks(album)">
 								<img src="{{album.imagePath}}"/>
-								<span class="item-text-single">
+								<em class="item-title text-primary">
 									{{album.name}}
-								</span>
-								<span class="item-text-single item-text-description">
-									{{album.artist.name}}, {{album.year}}
-								</span>
+								</em><br />
+								<div class="item-subtitle">
+									<div class="text-secondary">
+										{{album.artist.name}} &ndash; {{album.year}}
+									</div>
+								</div>
+							</span>
+							<div class="item-menu">
+								<md-menu #appMenu="mdMenu">
+									<button md-menu-item (click)="playerService.playAlbum(album)">
+										<md-icon>play_arrow</md-icon>
+										<span>play album</span>
+									</button>
+									<button md-menu-item (click)="playerService.enqueueAlbum(album)">
+										<md-icon>queue_music</md-icon>
+										<span>add to queue</span>
+									</button>
+									<button md-menu-item (click)="playerService.openLightbox(album)">
+										<md-icon>color_lens</md-icon>
+										<span>view album art</span>
+									</button>
+									<button md-menu-item (click)="trackService.downloadAlbum(album)" *ngIf="userService.isLoggedIn()">
+										<md-icon>file_download</md-icon>
+										<span>download all tracks</span>
+									</button>
+								</md-menu>
+								<button md-icon-button [mdMenuTriggerFor]="appMenu">
+									<md-icon>more_vert</md-icon>
+								</button>
 							</div>
 						</md-list-item>
 					</md-list>
 				</div>
+
+				<!-- No album results -->
 				<div *ngIf="albums.length == 0" style="text-align: center;">
 					<md-icon class="error-icon">
 						not_interested
@@ -79,34 +104,64 @@
 						No albums found
 					</div>
 				</div>
+
 			</div>
 		</div>
+
+		<!-- Tracks -->
 		<div fxFlex='33%'>
-			<h2 style="color: rgba(255, 255, 255, 0.34);">
-				Tracks
-			</h2>
+			<h3 class="sad-header">Tracks</h3>
 			<div *ngIf="tracksLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 			</div>
 			<div *ngIf="!tracksLoading">
+
+				<!-- Results -->
 				<div *ngIf="tracks.length > 0">
-					<md-list>
-						<md-list-item
-							class="item-line"
-							*ngFor="let track of tracks"
-							(click)="playerService.player.playOne(track)">
-							<div md-line>
-								<img src="{{track.album.imagePath}}" />
-								<span class="item-text-single">
-									{{track.name}}
-								</span>
-								<span class="item-text-single item-text-description">
-									{{track.album.artist.name}}
-								</span>
+					<!-- List -->
+					<md-list class="item-column-body" *ngIf="tracks.length > 0">
+						<md-list-item class="item-line-image" *ngFor="let track of tracks">
+							<span md-line class="item-body" (click)="playerService.player.playOne(track)">
+								<img src="{{track.album.imagePath}}"/>
+								<em class="item-title text-primary">
+									<span class="text-hint" style="margin-right: 5px; font-style: normal;">
+										{{track.discNum}}-{{track.trackNum}}
+									</span> {{track.name}}
+								</em><br />
+								<div class="item-subtitle">
+									<div class="text-secondary">
+										{{track.genre}} &ndash; {{track.lengthFormatted}}
+									</div>
+								</div>
+							</span>
+							<div class="item-menu">
+								<md-menu #appMenu="mdMenu">
+									<button md-menu-item (click)="playerService.player.playOne(track)">
+										<md-icon>play_arrow</md-icon>
+										<span>play track</span>
+									</button>
+									<button md-menu-item (click)="playerService.player.enqueueOne(track)">
+										<md-icon>queue_music</md-icon>
+										<span>add to queue</span>
+									</button>
+									<button md-menu-item (click)="playerService.openLightbox(track.album)">
+										<md-icon>color_lens</md-icon>
+										<span>view album art</span>
+									</button>
+									<button md-menu-item (click)="trackService.download(track)" *ngIf="userService.isLoggedIn()">
+										<md-icon>file_download</md-icon>
+										<span>download</span>
+									</button>
+								</md-menu>
+								<button md-icon-button [mdMenuTriggerFor]="appMenu">
+									<md-icon>more_vert</md-icon>
+								</button>
 							</div>
 						</md-list-item>
 					</md-list>
 				</div>
+
+				<!-- No Results -->
 				<div *ngIf="tracks.length == 0" style="text-align: center;">
 					<md-icon class="error-icon">
 						not_interested
