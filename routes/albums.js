@@ -81,11 +81,11 @@ function loadAll(req, res)
  */
 function find(req, res)
 {
-	var query = req.query.query.trim().toLowerCase().replace(/\W/g, '');
+	var query = req.query.query.trim();
 	if (query.length > 2)
 	{
-		var regex = new RegExp('.*' + query + '.*', 'i');
-		Album.find({nameKey: regex}).sort('nameKey').populate('artist').exec(function(err, albums){
+		var regex = new RegExp(query, 'i');
+		Album.find({name: regex}).sort('nameKey').populate('artist').exec(function(err, albums){
 			if (err)
 			{
 				return res.status(500).json({
