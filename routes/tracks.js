@@ -92,7 +92,7 @@ function getRelatedGenre(genre, degree)
 function loadRelated(req, res)
 {
 	var trackId = mongoose.Types.ObjectId(req.query.trackId);
-	var degree = req.query.degree || 1;
+	var degree = req.query.degree;
 
 	Track.find({_id: trackId}, function(error, data){
 
