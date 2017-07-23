@@ -133,6 +133,7 @@ export class Player implements OnInit
 	playMany(tracks)
 	{
 		this.resetPlayer();
+		this.isRadio = false;
 		for (var i = 0; i < tracks.length; i++)
 		{
 			this.queue.push(tracks[i]);
@@ -175,6 +176,7 @@ export class Player implements OnInit
 	playPosition(index)
 	{
 		this.resetAudio();
+		this.isRadio = false;
 		this.queuePosition = index;
 		this.currentTrack = this.queue[this.queuePosition];
 		this.audio = new Audio(this.currentTrack.filePath);
@@ -190,6 +192,7 @@ export class Player implements OnInit
 	 */
 	enqueueOne(track)
 	{
+		this.isRadio = false;
 		this.queue.push(track);
 		this.openQueue();
 	}
@@ -199,6 +202,7 @@ export class Player implements OnInit
 	 */
 	enqueueMany(tracks)
 	{
+		this.isRadio = false;
 		for (var i in tracks)
 		{
 			this.queue.push(tracks[i]);
