@@ -89,10 +89,10 @@ export class RadioComponent implements OnInit
 				this.degreeString = "patrician";
 				break;
 			case 5:
-				this.degreeString = "indiana jones";
+				this.degreeString = "like indiana jones";
 				break;
 			default:
-				this.degreeString = "not adventurous";
+				this.degreeString = "boring";
 				break;
 		}
 		this.playerService.player.degree = value;
