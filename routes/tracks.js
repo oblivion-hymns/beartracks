@@ -34,10 +34,13 @@ function getRelatedGenre(genre, degree)
 	}
 }
 
+/**
+ * Finds a track related to the given track by a given degree (integer)
+ */
 function loadRelated(req, res)
 {
 	var trackId = mongoose.Types.ObjectId(req.query.trackId);
-	var degree = req.query.degree;
+	var degree = req.query.degree || 1;
 
 	Track.find({_id: trackId}, function(error, data){
 

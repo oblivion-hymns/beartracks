@@ -13,8 +13,10 @@ import { TrackService } from '../tracks/track.service';
 @Injectable()
 export class PlayerService
 {
-	player: Player;
 	public isPlaying: boolean;
+	public player: Player;
+	public radioDegree: number = 1;
+	public radioHome: string = '';
 
 	constructor(private trackService: TrackService, private http: Http)
 	{
@@ -55,5 +57,15 @@ export class PlayerService
 				this.player.enqueueMany(allTracks);
 			}
 		)
+	}
+
+	enableRadio()
+	{
+		this.player.isRadio = true;
+	}
+
+	disableRadio()
+	{
+		this.player.isRadio = false;
 	}
 }

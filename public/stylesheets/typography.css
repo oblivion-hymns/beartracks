@@ -21,6 +21,11 @@
 	color: rgba(255, 255, 255, 0.12);
 }
 
+.text-blue
+{
+	color: rgba(172, 218, 238, 0.87) !important;
+}
+
 .warn
 {
 	color: rgba(244, 67, 54, 0.87) !important;

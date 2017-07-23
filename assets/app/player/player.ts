@@ -9,6 +9,7 @@ export class Player implements OnInit
 {
 	private audio;
 	private interval;
+	public isRadio: boolean = false;
 	public isPlaying: boolean;
 	public volume: number = 0.5;
 	public oldVolume: number = 0.5;

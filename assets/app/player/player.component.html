@@ -125,10 +125,31 @@
 
 		<button md-icon-button
 			class="text-hint tiny-icon"
+			mdTooltip="Enable Radio Mode"
+			mdTooltipPosition="below"
+			(click)="playerService.enableRadio()"
+			style="margin-left: 8px;"
+			*ngIf="!playerService.player.isRadio">
+			<md-icon>radio</md-icon>
+		</button>
+
+		<button md-icon-button
+			class="tiny-icon text-blue"
+			mdTooltip="Disable Radio Mode"
+			mdTooltipPosition="below"
+			(click)="playerService.disableRadio()"
+			style="margin-left: 8px;"
+			*ngIf="playerService.player.isRadio">
+			<md-icon>radio</md-icon>
+		</button>
+
+		<button md-icon-button
+			class="text-hint tiny-icon"
 			mdTooltip="Surprise me!"
 			mdTooltipPosition="below"
 			(click)="surpriseMe()"
-			style="margin-left: 8px;">
+			style="margin-left: 8px;"
+			*ngIf="!playerService.player.isRadio">
 			<md-icon>casino</md-icon>
 		</button>
 	</h3>
