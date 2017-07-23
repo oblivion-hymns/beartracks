@@ -45,6 +45,12 @@ img.now-playing-art
 	width: 96px;
 }
 
+img.now-playing-art:hover
+{
+	cursor: pointer;
+	opacity: 0.50;
+}
+
 .now-playing-elapsed
 {
 	color:rgba(255, 255, 255, 0.54);
