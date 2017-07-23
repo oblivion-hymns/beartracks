@@ -1,3 +1,31 @@
-<div id="Container" style="text-align: center; padding: 16px;">
-	Beartracks Radio, featuring Better Than Genius&trade; intelligence.
+<div class="container">
+	<div fxLayout="row">
+		<div fxLayout="column" fxFlex="50%" fxFlexOffset="25%">
+			<h3 class="sad-header">Radio</h3>
+			<p class="text-primary">
+				Beartracks can pick music for you. Click <md-icon class="tiny-icon">radio</md-icon>
+				in the player to start.
+			</p>
+			<p class="text-hint">
+				As long as <md-icon class="tiny-icon">radio</md-icon> is <span class="text-blue">blue</span>,
+				the next song will be chosen automatically by Beartracks.
+			</p>
+		</div>
+	</div>
+	<div fxLayout="row">
+
+		<div class="text-center"
+			fxLayout="column"
+			fxFlex="50%"
+			fxFlexOffset="25%"
+			*ngIf="!playerService.player.isRadio">
+			<button md-button (click)="playerService.enableRadio()">
+				<h1 class="enable-radio">
+					<md-icon>radio</md-icon> enable radio
+				</h1>
+			</button>
+
+		</div>
+
+	</div>
 </div>

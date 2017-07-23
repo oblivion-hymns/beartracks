@@ -26,11 +26,12 @@ import { SearchComponent } from './search/search.component';
 import { SignupComponent } from './user/signup.component';
 
 //Services
+import { PlayerService } from './player/player.service';
 import { UserService } from './user/user.service';
 
 //decorator
 @NgModule({
-	providers: [UserService],
+	providers: [PlayerService, UserService],
 	declarations: [
 		AppComponent,
 		BrowseComponent,

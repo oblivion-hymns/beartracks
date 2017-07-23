@@ -59,6 +59,7 @@ export class PlayerService
 
 	enableRadio()
 	{
+		console.log('aye');
 		this.player.isRadio = true;
 	}
 

@@ -16,12 +16,64 @@ router.get('/related', loadRelated);
 router.post('/album', loadAlbum);
 router.get('/increment-song', incrementSong);
 router.get('/recent', loadRecentlyPlayed);
+router.get('/genre-map', loadGenreMap);
+router.get('/random-genre', loadRandomGenre);
 
 function baseRoute(req, res)
 {
-	res.render('index');
+	return res.render('index');
 }
 
+/**
+ * Returns the genre map
+ * @return String[]
+ */
+function loadGenreMap(req, res)
+{
+	return res.status(200).json({
+		genres: genreMap.genres
+	});
+}
+
+/**
+ * Returns a random track in the given genre
+ * @return Track
+ */
+function loadRandomGenre(req, res)
+{
+	var genre = req.query.genre;
+	Track.count({genre: genre}).exec(function(error, count){
+		var random = Math.floor(Math.random() * count);
+		Track.findOne({genre: genre})
+			.skip(random)
+			.populate('album')
+			.populate({
+				path: 'album',
+				populate: {
+					path: 'artist',
+					model: 'Artist'
+				}
+			})
+			.exec(function(error, track){
+				if (error)
+				{
+					console.log(error);
+					return res.status(500).json({
+						message: 'An error occurred'
+					});
+				}
+
+				return res.status(200).json({
+					track: track
+				});
+		});
+	});
+}
+
+/**
+ * Gets a related genre for the provided genre, to the provided degree.
+ * Each additional degree is one more relationship that will be made before deciding on a result
+ */
 function getRelatedGenre(genre, degree)
 {
 	for (var i = 0; i < genreMap.genres.length; i++)
