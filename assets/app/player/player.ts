@@ -142,6 +142,18 @@ export class Player implements OnInit
 	}
 
 	/**
+	 * Plays a random track from the given genre
+	 */
+	playTrackInGenre(genre)
+	{
+		this.resetPlayer();
+		this.trackService.loadByGenre(genre).subscribe(track => {
+			this.queue.push(track);
+			this.playFromBeginning();
+		})
+	}
+
+	/**
 	 * Plays a track related to the given one by the given degree
 	 * @param Track track
 	 * @param number degree

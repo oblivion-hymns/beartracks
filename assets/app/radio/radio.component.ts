@@ -7,11 +7,36 @@ import { UserService } from './../user/user.service';
 @Component({
 	providers: [TrackService, UserService],
 	selector: 'bt-radio',
-	styles: [``],
+	styles: [`
+		md-slider
+		{
+			width: 100%;
+		}
+
+		.degree-slider
+		{
+			float: left; width: 50%;
+		}
+
+		.degree-text
+		{
+			box-sizing: border-box;
+			float: right;
+			margin-top: 14px;
+			padding-left: 16px;
+			width: 50%;
+		}
+
+		.radio-container
+		{
+			margin-top: 32px;
+		}
+	`],
 	templateUrl: './radio.component.html'
 })
 export class RadioComponent implements OnInit
 {
+	public genre: string = null;
 	public genres: string[] = [];
 	public degreeString: string = "Not adventurous";
 
@@ -22,6 +47,23 @@ export class RadioComponent implements OnInit
 	ngOnInit()
 	{
 		this.trackService.loadGenres().subscribe(genres => {this.genres = genres});
+	}
+
+	/**
+	 * Starts radio playback
+	 */
+	startRadio()
+	{
+		this.playerService.player.playTrackInGenre(this.genre);
+	}
+
+	/**
+	 * Sets the genre
+	 */
+	set setGenre(value)
+	{
+		console.log(value);
+		this.genre = value || null;
 	}
 
 	/**

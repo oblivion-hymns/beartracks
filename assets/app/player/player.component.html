@@ -154,52 +154,62 @@
 		</button>
 	</h3>
 
-	<div class="queue-list" *ngIf="playerService.player.queue.length">
+	<div *ngIf="!playerService.player.isRadio">
+		<div class="queue-list" *ngIf="playerService.player.queue.length">
 
-		<div
-			class="queue-item"
-			*ngFor="let track of playerService.player.queue; let i = index"
-			[style.backgroundColor]="playerService.player.queuePosition == i ? 'rgba(0, 0, 0, 0.13)' : null">
+			<div
+				class="queue-item"
+				*ngFor="let track of playerService.player.queue; let i = index"
+				[style.backgroundColor]="playerService.player.queuePosition == i ? 'rgba(0, 0, 0, 0.13)' : null">
 
-			<span style="float: left;" *ngIf="playerService.player.queuePosition == i">
-				<md-icon
-					class="player-control player-pause"
-					 *ngIf="!playerService.player.audio.paused"
-					(click)="playerService.player.pause()">
-					pause
-				</md-icon>
-				<md-icon
-					class="player-control player-play"
-					 *ngIf="playerService.player.audio.paused"
-					(click)="playerService.player.resume()" >
-					play_arrow
-				</md-icon>
-			</span>
-
-			<span style="float: left;" *ngIf="playerService.player.queuePosition != i">
-				<md-icon
-					class="player-control player-play"
-					(click)="playerService.player.playPosition(i)" >
-					play_arrow
-				</md-icon>
-			</span>
-
-			<span class="queue-item-field">
-				<span class="queue-item-field-text">
-					{{i+1}}. {{ track.name }}
+				<span style="float: left;" *ngIf="playerService.player.queuePosition == i">
+					<md-icon
+						class="player-control player-pause"
+						 *ngIf="!playerService.player.audio.paused"
+						(click)="playerService.player.pause()">
+						pause
+					</md-icon>
+					<md-icon
+						class="player-control player-play"
+						 *ngIf="playerService.player.audio.paused"
+						(click)="playerService.player.resume()" >
+						play_arrow
+					</md-icon>
 				</span>
-				<span style="float: right; padding-top: 1px; color: rgba(255, 255, 255, 0.34);">
-					{{track.lengthFormatted}}
+
+				<span style="float: left;" *ngIf="playerService.player.queuePosition != i">
+					<md-icon
+						class="player-control player-play"
+						(click)="playerService.player.playPosition(i)" >
+						play_arrow
+					</md-icon>
 				</span>
-			</span>
+
+				<span class="queue-item-field">
+					<span class="queue-item-field-text">
+						{{i+1}}. {{ track.name }}
+					</span>
+					<span style="float: right; padding-top: 1px; color: rgba(255, 255, 255, 0.34);">
+						{{track.lengthFormatted}}
+					</span>
+				</span>
+			</div>
+		</div>
+		<div class="queue-list" *ngIf="playerService.player.queue.length == 0" style="text-align: center;">
+			<md-icon class="error-icon">
+				queue_music
+			</md-icon><br />
+			<div class="error-text">
+				No music queued
+			</div>
 		</div>
 	</div>
-	<div class="queue-list" *ngIf="playerService.player.queue.length == 0" style="text-align: center;">
+
+	<div class="text-center" *ngIf="playerService.player.isRadio">
 		<md-icon class="error-icon">
-			queue_music
-		</md-icon><br />
-		<div class="error-text">
-			No music queued
-		</div>
+			radio
+		</md-icon>
+		<bt-radio></bt-radio>
 	</div>
+
 </div>
