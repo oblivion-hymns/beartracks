@@ -13,45 +13,10 @@ import { UserService } from './../user/user.service';
 	providers: [ArtistService, AlbumService, TrackService],
 	selector: 'bt-search',
 	styles: [`
-		.item-line
+		.sad-header md-icon.tiny-icon:hover
 		{
-			padding: 5px;
-			overflow: hidden;
-		}
-
-		.item-line:hover
-		{
-			background-color: rgba(40, 40, 40, 0.87);
+			color: rgba(255, 255, 255, 0.54);
 			cursor: pointer;
-		}
-
-		.item-line img
-		{
-			float: left;
-			height: 48px;
-			margin-right: 10px;
-			width: 48px;
-		}
-
-		.item-line .item-text
-		{
-			display: block;
-			line-height: 24px;
-			margin-top: 0;
-			white-space: normal;
-		}
-
-		.item-line .item-text-single
-		{
-			display: block;
-			line-height: 24px;
-			text-overflow: ellipsis;
-			overflow-x: hidden;
-		}
-
-		.item-line .item-text-single.item-text-description
-		{
-			color: rgba(255, 255, 255, 0.34);
 		}
 	`],
 	templateUrl: './search.component.html'

@@ -1,9 +1,9 @@
-<md-input-container class="filter-box-top">
-	<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
-</md-input-container>
+<div class="container">
+	<md-input-container class="filter-box-top" style="width: 100%;">
+		<input mdInput maxlength="32" type="text" [(ngModel)]="filterString" autofocus/>
+	</md-input-container>
 
-<div fxLayout='row' *ngIf='filterQuery.length < 3'>
-	<div fxFlex='98%' fxFlexOffset="2%" style="text-align: center;">
+	<div class="text-center" *ngIf='filterQuery.length < 3'>
 		<md-icon class="error-icon">
 			search
 		</md-icon><br />
@@ -11,41 +11,11 @@
 			Start your search by typing above
 		</div>
 	</div>
-</div>
 
-<div fxLayout='row' *ngIf='filterQuery.length >= 3'>
-	<div fxFlex='98%' fxFlexOffset="2%">
-		<div fxFlex='33%'>
-			<h3 class="sad-header">Artists</h3>
-			<div *ngIf="artistsLoading">
-				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
-			</div>
-			<div *ngIf="!artistsLoading">
-				<div *ngIf="artists.length > 0">
-					<md-list>
-						<md-list-item class="item-line" *ngFor="let artist of artists">
-							<div md-line style="padding: 0px;">
-								<img src="{{artist.imagePath}}"/>
-								<span class="item-text">
-									{{artist.name}}
-								</span>
-							</div>
-						</md-list-item>
-					</md-list>
-				</div>
-				<div *ngIf="artists.length == 0" style="text-align: center;">
-					<md-icon class="error-icon">
-						not_interested
-					</md-icon><br />
-					<div class="error-text">
-						No artists found
-					</div>
-				</div>
-			</div>
-		</div>
+	<div fxLayout="row" *ngIf='filterQuery.length >= 3'>
 
 		<!-- Albums -->
-		<div fxFlex='33%'>
+		<div fxFlex="40%" fxFlexOffset="10%" fxLayout="column">
 			<h3 class="sad-header">Albums</h3>
 			<div *ngIf="albumsLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
@@ -109,8 +79,19 @@
 		</div>
 
 		<!-- Tracks -->
-		<div fxFlex='33%'>
-			<h3 class="sad-header">Tracks</h3>
+		<div fxFlex="40%" fxLayout="column">
+			<h3 class="sad-header">
+				Tracks
+				<md-icon
+					class="tiny-icon"
+					mdTooltip="Queue all"
+					mdTooltipPosition="below"
+					(click)="playerService.player.enqueueMany(tracks)"
+					*ngIf="tracks.length > 0">
+					queue
+				</md-icon>
+			</h3>
+
 			<div *ngIf="tracksLoading">
 				<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 			</div>
@@ -172,5 +153,7 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
+
 </div>
