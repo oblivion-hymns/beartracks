@@ -180,7 +180,7 @@ function loadRandom(req, res)
  */
 function find(req, res)
 {
-	var query = req.query.query.trim().toLowerCase().replace(/\W/g, '');
+	var query = req.query.query.trim();
 	if (query.length > 2)
 	{
 		var populate = {
@@ -191,8 +191,8 @@ function find(req, res)
 			}
 		};
 
-		var regex = new RegExp('.*' + query + '.*', 'i');
-		Track.find({nameKey: regex}).sort('nameKey').populate('album').populate(populate).exec(function(err, tracks){
+		var regex = new RegExp(query, 'i');
+		Track.find({name: regex}).sort('nameKey').populate('album').populate(populate).exec(function(err, tracks){
 			if (err)
 			{
 				return res.status(500).json({
