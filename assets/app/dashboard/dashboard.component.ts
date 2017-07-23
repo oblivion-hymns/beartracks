@@ -7,6 +7,8 @@ import { Track } from './../tracks/track';
 import { TrackService } from './../tracks/track.service';
 import { UserService } from './../user/user.service';
 
+import * as dateformat from 'dateformat';
+
 @Component({
 	providers: [AlbumService, PlayerService, TrackService, UserService],
 	selector: 'bt-dashboard',
@@ -53,6 +55,7 @@ export class DashboardComponent implements OnInit
 		var yesterday = new Date(yesterdayString);
 
 		var inputDate = new Date(date);
+		return dateformat(inputDate, 'mmm d, h:MMtt');
 		if (inputDate.getDate() >= today.getDate())
 		{
 			return "Today";
@@ -61,5 +64,7 @@ export class DashboardComponent implements OnInit
 		{
 			return "Yesterday";
 		}
+
+
 	}
 }

@@ -63,18 +63,26 @@
 
 			</md-list-item>
 		</md-list>
+	</div>
+
+	<!-- Recently played -->
+	<div fxFlex="40%">
+		<h3 class="sad-header">recently played</h3>
 
 		<!-- List -->
-		<md-list *ngIf="!loadingAlbums">
-			<md-list-item class="item-line-image" *ngFor="let album of albums">
-				<span md-line class="item-body" (click)="playerService.playAlbum(album)">
-					<img src="{{album.imagePath}}"/>
+		<md-list *ngIf="!loadingRecent">
+			<md-list-item class="item-line-image" *ngFor="let track of recentTracks">
+				<span md-line class="item-body" (click)="playerService.player.playOne(album)">
+					<img src="{{track.album.imagePath}}"/>
 					<em class="item-title text-primary">
-						{{album.name}}
+						{{track.name}}
+						<!-- <span class="text-divider" style="margin-left: 5px; font-style: normal;">
+							&ndash; {{this.translateDate(track.updatedAt)}}
+						</span> -->
 					</em><br />
 					<div class="item-subtitle">
 						<div class="text-secondary">
-							{{album.artist.name}} &ndash; {{album.year}}
+							{{track.album.artist.name}} &ndash; {{track.genre}}
 						</div>
 					</div>
 				</span>
