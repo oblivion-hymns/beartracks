@@ -66,10 +66,9 @@ img.now-playing-art
 #Queue
 {
 	background-color: rgb(40, 40, 40);
-	border-radius: 0px 5px 0px 0px;
 	bottom: 0px;
 	box-sizing: border-box;
-	height: 65%;
+	height: calc(100% - 64px);
 	left: 0px;
 	overflow-y: hidden;
 	padding-right: 24px;
