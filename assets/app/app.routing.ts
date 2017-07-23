@@ -8,13 +8,13 @@ import { SearchComponent } from './search/search.component';
 import { SignupComponent } from './user/signup.component';
 
 const APP_ROUTES: Routes = [
-	{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-	{ path: 'profile', component: ProfileComponent },
-	{ path: 'signup', component: SignupComponent },
-	{ path: 'dashboard', component: DashboardComponent },
+	{ path: '', redirectTo: '/browse', pathMatch: 'full' },
 	{ path: 'search', component: SearchComponent },
+	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'browse', component: BrowseComponent },
-	{ path: 'jukebox', component: JukeboxComponent }
+	{ path: 'jukebox', component: JukeboxComponent },
+	{ path: 'profile', component: ProfileComponent },
+	{ path: 'signup', component: SignupComponent }
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);
