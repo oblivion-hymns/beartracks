@@ -15,12 +15,10 @@ export class PlayerService
 {
 	public isPlaying: boolean;
 	public player: Player;
-	public radioDegree: number = 1;
-	public radioHome: string = '';
 
 	constructor(private trackService: TrackService, private http: Http)
 	{
-		this.player = new Player(this.http);
+		this.player = new Player(this.http, this.trackService);
 	}
 
 	/**

@@ -12,7 +12,7 @@ var router = express.Router();
 router.get('/', baseRoute);
 router.get('/random', loadRandom);
 router.get('/find', find);
-router.post('/related', loadRelated);
+router.get('/related', loadRelated);
 router.post('/album', loadAlbum);
 router.get('/increment-song', incrementSong);
 router.get('/recent', loadRecentlyPlayed);

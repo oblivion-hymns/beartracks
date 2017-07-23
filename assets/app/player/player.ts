@@ -4,12 +4,12 @@ import { OnInit } from '@angular/core';
 import { Album } from '../albums/album';
 import { Artist } from '../artists/artist';
 import { Track } from '../tracks/track';
+import { TrackService } from '../tracks/track.service';
 
 export class Player implements OnInit
 {
 	private audio;
 	private interval;
-	public isRadio: boolean = false;
 	public isPlaying: boolean;
 	public volume: number = 0.5;
 	public oldVolume: number = 0.5;
@@ -23,11 +23,17 @@ export class Player implements OnInit
 	public queuePosition = -1;
 	public queueOpen: boolean = false;
 	public visible: boolean = true;
-	private http: Http;
 
-	constructor(http: Http)
+	public isRadio: boolean = false;
+	public degree: number = 1;
+
+	private http: Http;
+	private trackService: TrackService;
+
+	constructor(http: Http, trackService: TrackService)
 	{
 		this.http = http;
+		this.trackService = trackService;
 	}
 
 	ngOnInit()
@@ -132,6 +138,16 @@ export class Player implements OnInit
 			this.queue.push(tracks[i]);
 		}
 		this.playFromBeginning();
+	}
+
+	/**
+	 * Plays a track related to the given one by the given degree
+	 * @param Track track
+	 * @param number degree
+	 */
+	playRelated(track, degree)
+	{
+		this.trackService.loadRelated(track, degree);
 	}
 
 	/**
@@ -307,16 +323,21 @@ export class Player implements OnInit
 			var finishedTrack = this.currentTrack;
 			this.http.get('http://bwilbur.com:3000/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
 
-			if (this.queue[this.queuePosition + 1])
+			if (this.isRadio)
 			{
-				this.playPosition(this.queuePosition + 1);
+				this.playRelated(this.currentTrack, this.degree);
 			}
 			else
 			{
-				this.pause();
+				if (this.queue[this.queuePosition + 1])
+				{
+					this.playPosition(this.queuePosition + 1);
+				}
+				else
+				{
+					this.pause();
+				}
 			}
-
-			//this.currentTrack = null;
 		}
 	}
 
