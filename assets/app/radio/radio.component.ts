@@ -57,6 +57,11 @@ export class RadioComponent implements OnInit
 		this.playerService.player.playTrackInGenre(this.genre);
 	}
 
+	onDegreeChange(event)
+	{
+		this.setDegree(event.value);
+	}
+
 	/**
 	 * Sets the genre
 	 */
@@ -68,7 +73,7 @@ export class RadioComponent implements OnInit
 	/**
 	 * Sets the degree & its visual representation
 	 */
-	set setDegree(value)
+	setDegree(value)
 	{
 		switch (value)
 		{
@@ -88,7 +93,7 @@ export class RadioComponent implements OnInit
 				this.degreeString = "patrician";
 				break;
 			case 5:
-				this.degreeString = "like indiana jones";
+				this.degreeString = "ascended";
 				break;
 			default:
 				this.degreeString = "boring";
