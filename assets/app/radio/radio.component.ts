@@ -38,7 +38,7 @@ export class RadioComponent implements OnInit
 {
 	public genre: string = null;
 	public genres: string[] = [];
-	public degreeString: string = "Not adventurous";
+	public degreeString: string = "boring";
 
 	constructor(private userService: UserService,
 				private playerService: PlayerService,
@@ -62,7 +62,6 @@ export class RadioComponent implements OnInit
 	 */
 	set setGenre(value)
 	{
-		console.log(value);
 		this.genre = value || null;
 	}
 
