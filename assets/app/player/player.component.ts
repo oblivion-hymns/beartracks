@@ -16,11 +16,17 @@ export class PlayerComponent
 {
 	constructor(private playerService: PlayerService, private trackService: TrackService, private _lightbox: Lightbox){}
 
+	/**
+	 * Volume changes as the slider is increased/decreased -- not just when you release
+	 */
 	onVolumeChange(event)
 	{
 		this.playerService.player.setVolume(event.value);
 	}
 
+	/**
+	 * Adds a totally random song
+	 */
 	surpriseMe()
 	{
 		this.trackService.loadRandom().subscribe((track: Track[]) => {
