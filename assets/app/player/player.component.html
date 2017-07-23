@@ -32,7 +32,7 @@
 	<div id="Player" *ngIf="!playerService.player.isLoading">
 		<div *ngIf="playerService.player.currentTrack">
 			<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}"
-				(click)="openLightbox(playerService.player.currentTrack.album)"
+				(click)="playerService.openLightbox(playerService.player.currentTrack.album)"
 				style="float: left;"/>
 
 			<div

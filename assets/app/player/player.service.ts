@@ -1,5 +1,6 @@
 import { Http, Response, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { Lightbox } from 'angular2-lightbox';
 
 import 'rxjs/Rx';
 import { Observable } from 'rxjs';
@@ -16,9 +17,25 @@ export class PlayerService
 	public isPlaying: boolean;
 	public player: Player;
 
-	constructor(private trackService: TrackService, private http: Http)
+	constructor(private trackService: TrackService, private http: Http, private _lightbox: Lightbox)
 	{
 		this.player = new Player(this.http, this.trackService);
+	}
+
+	/**
+	 * Opens a pretty lightbox with the given album's art inside it
+	 */
+	openLightbox(album: Album)
+	{
+		var albums = [
+			{
+				caption: album.artist.name + ' - "' + album.name + '" (' + album.year + ')',
+				src: album.imagePath,
+				thumb: album.imagePath
+			}
+		];
+
+		this._lightbox.open(albums, 0);
 	}
 
 	/**
