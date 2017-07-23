@@ -15,6 +15,9 @@ import { MaterialModule } from '@angular/material';
 import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIconModule,
 		MdMenuModule, MdProgressBarModule, MdSidenavModule, MdTabsModule } from '@angular/material';
 
+//Plugins
+import { LightboxModule } from 'angular2-lightbox';
+
 //App-specific
 import { BrowseComponent } from './browse/browse.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -50,6 +53,7 @@ import { UserService } from './user/user.service';
 		ReactiveFormsModule,
 		routing,
 		HttpModule,
+		LightboxModule,
 
 		MaterialModule,
 		BrowserAnimationsModule,

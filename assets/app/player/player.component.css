@@ -103,7 +103,7 @@ img.now-playing-art
 	color: rgba(255, 255, 255, 0.54);
 	height: 40px;
 	left: 0px;
-	opacity: 0.95;
+	opacity: 0.75;
 	padding: 8px;
 	position: fixed;
 	transition: background-color 0.3s ease-out;

@@ -22,10 +22,18 @@
 		</h3>
 	</div>
 
+	<div id="PlayerLoading" class="text-center" *ngIf="playerService.player.isLoading">
+		<div class="text-center error-text">
+			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		</div>
+	</div>
+
 	<!-- Player -->
-	<div id="Player">
+	<div id="Player" *ngIf="!playerService.player.isLoading">
 		<div *ngIf="playerService.player.currentTrack">
-			<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}" style="float: left;"/>
+			<img class="now-playing-art" src="{{playerService.player.currentTrack.album.imagePath}}"
+				(click)="openLightbox(playerService.player.currentTrack.album)"
+				style="float: left;"/>
 
 			<div
 				class="now-playing"

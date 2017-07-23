@@ -11,6 +11,7 @@ export class Player implements OnInit
 	private audio;
 	private interval;
 	public isPlaying: boolean;
+	public isLoading: boolean = false;
 	public volume: number = 0.5;
 	public oldVolume: number = 0.5;
 
@@ -174,8 +175,10 @@ export class Player implements OnInit
 	{
 		this.queuePosition = 0;
 		this.currentTrack = this.queue[this.queuePosition];
+		this.isLoading = true;
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
+		this.audio.oncanplay = () => {this.isLoading = false};
 		this.audio.volume = this.volume;
 		this.checkTimeInterval();
 		this.openQueue();
@@ -191,8 +194,10 @@ export class Player implements OnInit
 		this.isRadio = false;
 		this.queuePosition = index;
 		this.currentTrack = this.queue[this.queuePosition];
+		this.isLoading = true;
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
+		this.audio.oncanplay = () => {this.isLoading = false};
 		this.audio.volume = this.volume;
 		this.checkTimeInterval();
 		this.openQueue();
