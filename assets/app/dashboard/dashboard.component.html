@@ -10,7 +10,7 @@
 
 		<md-list *ngIf="albums.length > 0">
 			<md-list-item class="item-line-image" *ngFor="let album of albums">
-				<span md-line class="item-body" (click)="loadTracks(album)">
+				<span md-line class="item-body" (click)="playerService.playAlbum(album)">
 					<img src="{{album.imagePath}}"/>
 					<em class="item-title text-primary">
 						{{album.name}}

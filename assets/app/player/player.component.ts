@@ -14,9 +14,9 @@ export class PlayerComponent
 {
 	constructor(private playerService: PlayerService, private trackService: TrackService){}
 
-	set volume(value)
+	onVolumeChange(event)
 	{
-		this.playerService.player.setVolume(value);
+		this.playerService.player.setVolume(event.value);
 	}
 
 	surpriseMe()

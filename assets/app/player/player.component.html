@@ -96,7 +96,9 @@
 					</md-icon>
 
 					<!-- Volume -->
-					<md-slider min="0.0" max="1.0" step="0.05" value="0.5" [(ngModel)]="volume" ></md-slider>
+					<md-slider min="0.0" max="1.0" step="0.01" value="0.5" tickInterval="50"
+						(input)="onVolumeChange($event);">
+					</md-slider>
 				</div>
 
 				<div style="float: right;">
