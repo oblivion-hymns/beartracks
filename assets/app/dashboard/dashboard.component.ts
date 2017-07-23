@@ -40,8 +40,6 @@ export class DashboardComponent implements OnInit
 			this.recentTracks = tracks;
 			this.loadingRecent = false;
 		});
-
-		console.log(this.userService.isLoggedIn());
 	}
 
 	translateDate(date)
