@@ -25,7 +25,7 @@ export class Player implements OnInit
 	public visible: boolean = true;
 
 	public isRadio: boolean = false;
-	public degree: number = 1;
+	public degree: number = 0;
 
 	private http: Http;
 	private trackService: TrackService;
