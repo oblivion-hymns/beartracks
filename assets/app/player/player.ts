@@ -147,7 +147,11 @@ export class Player implements OnInit
 	 */
 	playRelated(track, degree)
 	{
-		this.trackService.loadRelated(track, degree);
+		this.resetPlayer();
+		this.trackService.loadRelated(track, degree).subscribe(track => {
+			this.queue.push(track);
+			this.playFromBeginning();
+		});
 	}
 
 	/**
@@ -176,9 +180,8 @@ export class Player implements OnInit
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
 		this.audio.volume = this.volume;
-		this.openQueue();
-
 		this.checkTimeInterval();
+		this.openQueue();
 	}
 
 	/**
@@ -307,7 +310,10 @@ export class Player implements OnInit
 	{
 		if (this.currentTrack)
 		{
-			this.elapsedPercent = (this.audio.currentTime / parseInt(this.currentTrack.length)) * 100;
+			var currentAudioTime = Math.floor(this.audio.currentTime);
+			var currentTrackLength = Math.floor(parseInt(this.currentTrack.length));
+
+			this.elapsedPercent = Math.floor(currentAudioTime / currentTrackLength * 100);
 		}
 		else
 		{
