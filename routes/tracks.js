@@ -91,12 +91,12 @@ function getRelatedGenre(genre, degree)
  */
 function loadRelated(req, res)
 {
-	var trackId = trackId || null;
-	var genre = genre || null;
+	var trackId = req.query.trackId || null;
+	var genre = req.query.genre || null;
 
 	if (trackId)
 	{
-		trackId = mongoose.Types.ObjectId(req.query.trackId);
+		trackId = mongoose.Types.ObjectId(trackId);
 	}
 
 	var degree = req.query.degree;

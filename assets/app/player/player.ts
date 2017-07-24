@@ -170,7 +170,9 @@ export class Player implements OnInit
 			this.playFromBeginning();
 		});*/
 
+		console.log('Getting track related to ', this.homeGenre);
 		this.trackService.loadRelatedByGenre(this.homeGenre, this.degree).subscribe(track => {
+			console.log('Found related track in genre ', track.genre);
 			this.queue.push(track);
 			this.playFromBeginning();
 		})
