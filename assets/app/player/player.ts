@@ -27,6 +27,7 @@ export class Player implements OnInit
 
 	public isRadio: boolean = false;
 	public degree: number = 0;
+	public homeGenre: string = '';
 
 	private http: Http;
 	private trackService: TrackService;
@@ -162,10 +163,17 @@ export class Player implements OnInit
 	playRelated(track, degree)
 	{
 		this.resetPlayer();
-		this.trackService.loadRelated(track, degree).subscribe(track => {
+
+		//Journey mode
+		/*this.trackService.loadRelated(track, degree).subscribe(track => {
 			this.queue.push(track);
 			this.playFromBeginning();
-		});
+		});*/
+
+		this.trackService.loadRelatedByGenre(this.homeGenre, this.degree).subscribe(track => {
+			this.queue.push(track);
+			this.playFromBeginning();
+		})
 	}
 
 	/**

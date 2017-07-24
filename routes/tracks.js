@@ -91,20 +91,18 @@ function getRelatedGenre(genre, degree)
  */
 function loadRelated(req, res)
 {
-	var trackId = mongoose.Types.ObjectId(req.query.trackId);
+	var trackId = trackId || null;
+	var genre = genre || null;
+
+	if (trackId)
+	{
+		trackId = mongoose.Types.ObjectId(req.query.trackId);
+	}
+
 	var degree = req.query.degree;
 
-	Track.find({_id: trackId}, function(error, data){
-
-		if (error)
-		{
-			console.error(error);
-			return res.status(500).json({
-				message: 'An error occurred'
-			});
-		}
-
-		var genre = data[0].genre;
+	if (genre)
+	{
 		for (var i = 0; i < degree; i++)
 		{
 			genre = getRelatedGenre(genre);
@@ -136,7 +134,55 @@ function loadRelated(req, res)
 					});
 			});
 		});
-	});
+	}
+	else
+	{
+		Track.find({_id: trackId}, function(error, data){
+
+			if (error)
+			{
+				console.error(error);
+				return res.status(500).json({
+					message: 'An error occurred'
+				});
+			}
+
+			var genre = data[0].genre;
+			for (var i = 0; i < degree; i++)
+			{
+				genre = getRelatedGenre(genre);
+			}
+
+			Track.count({genre: genre}).exec(function(error, count){
+				var random = Math.floor(Math.random() * count);
+				Track.findOne({genre: genre})
+					.skip(random)
+					.populate('album')
+					.populate({
+						path: 'album',
+						populate: {
+							path: 'artist',
+							model: 'Artist'
+						}
+					})
+					.exec(function(error, track){
+						if (error)
+						{
+							console.log(error);
+							return res.status(500).json({
+								message: 'An error occurred'
+							});
+						}
+
+						res.status(200).json({
+							track: track
+						});
+				});
+			});
+		});
+	}
+
+
 
 
 }

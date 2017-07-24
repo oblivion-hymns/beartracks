@@ -107,6 +107,33 @@ export class TrackService
 	}
 
 	/**
+	 * Loads and returns a random track in one of the genres related to the provided one
+	 * @param String genre
+	 * @param Number degree
+	 */
+	loadRelatedByGenre(genre, degree)
+	{
+		return this.http.get('http://bwilbur.com/tracks/related?genre=' + genre + '&degree=' + degree)
+			.map((response: Response) => {
+				const trackData = response.json().track;
+				var id = trackData._id;
+				var name = trackData.name;
+				var nameKey = trackData.nameKey;
+				var album = trackData.album;
+				var discNum = trackData.discNum;
+				var trackNum = trackData.trackNum;
+				var genre = trackData.genre;
+				var length = trackData.length;
+				var filePath = trackData.filePath;
+				var playCount = trackData.playCount;
+				var updatedAt = trackData.updatedAt;
+				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
+				return track;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
 	 * Loads and returns a random track
 	 */
 	loadRandom()

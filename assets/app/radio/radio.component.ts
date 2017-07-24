@@ -47,6 +47,7 @@ export class RadioComponent implements OnInit
 	ngOnInit()
 	{
 		this.trackService.loadGenres().subscribe(genres => {this.genres = genres});
+		this.playerService.player.homeGenre = this.genre;
 	}
 
 	/**
@@ -54,6 +55,7 @@ export class RadioComponent implements OnInit
 	 */
 	startRadio()
 	{
+		this.playerService.player.homeGenre = this.genre;
 		this.playerService.player.playTrackInGenre(this.genre);
 	}
 
