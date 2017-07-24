@@ -75,55 +75,55 @@
 		},
 		{
 			"name": "Drum & Bass",
-			"related": ["Drum & Bass"]
+			"related": ["Drum & Bass", "Dubstep", "Electronic", "Electronica", "Glitch", "Techo", "Trance"]
 		},
 		{
 			"name": "Dubstep",
-			"related": ["Dubstep"]
+			"related": ["Dubstep", "Electronic", "Chillstep", "Techno", "Trance"]
 		},
 		{
 			"name": "Electronic",
-			"related": ["Electronic"]
+			"related": ["Electronic", "Electronica", "Techno", "Trance", "Chillstep", "Chillwave"]
 		},
 		{
 			"name": "Electronica",
-			"related": ["Electronica"]
+			"related": ["Electronica", "Electronic", "Techno", "Trance", "Chillstep", "Chillwave"]
 		},
 		{
 			"name": "Emo",
-			"related": ["Emo"]
+			"related": ["Emo", "Alternative Rock", "Alternative", "Pop Punk"]
 		},
 		{
 			"name": "Experimental Hip Hop",
-			"related": ["Experimental Hip Hop"]
+			"related": ["Experimental Hip Hop", "Hip-hop", "Rap", "R&B"]
 		},
 		{
 			"name": "Experimental",
-			"related": ["Experimental"]
+			"related": ["Experimental", "Avant-garde"]
 		},
 		{
 			"name": "Folk Punk",
-			"related": ["Folk Punk"]
+			"related": ["Folk Punk", "Folk", "Punk", "Punk Rock"]
 		},
 		{
 			"name": "Folk",
-			"related": ["Folk"]
+			"related": ["Folk", "Folk Punk", "Acoustic"]
 		},
 		{
 			"name": "Funk Rock",
-			"related": ["Funk Rock"]
+			"related": ["Funk Rock", "Funk", "Alternative", "Alternative Rock", "Rock"]
 		},
 		{
 			"name": "Funk",
-			"related": ["Funk"]
+			"related": ["Funk", "Funk Rock", "R&B"]
 		},
 		{
 			"name": "Glitch",
-			"related": ["Glitch"]
+			"related": ["Glitch", "Dubstep", "Chillstep", "Chillwave", "Techno", "Trance"]
 		},
 		{
 			"name": "Hard Rock",
-			"related": ["Hard Rock"]
+			"related": ["Hard Rock", "Rock", "Metal"]
 		},
 		{
 			"name": "Hardcore",
@@ -135,35 +135,35 @@
 		},
 		{
 			"name": "Hip-hop",
-			"related": ["Hip-hop"]
+			"related": ["Hip-hop", "Rap", "R&B"]
 		},
 		{
 			"name": "Indie Folk",
-			"related": ["Indie Folk"]
+			"related": ["Indie Folk", "Indie Pop", "Indie Rock", "Indie", "Folk", "Alternative", "Alternative Rock"]
 		},
 		{
 			"name": "Indie Pop",
-			"related": ["Indie Pop"]
+			"related": ["Indie Pop", "Pop", "Indie Folk", "Indie Rock", "Indie"]
 		},
 		{
 			"name": "Indie Rock",
-			"related": ["Indie Rock"]
+			"related": ["Indie Rock", "Rock", "Indie", "Indie Folk", "Indie Pop"]
 		},
 		{
 			"name": "Indie",
-			"related": ["Indie"]
+			"related": ["Indie", "Indie Rock", "Indie Folk", "Indie Pop"]
 		},
 		{
 			"name": "Industrial Rock",
-			"related": ["Industrial Rock"]
+			"related": ["Industrial Rock", "Industrial"]
 		},
 		{
 			"name": "Industrial",
-			"related": ["Industrial"]
+			"related": ["Industrial", "Industrial Rock"]
 		},
 		{
 			"name": "Instrumental",
-			"related": ["Instrumental"]
+			"related": ["Instrumental", "Experimental"]
 		},
 		{
 			"name": "Jazz",
