@@ -134,9 +134,9 @@ img.now-playing-art:hover
 	padding: 8px;
 	overflow-y: auto;
 	box-sizing: border-box;
-	height: 60%;
-	min-height: 60%;
-	max-height: 60%;
+	height: 65%;
+	min-height: 65%;
+	max-height: 65%;
 }
 
 .queue-item
