@@ -28,8 +28,8 @@
 	</div>
 
 	<!-- Config -->
-	<div class="radio-row" fxLayout="row">
-		<div fxLayout="column" fxFlex="60%" fxFlexOffset="20%">
+	<div class="radio-row" fxLayout="row" *ngIf="this.playerService.player.homeGenre">
+		<div fxLayout="column" fxFlex="80%" fxFlexOffset="10%">
 
 			<!-- Genre -->
 			<!-- <md-select class="radio-container" placeholder="Genre" [(ngModel)]="setGenre">
@@ -41,11 +41,13 @@
 			<!-- Degree -->
 			<div class="radio-container">
 				<div class="degree-slider">
-					<md-slider min="0" max="5" step="1" value="0" tickInterval="1" (input)="onDegreeChange($event);">
+					<md-slider min="0" max="5" step="1" value="0" tickInterval="1"
+						(input)="onDegreeChange($event);"
+						value="{{playerService.player.degree}}">
 					</md-slider>
 				</div>
 				<div class="degree-text">
-					i'm feeling {{degreeString}}
+					{{degreeString}}
 				</div>
 			</div>
 

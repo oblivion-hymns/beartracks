@@ -21,9 +21,11 @@ import { UserService } from './../user/user.service';
 		.degree-text
 		{
 			box-sizing: border-box;
+			color: rgba(255, 255, 255, 0.54);
 			float: right;
 			margin-top: 14px;
 			padding-left: 16px;
+			text-transform: lowercase;
 			width: 50%;
 		}
 
@@ -44,7 +46,7 @@ export class RadioComponent implements OnInit
 {
 	public selectedGenre: string = null;
 	public genres: string[] = [];
-	public degreeString: string = "boring";
+	public degreeString: string = "";
 
 	constructor(private userService: UserService,
 				private playerService: PlayerService,
@@ -59,6 +61,7 @@ export class RadioComponent implements OnInit
 		if (currentTrack)
 		{
 			player.homeGenre = currentTrack.genre;
+			this.setDegree(player.degree);
 		}
 	}
 
@@ -105,30 +108,32 @@ export class RadioComponent implements OnInit
 	 */
 	setDegree(value)
 	{
+		var player = this.playerService.player;
+
 		switch (value)
 		{
 			case 0:
-				this.degreeString = "boring";
+				this.degreeString = "I only want to hear " + player.homeGenre;
 				break;
 			case 1:
-				this.degreeString = "curious";
+				this.degreeString = "I want music like " + player.homeGenre;
 				break;
 			case 2:
-				this.degreeString = "adventurous";
+				this.degreeString = "I want music a bit like " + player.homeGenre;
 				break;
 			case 3:
-				this.degreeString = "more adventurous";
+				this.degreeString = "I want to feel adventurous";
 				break;
 			case 4:
-				this.degreeString = "patrician";
+				this.degreeString = "I want to be a musical pilgrim";
 				break;
 			case 5:
-				this.degreeString = "ascended";
+				this.degreeString = "I want to be patrician";
 				break;
 			default:
-				this.degreeString = "boring";
-				break;
+				this.degreeString = "I only want " + player.homeGenre;
+				break
 		}
-		this.playerService.player.degree = value;
+		player.degree = value;
 	}
 }
