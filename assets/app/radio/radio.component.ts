@@ -36,7 +36,7 @@ import { UserService } from './../user/user.service';
 })
 export class RadioComponent implements OnInit
 {
-	public genre: string = null;
+	public selectedGenre: string = null;
 	public genres: string[] = [];
 	public degreeString: string = "boring";
 
@@ -47,7 +47,14 @@ export class RadioComponent implements OnInit
 	ngOnInit()
 	{
 		this.trackService.loadGenres().subscribe(genres => {this.genres = genres});
-		this.playerService.player.homeGenre = this.genre;
+
+		var player = this.playerService.player;
+		var currentTrack = player.currentTrack;
+		if (currentTrack)
+		{
+			player.homeGenre = currentTrack.genre;
+			console.log(player.homeGenre);
+		}
 	}
 
 	/**
@@ -55,8 +62,12 @@ export class RadioComponent implements OnInit
 	 */
 	startRadio()
 	{
-		this.playerService.player.homeGenre = this.genre;
-		this.playerService.player.playTrackInGenre(this.genre);
+		if (this.selectedGenre)
+		{
+			var player = this.playerService.player;
+			player.homeGenre = this.selectedGenre;
+			player.playTrackInGenre(player.homeGenre);
+		}
 	}
 
 	onDegreeChange(event)
@@ -69,7 +80,7 @@ export class RadioComponent implements OnInit
 	 */
 	set setGenre(value)
 	{
-		this.genre = value || null;
+		this.selectedGenre = value || null;
 	}
 
 	/**

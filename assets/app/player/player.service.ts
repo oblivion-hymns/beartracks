@@ -76,8 +76,11 @@ export class PlayerService
 
 	enableRadio()
 	{
-		console.log('aye');
 		this.player.isRadio = true;
+		if (this.player.currentTrack)
+		{
+			this.player.homeGenre = this.player.currentTrack.genre;
+		}
 	}
 
 	disableRadio()

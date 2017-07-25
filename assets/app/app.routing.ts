@@ -8,7 +8,7 @@ import { SearchComponent } from './search/search.component';
 import { SignupComponent } from './user/signup.component';
 
 const APP_ROUTES: Routes = [
-	{ path: '', redirectTo: '/library', pathMatch: 'full' },
+	{ path: '', redirectTo: '/browse', pathMatch: 'full' },
 	{ path: 'search', component: SearchComponent },
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'browse', component: BrowseComponent },
