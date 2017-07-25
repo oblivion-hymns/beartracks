@@ -1,7 +1,4 @@
 <md-toolbar>
-	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active">
-		<h3>Dashboard</h3>
-	</button>
 	<button md-button [routerLink]="['/browse']" routerLinkActive="active">
 		<h3>Library</h3>
 	</button>
@@ -10,6 +7,9 @@
 	</button>
 	<button md-button [routerLink]="['/jukebox']" routerLinkActive="active">
 		<h3>Chat</h3>
+	</button>
+	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active">
+		<h3>Social</h3>
 	</button>
 	<button md-button [routerLink]="['/profile']" routerLinkActive="active">
 		<h3 *ngIf="userService.isLoggedIn()">Profile</h3>
