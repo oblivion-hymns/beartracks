@@ -59,7 +59,6 @@ export class RadioComponent implements OnInit
 		if (currentTrack)
 		{
 			player.homeGenre = currentTrack.genre;
-			console.log(player.homeGenre);
 		}
 	}
 
@@ -87,6 +86,18 @@ export class RadioComponent implements OnInit
 	set setGenre(value)
 	{
 		this.selectedGenre = value || null;
+	}
+
+	isGenreSelected(name)
+	{
+		var player = this.playerService.player;
+		var currentTrack = player.currentTrack;
+		if (currentTrack)
+		{
+			return (player.homeGenre == name);
+		}
+
+		return false;
 	}
 
 	/**

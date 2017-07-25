@@ -1,18 +1,17 @@
 <div class="container">
 
-	<!-- Intro -->
+	<!-- Now playing -->
 	<div fxLayout="row">
-		<div class="text-center" fxLayout="column" fxFlex="60%" fxFlexOffset="20%">
-			<span class="error-text">
-				The next song will be chosen by Beartracks
-			</span>
+		<div fxLayout="column" fxFlex="60%" fxFlexOffset="20%">
+			<div class="text-center" *ngIf="this.playerService.player.homeGenre">
+				<md-icon class="error-icon">
+					radio
+				</md-icon><br />
+				<h3 style="color: #444; text-transform: lowercase;">
+					Now playing {{playerService.player.homeGenre}} mix
+				</h3>
+			</div>
 		</div>
-	</div>
-
-	<div class="radio-row" fxLayout="row" fxFlex="60%" fxFlexOffset="20%" *ngIf="this.playerService.player.homeGenre">
-		<h3 class="sad-header">
-			Now playing {{playerService.player.homeGenre}} mix
-		</h3>
 	</div>
 
 	<!-- Config -->
@@ -21,7 +20,7 @@
 
 			<!-- Genre -->
 			<md-select class="radio-container" placeholder="Genre" [(ngModel)]="setGenre">
-				<md-option *ngFor="let genre of genres" [value]="genre.name">
+				<md-option *ngFor="let genre of genres" [value]="genre.name" ngSelected="isGenreSelected(genre.name)">
 					{{genre.name}}
 				</md-option>
 			</md-select>
@@ -38,8 +37,8 @@
 			</div>
 
 			<!-- Start -->
-			<button md-raised-button class="radio-container" (click)="startRadio()" [disabled]="!this.genre">
-				start radio
+			<button md-raised-button class="radio-container" (click)="startRadio()" [disabled]="!this.selectedGenre">
+				start new {{selectedGenre}} mix
 			</button>
 		</div>
 	</div>
