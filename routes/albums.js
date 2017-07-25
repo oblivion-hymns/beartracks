@@ -17,65 +17,6 @@ function baseRoute(req, res)
 	res.render('index');
 }
 
-function loadForArtist(req, res)
-{
-	var artistId = req.query.artistId;
-	if (!artistId)
-	{
-		return res.status(500).json({
-			message: 'An error occurred'
-		});
-	}
-
-	Album.find({'artist': new ObjectId(artistId)}).sort('-year').populate('artist').exec(function(error, albums){
-		if (error)
-		{
-			console.log(error);
-			return res.status(500).json({
-				message: 'An error occurred'
-			});
-		}
-
-		res.status(200).json({
-			albums: albums
-		});
-	});
-}
-
-function loadRecent(req, res)
-{
-	Album.find({}).sort({_id: -1}).limit(50).populate('artist').exec(function(error, albums){
-		if (error)
-		{
-			console.log(error);
-			return res.status(500).json({
-				message: 'An error occurred'
-			});
-		}
-
-		res.status(200).json({
-			albums: albums
-		});
-	});
-}
-
-function loadAll(req, res)
-{
-	Album.find({}).sort('nameKey').populate('artist').exec(function(error, albums){
-		if (error)
-		{
-			console.log(error);
-			return res.status(500).json({
-				message: 'An error occurred'
-			});
-		}
-
-		res.status(200).json({
-			albums: albums
-		});
-	});
-}
-
 /**
  * Returns a list of albums with a name like the given one
  */
@@ -114,6 +55,56 @@ function find(req, res)
 			});
 		});
 	}
+}
+
+/**
+ * Returns a list of albums for the given Artist
+ * @return Album[]
+ */
+function loadForArtist(req, res)
+{
+	var artistId = req.query.artistId;
+	if (!artistId)
+	{
+		return res.status(500).json({
+			message: 'An error occurred'
+		});
+	}
+
+	Album.find({'artist': new ObjectId(artistId)}).sort('-year').populate('artist').exec(function(error, albums){
+		if (error)
+		{
+			console.log(error);
+			return res.status(500).json({
+				message: 'An error occurred'
+			});
+		}
+
+		res.status(200).json({
+			albums: albums
+		});
+	});
+}
+
+/**
+ * Returns a list of the most recently-uploaded albums
+ * @return Album[]
+ */
+function loadRecent(req, res)
+{
+	Album.find({}).sort({_id: -1}).limit(15).populate('artist').exec(function(error, albums){
+		if (error)
+		{
+			console.log(error);
+			return res.status(500).json({
+				message: 'An error occurred'
+			});
+		}
+
+		res.status(200).json({
+			albums: albums
+		});
+	});
 }
 
 module.exports = router;

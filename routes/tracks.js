@@ -185,7 +185,7 @@ function loadRecentlyPlayed(req, res)
 			}
 		})
 		.sort('-updatedAt')
-		.limit(20)
+		.limit(15)
 		.exec(function(error, tracks){
 			if (error)
 			{
