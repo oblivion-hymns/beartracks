@@ -25,69 +25,56 @@ function baseRoute(req, res)
 }
 
 /**
- * Returns the genre map
- * @return String[]
+ * Returns a list of tracks with a name like the given one
  */
-function loadGenreMap(req, res)
+function find(req, res)
 {
-	return res.status(200).json({
-		genres: genreMap.genres
-	});
-}
-
-/**
- * Returns a random track in the given genre
- * @return Track
- */
-function loadRandomGenre(req, res)
-{
-	var genre = req.query.genre;
-	Track.count({genre: genre}).exec(function(error, count){
-		var random = Math.floor(Math.random() * count);
-		Track.findOne({genre: genre})
-			.skip(random)
-			.populate('album')
-			.populate({
-				path: 'album',
-				populate: {
-					path: 'artist',
-					model: 'Artist'
-				}
-			})
-			.exec(function(error, track){
-				if (error)
-				{
-					console.log(error);
-					return res.status(500).json({
-						message: 'An error occurred'
-					});
-				}
-
-				return res.status(200).json({
-					track: track
-				});
-		});
-	});
-}
-
-/**
- * Gets a related genre for the provided genre, to the provided degree.
- * Each additional degree is one more relationship that will be made before deciding on a result
- */
-function getRelatedGenre(genre, degree)
-{
-	for (var i = 0; i < genreMap.genres.length; i++)
+	var query = req.query.query.trim();
+	if (query.length > 2)
 	{
-		var genreInfo = genreMap.genres[i];
-		if (genre == genreInfo.name)
-		{
-			return genreInfo.related[Math.floor(Math.random() * genreInfo.related.length)];
-		}
+		var populate = {
+			path: 'album',
+			populate: {
+				path: 'artist',
+				model: 'Artist'
+			}
+		};
+
+		var regex = new RegExp(query, 'i');
+		Track.find({name: regex}).sort('nameKey').populate('album').populate(populate).exec(function(err, tracks){
+			if (err)
+			{
+				return res.status(500).json({
+					title: 'An error occurred',
+					error: err
+				});
+			}
+
+			//Sort results based on levenshtein distance from original query
+			tracks = tracks.sort(function(a, b){
+				//Do not include artist
+				var aKey = a.name.trim().toLowerCase();
+				var bKey = b.name.trim().toLowerCase();
+
+				var aDistance = new Levenshtein(aKey, query).distance;
+				var bDistance = new Levenshtein(bKey, query).distance;
+
+				return aDistance - bDistance;
+			});
+
+			tracks = tracks.slice(0, 15);
+
+			res.status(200).json({
+				message: 'Success',
+				tracks: tracks
+			});
+		});
 	}
 }
 
 /**
- * Finds a track related to the given track by a given degree (integer)
+ * Finds a track related to the given track or genre
+ * @return Track
  */
 function loadRelated(req, res)
 {
@@ -181,10 +168,37 @@ function loadRelated(req, res)
 			});
 		});
 	}
+}
 
+/**
+ * Loads the most recently-played tracks
+ */
+function loadRecentlyPlayed(req, res)
+{
+	Track.find({playCount: {$gt: 0}})
+		.populate('album')
+		.populate({
+			path: 'album',
+			populate: {
+				path: 'artist',
+				model: 'Artist'
+			}
+		})
+		.sort('-updatedAt')
+		.limit(20)
+		.exec(function(error, tracks){
+			if (error)
+			{
+				console.log(error);
+				return res.status(500).json({
+					message: 'An error occurred'
+				});
+			}
 
-
-
+			res.status(200).json({
+				tracks: tracks
+			});
+	});
 }
 
 /**
@@ -219,54 +233,6 @@ function loadRandom(req, res)
 				});
 		});
 	});
-}
-
-/**
- * Returns a list of tracks with a name like the given one
- */
-function find(req, res)
-{
-	var query = req.query.query.trim();
-	if (query.length > 2)
-	{
-		var populate = {
-			path: 'album',
-			populate: {
-				path: 'artist',
-				model: 'Artist'
-			}
-		};
-
-		var regex = new RegExp(query, 'i');
-		Track.find({name: regex}).sort('nameKey').populate('album').populate(populate).exec(function(err, tracks){
-			if (err)
-			{
-				return res.status(500).json({
-					title: 'An error occurred',
-					error: err
-				});
-			}
-
-			//Sort results based on levenshtein distance from original query
-			tracks = tracks.sort(function(a, b){
-				//Do not include artist
-				var aKey = a.name.trim().toLowerCase();
-				var bKey = b.name.trim().toLowerCase();
-
-				var aDistance = new Levenshtein(aKey, query).distance;
-				var bDistance = new Levenshtein(bKey, query).distance;
-
-				return aDistance - bDistance;
-			});
-
-			tracks = tracks.slice(0, 15);
-
-			res.status(200).json({
-				message: 'Success',
-				tracks: tracks
-			});
-		});
-	}
 }
 
 /**
@@ -332,33 +298,64 @@ function incrementSong(req, res)
 }
 
 /**
- * Loads the most recently-played tracks
+ * Returns the genre map
+ * @return String[]
  */
-function loadRecentlyPlayed(req, res)
+function loadGenreMap(req, res)
 {
-	Track.find({playCount: {$gt: 0}})
-		.populate('album')
-		.populate({
-			path: 'album',
-			populate: {
-				path: 'artist',
-				model: 'Artist'
-			}
-		})
-		.sort('-updatedAt')
-		.limit(50)
-		.exec(function(error, tracks){
-			if (error)
-			{
-				console.log(error);
-				return res.status(500).json({
-					message: 'An error occurred'
-				});
-			}
+	return res.status(200).json({
+		genres: genreMap.genres
+	});
+}
 
-			res.status(200).json({
-				tracks: tracks
-			});
+/**
+ * Gets a related genre for the provided genre, to the provided degree.
+ * Each additional degree is one more relationship that will be made before deciding on a result
+ */
+function getRelatedGenre(genre, degree)
+{
+	for (var i = 0; i < genreMap.genres.length; i++)
+	{
+		var genreInfo = genreMap.genres[i];
+		if (genre == genreInfo.name)
+		{
+			return genreInfo.related[Math.floor(Math.random() * genreInfo.related.length)];
+		}
+	}
+}
+
+/**
+ * Returns a random track in the given genre
+ * @return Track
+ */
+function loadRandomGenre(req, res)
+{
+	var genre = req.query.genre;
+	Track.count({genre: genre}).exec(function(error, count){
+		var random = Math.floor(Math.random() * count);
+		Track.findOne({genre: genre})
+			.skip(random)
+			.populate('album')
+			.populate({
+				path: 'album',
+				populate: {
+					path: 'artist',
+					model: 'Artist'
+				}
+			})
+			.exec(function(error, track){
+				if (error)
+				{
+					console.log(error);
+					return res.status(500).json({
+						message: 'An error occurred'
+					});
+				}
+
+				return res.status(200).json({
+					track: track
+				});
+		});
 	});
 }
 
