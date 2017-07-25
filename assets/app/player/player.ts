@@ -181,6 +181,7 @@ export class Player implements OnInit
 	{
 		this.queuePosition = 0;
 		this.currentTrack = this.queue[this.queuePosition];
+		this.homeGenre = this.currentTrack.genre;
 		this.isLoading = true;
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
@@ -200,13 +201,13 @@ export class Player implements OnInit
 		this.isRadio = false;
 		this.queuePosition = index;
 		this.currentTrack = this.queue[this.queuePosition];
+		this.homeGenre = this.currentTrack.genre;
 		this.isLoading = true;
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
 		this.audio.oncanplay = () => {this.isLoading = false};
 		this.audio.volume = this.volume;
 		this.checkTimeInterval();
-		this.openQueue();
 	}
 
 	/**
