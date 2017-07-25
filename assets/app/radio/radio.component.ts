@@ -113,25 +113,25 @@ export class RadioComponent implements OnInit
 		switch (value)
 		{
 			case 0:
-				this.degreeString = "I only want to hear " + player.homeGenre;
+				this.degreeString = 'Just ' + player.homeGenre;
 				break;
 			case 1:
-				this.degreeString = "I want music like " + player.homeGenre;
+				this.degreeString = 'Music like ' + player.homeGenre;
 				break;
 			case 2:
-				this.degreeString = "I want music a bit like " + player.homeGenre;
+				this.degreeString = 'Music similar to ' + player.homeGenre;
 				break;
 			case 3:
-				this.degreeString = "I want to feel adventurous";
+				this.degreeString = 'Anything somewhat related to ' + player.homeGenre;
 				break;
 			case 4:
-				this.degreeString = "I want to be a musical pilgrim";
+				this.degreeString = 'Everything like ' + player.homeGenre + ' and more';
 				break;
 			case 5:
-				this.degreeString = "I want to be elite";
+				this.degreeString = "Pretty much everything";
 				break;
 			default:
-				this.degreeString = "I only want " + player.homeGenre;
+				this.degreeString = 'Just ' + player.homeGenre;
 				break
 		}
 		player.degree = value;

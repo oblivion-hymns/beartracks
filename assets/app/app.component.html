@@ -1,20 +1,52 @@
 <md-toolbar>
+
+	<!-- Queue button -->
+	<ng-container *ngIf="playerService.player.visible">
+		<button md-button
+			style="width: 4%"
+			*ngIf="!playerService.player.queueOpen"
+			(click)="playerService.player.openQueue()">
+			<md-icon>queue_music</md-icon>
+		</button>
+
+		<button md-button
+			style="width: 4%"
+			*ngIf="playerService.player.queueOpen"
+			(click)="playerService.player.closeQueue()">
+			<md-icon>queue_music</md-icon>
+		</button>
+	</ng-container>
+
+	<ng-container *ngIf="playerService.player.visible">
+		<button md-button
+			style="width: 4%"
+			*ngIf="playerService.player.queueOpen"
+			(click)="playerService.player.closeQueue()"
+			mdTooltip="Can't open queue while in chat"
+			mdTooltipPosition="below"
+			disabled>
+			<md-icon>queue_music</md-icon>
+		</button>
+	</ng-container>
+
+
+	<!-- Toolbar -->
 	<button md-button [routerLink]="['/browse']" routerLinkActive="active">
 		<h3>Library</h3>
 	</button>
-	<button md-button disabled>
-		<h3>Relax</h3>
+	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active">
+		<h3>What's new</h3>
 	</button>
 	<button md-button [routerLink]="['/jukebox']" routerLinkActive="active">
 		<h3>Chat</h3>
 	</button>
-	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active">
-		<h3>Social</h3>
-	</button>
+
 	<button md-button [routerLink]="['/profile']" routerLinkActive="active">
 		<h3 *ngIf="userService.isLoggedIn()">Profile</h3>
 		<h3 *ngIf="!userService.isLoggedIn()">Login</h3>
 	</button>
+
+	<!-- Search -->
 	<button md-button [routerLink]="['/search']" routerLinkActive="active" style="width: 4%">
 		<md-icon>search</md-icon>
 	</button>

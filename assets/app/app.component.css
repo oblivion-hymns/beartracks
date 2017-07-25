@@ -13,15 +13,22 @@ md-toolbar {
 	text-transform: lowercase;
 }
 
-md-toolbar [md-button] {
+md-toolbar [md-button]
+{
 	color: rgba(255, 255, 255, 0.54);
 	height: 100%;
 	padding: 16px 32px;
-	width: 19%;
+	width: 23%;
 }
 
-md-toolbar [md-button].active {
+md-toolbar [md-button].active
+{
 	border-bottom: 2px solid rgba(255, 255, 255, 0.87);
+}
+
+md-toolbar [md-button][disabled]
+{
+	cursor: not-allowed;
 }
 
 md-sidenav-container {
