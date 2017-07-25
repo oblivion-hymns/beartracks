@@ -31,6 +31,12 @@ import { UserService } from './../user/user.service';
 		{
 			margin-top: 32px;
 		}
+
+		.radio-row
+		{
+			margin-top: 16px;
+			text-align: left;
+		}
 	`],
 	templateUrl: './radio.component.html'
 })

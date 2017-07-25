@@ -9,14 +9,14 @@
 		</div>
 	</div>
 
-	<div fxLayout="row" style="margin-top: 16px; text-align: left;" *ngIf="this.playerService.player.homeGenre">
+	<div class="radio-row" fxLayout="row" fxFlex="60%" fxFlexOffset="20%" *ngIf="this.playerService.player.homeGenre">
 		<h3 class="sad-header">
 			Now playing {{playerService.player.homeGenre}} mix
 		</h3>
 	</div>
 
 	<!-- Config -->
-	<div fxLayout="row" style="margin-top: 16px; text-align: left;">
+	<div class="radio-row" fxLayout="row">
 		<div fxLayout="column" fxFlex="60%" fxFlexOffset="20%">
 
 			<!-- Genre -->
