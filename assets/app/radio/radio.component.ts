@@ -45,7 +45,7 @@ import { UserService } from './../user/user.service';
 export class RadioComponent implements OnInit
 {
 	public selectedGenre: string = null;
-	public genres: string[] = [];
+	public genres: any[] = [];
 	public degreeString: string = "";
 
 	constructor(private userService: UserService,
@@ -54,7 +54,7 @@ export class RadioComponent implements OnInit
 
 	ngOnInit()
 	{
-		this.trackService.loadGenres().subscribe(genres => {this.genres = genres});
+		this.trackService.loadGenres().subscribe(genres => {this.genres = genres; console.log(this.genres)});
 
 		var player = this.playerService.player;
 		var currentTrack = player.currentTrack;
@@ -135,5 +135,60 @@ export class RadioComponent implements OnInit
 				break
 		}
 		player.degree = value;
+	}
+
+	getRelatedGenres(genre)
+	{
+		var relatedGenres = [];
+
+		for (let k = 0; k < this.genres.length; k++)
+		{
+			var genreMap = this.genres[k];
+			if (genre == genreMap.name)
+			{
+				relatedGenres = relatedGenres.concat(genreMap.related);
+			}
+		}
+
+		return relatedGenres;
+	}
+
+	getMixGenres()
+	{
+		var player = this.playerService.player;
+		var genre = player.homeGenre;
+
+		//If you are not including related genres
+		if (player.degree == 0)
+		{
+			return genre;
+		}
+
+		//Include related genres
+		var mixGenres = this.getRelatedGenres(genre);
+		for (let i = 0; i < player.degree; i++)
+		{
+			var outsideMixGenres = [];
+			for (let j = 0; j < mixGenres.length; j++)
+			{
+				var relatedGenres = this.getRelatedGenres(mixGenres[j]);
+				outsideMixGenres = outsideMixGenres.concat(relatedGenres);
+			}
+
+			mixGenres = mixGenres.concat(outsideMixGenres);
+		}
+
+		//Clean up duplicates & sort
+		mixGenres = mixGenres.sort();
+		for (let i = 0; i < mixGenres.length; i++)
+		{
+			var potentialGenre = mixGenres[i];
+			if (mixGenres.indexOf(potentialGenre) === -1)
+			{
+				mixGenres.push(potentialGenre);
+			}
+		}
+
+		return mixGenres.join(', ');
 	}
 }

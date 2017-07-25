@@ -115,8 +115,6 @@ export class Player implements OnInit
 		}
 	}
 
-
-
 	/**
 	 * Replaces the queue with a single track and plays that track
 	 * @param Track track

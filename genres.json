@@ -11,7 +11,7 @@
 		},
 		{
 			"name": "Alternative",
-			"related": ["Alterative", "Alternative Rock", "Spoken Word"]
+			"related": ["Alternative", "Alternative Rock", "Spoken Word"]
 		},
 		{
 			"name": "Ambient",
@@ -187,11 +187,11 @@
 		},
 		{
 			"name": "Modern Classical",
-			"related": ["Modern Classical"]
+			"related": ["Modern Classical", "Ambient", "Neo-classical"]
 		},
 		{
 			"name": "Neo-classical",
-			"related": ["Neo-classical"]
+			"related": ["Neo-classical", "Modern Classical", "Ambient"]
 		},
 		{
 			"name": "Nerdcore Rap",
