@@ -152,6 +152,11 @@
 					<div class="item-subtitle">
 						<div class="text-secondary">
 							{{track.genre}} &ndash; {{track.lengthFormatted}}
+							<span class="text-hint">
+								&mdash; {{track.playCount}}
+								play<ng-container *ngIf="track.playCount == 0 || track.playCount > 1">s</ng-container>
+							</span>
+
 						</div>
 					</div>
 				</span>
