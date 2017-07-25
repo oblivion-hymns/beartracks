@@ -179,16 +179,18 @@ export class RadioComponent implements OnInit
 		}
 
 		//Clean up duplicates & sort
-		mixGenres = mixGenres.sort();
+		var cleanedGenres = [];
 		for (let i = 0; i < mixGenres.length; i++)
 		{
 			var potentialGenre = mixGenres[i];
-			if (mixGenres.indexOf(potentialGenre) === -1)
+			if (cleanedGenres.indexOf(potentialGenre) === -1)
 			{
-				mixGenres.push(potentialGenre);
+				cleanedGenres.push(potentialGenre);
 			}
 		}
 
-		return mixGenres.join(', ');
+		cleanedGenres = cleanedGenres.sort();
+
+		return cleanedGenres.join(', ');
 	}
 }
