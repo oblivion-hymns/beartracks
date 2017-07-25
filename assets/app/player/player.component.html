@@ -15,8 +15,9 @@
 	</div>
 
 	<div id="PlayerLoading" class="text-center" *ngIf="playerService.player.isLoading">
-		<div class="text-center error-text">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		<div class="error-text">
+			<md-progress-spinner mode="indeterminate" style="display: inline-block;">
+			</md-progress-spinner>
 		</div>
 	</div>
 
@@ -108,17 +109,19 @@
 				</div>
 			</div>
 
-
 			<md-progress-bar
 				class="now-playing-progress"
 				[mode]="determinate"
 				[value]="playerService.player.elapsedPercent">
 			</md-progress-bar>
 		</div>
-		<div *ngIf="!playerService.player.currentTrack">
-			<p style="color: rgba(80, 80, 80, 0.87);">
-				Nothing currently playing
-			</p>
+		<div class="text-center" *ngIf="!playerService.player.currentTrack">
+			<md-icon class="error-icon">
+				filter_none
+			</md-icon><br />
+			<div class="error-text">
+				Nothing is playing
+			</div>
 		</div>
 	</div>
 

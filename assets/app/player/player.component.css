@@ -7,6 +7,13 @@
 	height: 190px;
 }
 
+#PlayerLoading
+{
+	box-sizing: border-box;
+	height: 190px;
+	padding: 16px;
+}
+
 #Player .now-playing
 {
 	display: block;
