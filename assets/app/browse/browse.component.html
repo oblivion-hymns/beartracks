@@ -28,8 +28,24 @@
 
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="artists.length > 0">
-			<md-list-item class="item-line-single" *ngFor="let artist of displayArtists" (click)="loadAlbums(artist)">
-				<div md-line>{{artist.name}}</div>
+			<md-list-item class="item-line-single" *ngFor="let artist of displayArtists">
+
+				<span md-line class="item-body" (click)="loadAlbums(artist)">
+					{{artist.name}}
+				</span>
+
+				<div class="item-menu">
+					<md-menu #appMenu="mdMenu">
+						<button md-menu-item (click)="playerService.openLightboxArtist(artist)">
+							<md-icon>color_lens</md-icon>
+							<span>view artist photo</span>
+						</button>
+					</md-menu>
+					<button md-icon-button [mdMenuTriggerFor]="appMenu">
+						<md-icon>more_vert</md-icon>
+					</button>
+				</div>
+
 			</md-list-item>
 		</md-list>
 	</div>
@@ -59,6 +75,7 @@
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="albums.length > 0">
 			<md-list-item class="item-line-image" *ngFor="let album of albums">
+
 				<span md-line class="item-body" (click)="loadTracks(album)">
 					<img src="{{album.imagePath}}"/>
 					<em class="item-title text-primary">
@@ -70,6 +87,7 @@
 						</div>
 					</div>
 				</span>
+
 				<div class="item-menu">
 					<md-menu #appMenu="mdMenu">
 						<button md-menu-item (click)="playerService.playAlbum(album)">

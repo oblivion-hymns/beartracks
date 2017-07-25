@@ -22,6 +22,19 @@ export class PlayerService
 		this.player = new Player(this.http, this.trackService);
 	}
 
+	openLightboxArtist(artist: Artist)
+	{
+		var artists = [
+			{
+				caption: artist.name,
+				src: artist.imagePath,
+				thumb: artist.imagePath
+			}
+		];
+
+		this._lightbox.open(artists, 0);
+	}
+
 	/**
 	 * Opens a pretty lightbox with the given album's art inside it
 	 */
