@@ -2,7 +2,7 @@
 
 	<!-- New Albums -->
 	<div fxFlex="30%" fxFlexOffset="10%">
-		<h3 class="sad-header">New Albums</h3>
+		<h3 class="sad-header">Recently-uploaded Albums</h3>
 
 		<div *ngIf="loadingAlbums">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
@@ -73,9 +73,10 @@
 		</md-list>
 	</div>
 
+
 	<!-- Recently played -->
 	<div fxFlex="30%" fxFlexOffset="10%">
-		<h3 class="sad-header">recently played</h3>
+		<h3 class="sad-header">Recently-Played Tracks</h3>
 
 		<!-- List -->
 		<md-list *ngIf="!loadingRecent">
