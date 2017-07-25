@@ -15,6 +15,7 @@ router.get('/random', loadRandom);
 router.get('/find', find);
 router.get('/related', loadRelated);
 router.post('/album', loadAlbum);
+router.get('/artist', loadArtist);
 router.get('/increment-song', incrementSong);
 router.get('/recent', loadRecentlyPlayed);
 router.get('/genre-map', loadGenreMap);
@@ -286,7 +287,7 @@ function loadAlbum(req, res)
  */
 function loadArtist(req, res)
 {
-	var id = mongoose.Types.ObjectId(req.body.artistId);
+	var id = mongoose.Types.ObjectId(req.query.artistId);
 
 	Album.find({artist: id}).exec(function(error, albums){
 		return albums;
