@@ -131,27 +131,34 @@
 	</div>
 
 	<h3 class="sad-header">
-		Queue
+		<ng-container *ngIf="!playerService.player.isRadio">
+			Queue
+		</ng-container>
+		<ng-container *ngIf="playerService.player.isRadio">
+			Radio
+		</ng-container>
 
-		<button md-icon-button
-			class="text-hint tiny-icon"
-			mdTooltip="Enable Radio Mode"
-			mdTooltipPosition="below"
-			(click)="playerService.enableRadio()"
-			style="margin-left: 8px;"
-			*ngIf="!playerService.player.isRadio">
-			<md-icon>radio</md-icon>
-		</button>
+		<ng-container *ngIf="this.playerService.player.currentTrack">
+			<button md-icon-button
+				class="text-hint tiny-icon"
+				mdTooltip="Enable Radio Mode"
+				mdTooltipPosition="below"
+				(click)="playerService.enableRadio()"
+				style="margin-left: 8px;"
+				*ngIf="!playerService.player.isRadio">
+				<md-icon>radio</md-icon>
+			</button>
 
-		<button md-icon-button
-			class="tiny-icon text-blue"
-			mdTooltip="Disable Radio Mode"
-			mdTooltipPosition="below"
-			(click)="playerService.disableRadio()"
-			style="margin-left: 8px;"
-			*ngIf="playerService.player.isRadio">
-			<md-icon>radio</md-icon>
-		</button>
+			<button md-icon-button
+				class="tiny-icon text-blue"
+				mdTooltip="Disable Radio Mode"
+				mdTooltipPosition="below"
+				(click)="playerService.disableRadio()"
+				style="margin-left: 8px;"
+				*ngIf="playerService.player.isRadio">
+				<md-icon>radio</md-icon>
+			</button>
+		</ng-container>
 
 		<button md-icon-button
 			class="text-hint tiny-icon"
