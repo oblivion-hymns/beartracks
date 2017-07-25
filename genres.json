@@ -7,7 +7,7 @@
 		},
 		{
 			"name": "Alternative Rock",
-			"related": ["Alternative Rock", "Alternative", "Pop Rock", "Pop Punk", "Rock", "Ska"]
+			"related": ["Alternative Rock", "Alternative", "Pop Rock", "Pop Punk"]
 		},
 		{
 			"name": "Alternative",
@@ -15,7 +15,7 @@
 		},
 		{
 			"name": "Ambient",
-			"related": ["Ambient", "Chillwave", "Dream Pop", "Modern Classical", "Neo-classical", "New Age", "Shoegaze"]
+			"related": ["Ambient", "Chillwave", "Dream Pop", "Modern Classical", "Neo-classical", "Shoegaze"]
 		},
 		{
 			"name": "Anti-folk",

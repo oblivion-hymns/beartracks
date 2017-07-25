@@ -163,6 +163,10 @@ export class RadioComponent implements OnInit
 		{
 			return genre;
 		}
+		else if (player.degree == 1)
+		{
+			return this.getRelatedGenres(genre).sort().join(', ');
+		}
 
 		//Include related genres
 		var mixGenres = this.getRelatedGenres(genre);
