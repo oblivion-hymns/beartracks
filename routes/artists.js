@@ -18,6 +18,7 @@ function baseRoute(req, res)
 
 /**
  * Returns a list of artists with a name like the given one
+ * @return Artist[]
  */
 function find(req, res)
 {
@@ -54,6 +55,7 @@ function find(req, res)
 
 /**
  * Returns a list of all artists
+ * @return Artist[]
  */
 function loadAll(req, res)
 {
