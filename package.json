@@ -62,6 +62,7 @@
     "request": "^2.81.0",
     "rxjs": "^5.2.0",
     "serve-favicon": "~2.3.0",
+    "shuffle-array": "^1.0.1",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "socketio": "^1.0.0",

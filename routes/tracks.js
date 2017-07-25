@@ -2,6 +2,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var Levenshtein = require('levenshtein');
 var mongoose = require('mongoose');
+var shuffleArray = require('shuffle-array');
 
 var Artist = require('../models/artist');
 var Album = require('../models/album');
@@ -276,6 +277,45 @@ function loadAlbum(req, res)
 			res.status(200).json({
 				tracks: tracks
 			});
+	});
+}
+
+/**
+ * Loads and returns all tracks, in a random order, for the given artist
+ * @return Track[]
+ */
+function loadArtist(req, res)
+{
+	var id = mongoose.Types.ObjectId(req.body.artistId);
+
+	Album.find({artist: id}).exec(function(error, albums){
+		return albums;
+	}).then(function(albums){
+
+		var albumIds = [];
+		for (let i = 0; i < albums.length; i++)
+		{
+			albumIds.push(albums[i]._id);
+		}
+
+		Track.find({album: {$in: albumIds}}).populate('album').populate({
+			path: 'album',
+			populate: {
+				path: 'artist',
+				model: 'Artist'
+			}
+		}).exec(function(error, tracks){
+			if (error)
+			{
+				console.log(error);
+				return res.status(500).json({message: 'An error occurred'});
+			}
+
+			res.status(200).json({
+				tracks: shuffleArray(tracks)
+			});
+		});
+
 	});
 }
 

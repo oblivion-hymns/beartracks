@@ -9,7 +9,6 @@ var router = express.Router();
 router.get('/', baseRoute);
 router.get('/loadForArtist', loadForArtist);
 router.get('/recent', loadRecent);
-router.get('/all', loadAll);
 router.get('/find', find);
 
 function baseRoute(req, res)
