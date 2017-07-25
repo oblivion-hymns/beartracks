@@ -1,11 +1,3 @@
-<div id="OpenQueue"
-	(click)="playerService.player.openQueue()"
-	*ngIf="playerService.player.visible">
-	<md-icon>
-		queue_music
-	</md-icon>
-</div>
-
 <div id="Queue"
 	class="queue-closed"
 	[ngClass]="{'queue-closed': playerService.player.queueOpen == false}"

@@ -17,14 +17,12 @@
 		</button>
 	</ng-container>
 
-	<ng-container *ngIf="playerService.player.visible">
+	<ng-container *ngIf="!playerService.player.visible">
 		<button md-button
-			style="width: 4%"
-			*ngIf="playerService.player.queueOpen"
+			style="width: 4%; cursor: not-allowed;"
 			(click)="playerService.player.closeQueue()"
 			mdTooltip="Can't open queue while in chat"
-			mdTooltipPosition="below"
-			disabled>
+			mdTooltipPosition="right">
 			<md-icon>queue_music</md-icon>
 		</button>
 	</ng-container>
