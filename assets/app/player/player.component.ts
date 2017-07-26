@@ -32,4 +32,20 @@ export class PlayerComponent
 			this.playerService.player.enqueueOne(track);
 		});
 	}
+
+	/**
+	 * Convenience method to return the player
+	 */
+	getPlayer()
+	{
+		return this.playerService.player;
+	}
+
+	/**
+	 * Convenience method to return the current track
+	 */
+	getCurrentTrack()
+	{
+		return this.playerService.player.currentTrack;
+	}
 }
