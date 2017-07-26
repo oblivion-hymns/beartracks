@@ -26,10 +26,13 @@
 				value="{{playerService.player.degree}}">
 			</md-slider>
 
+			<p class="text-secondary" style="text-transform: lowercase;">
+				<strong>{{degreeString}}</strong>
+			</p>
+
 			<p class="text-hint" style="text-transform: lowercase;">
-				<strong>{{degreeString}}</strong><br />
 				<ng-container *ngIf="playerService.player.degree > 0">
-					{{getMixGenres()}}
+					Includes {{getMixGenres()}}
 				</ng-container>
 			</p>
 		</div>
