@@ -124,6 +124,7 @@ export class Player implements OnInit
 		this.resetPlayer();
 		this.queue.push(track);
 		this.playFromBeginning();
+		this.openQueue();
 	}
 
 	/**
@@ -139,6 +140,7 @@ export class Player implements OnInit
 			this.queue.push(tracks[i]);
 		}
 		this.playFromBeginning();
+		this.openQueue();
 	}
 
 	/**
@@ -181,14 +183,12 @@ export class Player implements OnInit
 	{
 		this.queuePosition = 0;
 		this.currentTrack = this.queue[this.queuePosition];
-		this.homeGenre = this.currentTrack.genre;
 		this.isLoading = true;
 		this.audio = new Audio(this.currentTrack.filePath);
 		this.audio.play();
 		this.audio.oncanplay = () => {this.isLoading = false};
 		this.audio.volume = this.volume;
 		this.checkTimeInterval();
-		this.openQueue();
 	}
 
 	/**
@@ -242,6 +242,7 @@ export class Player implements OnInit
 		if (this.currentTrack)
 		{
 			this.playFromBeginning();
+			this.openQueue();
 		}
 		else
 		{
@@ -373,6 +374,11 @@ export class Player implements OnInit
 
 			if (this.isRadio)
 			{
+				if (!this.homeGenre)
+				{
+					this.homeGenre = this.currentTrack.genre;
+				}
+
 				this.playRelated(this.currentTrack, this.degree);
 			}
 			else
