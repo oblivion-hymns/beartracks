@@ -31,13 +31,13 @@
 			<!-- Menu -->
 			<span style="float: right;">
 				<md-menu #nowPlayingMenu="mdMenu">
-					<button md-menu-item (click)="playerService.enqueueAlbum(getCurrentTrack().album)">
+					<!-- <button md-menu-item (click)="playerService.enqueueAlbum(getCurrentTrack().album)">
 						<md-icon>queue_music</md-icon>
 						<span>add album to queue</span>
-					</button>
+					</button> -->
 					<button md-menu-item (click)="playerService.enqueueSmart(getCurrentTrack().album)">
-						<md-icon>album</md-icon>
-						<span>smart queue album</span>
+						<md-icon>play_arrow</md-icon>
+						<span>play album from here</span>
 					</button>
 					<button md-menu-item (click)="playerService.playArtist(getCurrentTrack().album.artist)">
 						<md-icon>play_arrow</md-icon>
