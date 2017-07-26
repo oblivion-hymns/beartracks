@@ -15,7 +15,7 @@
 		},
 		{
 			"name": "Ambient",
-			"related": ["Ambient", "Chillwave", "Dream Pop", "Modern Classical", "Neo-classical", "Shoegaze"]
+			"related": ["Ambient", "Chillwave", "Modern Classical", "Neo-classical"]
 		},
 		{
 			"name": "Anti-folk",
@@ -23,7 +23,7 @@
 		},
 		{
 			"name": "Art Rock",
-			"related": ["Art Rock", "Experimental", "New Age", "Progressive Metal", "Progressive Rock"]
+			"related": ["Art Rock", "Experimental", "Progressive Metal", "Progressive Rock"]
 		},
 		{
 			"name": "Avant-garde",
@@ -35,7 +35,7 @@
 		},
 		{
 			"name": "Blues",
-			"related": ["Blues", "Southern Rock", "R&B"]
+			"related": ["Blues", "Southern Rock"]
 		},
 		{
 			"name": "Bossa Nova",
@@ -67,7 +67,7 @@
 		},
 		{
 			"name": "Doom Jazz",
-			"related": ["Doom Jazz", "Ambient"]
+			"related": ["Doom Jazz", "Ambient", "Jazz"]
 		},
 		{
 			"name": "Dream Pop",
@@ -127,11 +127,11 @@
 		},
 		{
 			"name": "Hardcore",
-			"related": ["Hardcore"]
+			"related": ["Hardcore", "Melodic Hardcore"]
 		},
 		{
 			"name": "Heavy Metal",
-			"related": ["Heavy Metal"]
+			"related": ["Heavy Metal", "Metal", "Post-black Metal", "Progressive Metal"]
 		},
 		{
 			"name": "Hip-hop",
@@ -167,19 +167,19 @@
 		},
 		{
 			"name": "Jazz",
-			"related": ["Jazz"]
+			"related": ["Jazz", "Doom Jazz"]
 		},
 		{
 			"name": "Lo-Fi",
-			"related": ["Lo-Fi"]
+			"related": ["Lo-Fi", "Dubstep", "Chillwave", "Chillstep"]
 		},
 		{
 			"name": "Melodic Hardcore",
-			"related": ["Melodic Hardcore"]
+			"related": ["Melodic Hardcore", "Hardcore", "Post-hardcore"]
 		},
 		{
 			"name": "Metal",
-			"related": ["Metal"]
+			"related": ["Metal", "Heavy Metal", "Hard Rock", "Progressive Metal", "Post-black Metal"]
 		},
 		{
 			"name": "Metalcore",
@@ -187,15 +187,15 @@
 		},
 		{
 			"name": "Modern Classical",
-			"related": ["Modern Classical", "Ambient", "Neo-classical"]
+			"related": ["Modern Classical", "Ambient", "Neo-classical", "Post-classical"]
 		},
 		{
 			"name": "Neo-classical",
-			"related": ["Neo-classical", "Modern Classical", "Ambient"]
+			"related": ["Neo-classical", "Modern Classical", "Ambient", "Post-classical"]
 		},
 		{
 			"name": "Nerdcore Rap",
-			"related": ["Nerdcore Rap"]
+			"related": ["Nerdcore Rap", "Rap", "Techno", "Trance"]
 		},
 		{
 			"name": "New Age",
@@ -203,19 +203,19 @@
 		},
 		{
 			"name": "Nu Metal",
-			"related": ["Nu Metal"]
+			"related": ["Nu Metal", "Rap", "Rap-rock", "Rock", "Alternative Rock"]
 		},
 		{
 			"name": "Pop Punk",
-			"related": ["Pop Punk"]
+			"related": ["Pop Punk", "Pop", "Punk", "Rock", "Alternative Rock", "Ska"]
 		},
 		{
 			"name": "Pop Rock",
-			"related": ["Pop Rock"]
+			"related": ["Pop Rock", "Pop", "Rock", "Alternative Rock", "Alternative"]
 		},
 		{
 			"name": "Pop",
-			"related": ["Pop"]
+			"related": ["Pop", "R&B", "Rap", "Hip-hop"]
 		},
 		{
 			"name": "Post-black Metal",
@@ -223,23 +223,23 @@
 		},
 		{
 			"name": "Post-classical",
-			"related": ["Post-classical"]
+			"related": ["Post-classical", "Modern Classical", "Neo-classical"]
 		},
 		{
 			"name": "Post-hardcore",
-			"related": ["Post-hardcore"]
+			"related": ["Post-hardcore", "Hardcore", "Melodic Hardcore", "Metal"]
 		},
 		{
 			"name": "Post-punk",
-			"related": ["Post-punk"]
+			"related": ["Post-punk", "Punk", "Post-rock"]
 		},
 		{
 			"name": "Post-rock",
-			"related": ["Post-rock"]
+			"related": ["Post-rock", "Rock", "Shoegaze", "Dream Pop"]
 		},
 		{
 			"name": "Progressive Metal",
-			"related": ["Progressive Metal"]
+			"related": ["Progressive Metal", "Progressive Rock", "Metal"]
 		},
 		{
 			"name": "Progressive Rock",
@@ -247,91 +247,91 @@
 		},
 		{
 			"name": "Psychedelic Drone",
-			"related": ["Psychedelic Drone"]
+			"related": ["Psychedelic Drone", "Psychedelic"]
 		},
 		{
 			"name": "Psychedelic",
-			"related": ["Psychedelic"]
+			"related": ["Psychedelic", "Psychedlic Drone", "Stoner Metal", "Stoner Rock"]
 		},
 		{
 			"name": "Punk Rock",
-			"related": ["Punk Rock"]
+			"related": ["Punk Rock", "Punk", "Rock", "Post-punk"]
 		},
 		{
 			"name": "Punk",
-			"related": ["Punk"]
+			"related": ["Punk", "Punk Rock", "Post-punk", "Rock", "Hard Rock", "Ska"]
 		},
 		{
 			"name": "R&B",
-			"related": ["R&B"]
+			"related": ["R&B", "Rap", "Soul", "Hip-hop"]
 		},
 		{
 			"name": "Rap",
-			"related": ["Rap"]
+			"related": ["Rap", "Hip-hop", "R&B"]
 		},
 		{
 			"name": "Rap-rock",
-			"related": ["Rap-rock"]
+			"related": ["Rap-rock", "Rap", "Rock", "Nu Metal"]
 		},
 		{
 			"name": "Reggae",
-			"related": ["Reggae"]
+			"related": ["Reggae", "R&B"]
 		},
 		{
 			"name": "Rock",
-			"related": ["Rock"]
+			"related": ["Rock", "Classic Rock", "Southern Rock", "Hard Rock", "Metal"]
 		},
 		{
 			"name": "Screamo",
-			"related": ["Screamo"]
+			"related": ["Screamo", "Post-hardcore", "Post-black Metal"]
 		},
 		{
 			"name": "Shoegaze",
-			"related": ["Shoegaze"]
+			"related": ["Shoegaze", "Dream Pop", "Post-rock"]
 		},
 		{
 			"name": "Ska Punk",
-			"related": ["Ska Punk"]
+			"related": ["Ska Punk", "Punk", "Ska", "Alternative Rock"]
 		},
 		{
 			"name": "Ska",
-			"related": ["Ska"]
+			"related": ["Ska", "Ska Punk", "Punk"]
 		},
 		{
 			"name": "Soul",
-			"related": ["Soul"]
+			"related": ["Soul", "R&B"]
 		},
 		{
 			"name": "Southern Rock",
-			"related": ["Southern Rock"]
+			"related": ["Southern Rock", "Classic Rock", "Rock"]
 		},
 		{
 			"name": "Spoken Word",
-			"related": ["Spoken Word"]
+			"related": ["Spoken Word", "Alternative", "Indie", "Indie Rock"]
 		},
 		{
 			"name": "Stoner Metal",
-			"related": ["Stoner Metal"]
+			"related": ["Stoner Metal", "Stoner Rock"]
 		},
 		{
 			"name": "Stoner Rock",
-			"related": ["Stoner Rock"]
+			"related": ["Stoner Rock", "Stoner Metal"]
 		},
 		{
 			"name": "Techno",
-			"related": ["Techno"]
+			"related": ["Techno", "Trance", "Dubstep", "Chillwave", "Chillstep", "Lo-Fi", "Electronic"]
 		},
 		{
 			"name": "Thrash Metal",
-			"related": ["Thrash Metal"]
+			"related": ["Thrash Metal", "Metal"]
 		},
 		{
 			"name": "Trance",
-			"related": ["Trance"]
+			"related": ["Trance", "Techno", "Dubstep", "Chillwave", "Chillstep", "Electronic"]
 		},
 		{
 			"name": "Trip-hop",
-			"related": ["Trip-hop"]
+			"related": ["Trip-hop", "Hip-hop", "Electronic"]
 		}
 	]
 }
