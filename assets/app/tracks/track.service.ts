@@ -17,6 +17,95 @@ export class TrackService
 	constructor(private http: Http) {}
 
 	/**
+	 * Loads and returns a random track
+	 */
+	loadRelated(track, degree)
+	{
+		var id = track._id;
+		return this.http.get('http://bwilbur.com/tracks/related?trackId=' + id + '&degree=' + degree)
+			.map(this.mapSingleTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Loads and returns a random track in one of the genres related to the provided one
+	 * @param String genre
+	 * @param Number degree
+	 */
+	loadRelatedByGenre(genre, degree)
+	{
+		return this.http.get('http://bwilbur.com/tracks/related?genre=' + genre + '&degree=' + degree)
+			.map(this.mapSingleTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Loads a random song in the given genre
+	 * @param String genre
+	 * @return Track
+	 */
+	loadByGenre(genre)
+	{
+		return this.http.get('http://bwilbur.com/tracks/random-genre?genre=' + genre)
+			.map(this.mapSingleTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Loads and returns a random track
+	 */
+	loadRandom()
+	{
+		return this.http.get('http://bwilbur.com/tracks/random')
+			.map(this.mapSingleTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Loads and returns a list of tracks for the given album
+	 */
+	loadForAlbum(albumId)
+	{
+		const body = JSON.stringify({albumId: albumId});
+		const headers = new Headers({'Content-Type': 'application/json'});
+
+		return this.http.post('http://bwilbur.com/tracks/album', body, {headers: headers})
+			.map(this.mapTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Loads and returns a shuffled list of all tracks for the given artist
+	 */
+	loadForArtist(artistId)
+	{
+		return this.http.get('http://bwilbur.com/tracks/artist?artistId=' + artistId)
+			.map(this.mapTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Returns a list of recently-played tracks
+	 */
+	loadRecentlyPlayed()
+	{
+		return this.http.get('http://bwilbur.com/tracks/recent')
+			.map(this.mapTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Finds tracks based on the given query
+	 */
+	find(query)
+	{
+		var getUrl = 'http://bwilbur.com:3000/tracks/find?query=' + query;
+		return this.http.get(getUrl)
+			.map(this.mapTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
 	 * Downloads the given track.
 	 * @param Track track
 	 */
@@ -48,195 +137,6 @@ export class TrackService
 	}
 
 	/**
-	 * Finds tracks based on the given query
-	 */
-	find(query)
-	{
-		var getUrl = 'http://bwilbur.com:3000/tracks/find?query=' + query;
-		return this.http.get(getUrl)
-			.map((response: Response) => {
-				const data = response.json().tracks;
-
-				let tracks: Track[] = [];
-				for (let trackData of data)
-				{
-					var id = trackData._id;
-					var name = trackData.name;
-					var nameKey = trackData.nameKey;
-					var album = trackData.album;
-					var discNum = trackData.discNum;
-					var trackNum = trackData.trackNum;
-					var genre = trackData.genre;
-					var length = trackData.length;
-					var filePath = trackData.filePath;
-					var playCount = trackData.playCount;
-					var updatedAt = trackData.updatedAt;
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
-					tracks.push(track);
-				}
-
-				return tracks;
-			})
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	/**
-	 * Loads and returns a random track
-	 */
-	loadRelated(track, degree)
-	{
-		var id = track._id;
-		return this.http.get('http://bwilbur.com/tracks/related?trackId=' + id + '&degree=' + degree)
-			.map((response: Response) => {
-				const trackData = response.json().track;
-				var id = trackData._id;
-				var name = trackData.name;
-				var nameKey = trackData.nameKey;
-				var album = trackData.album;
-				var discNum = trackData.discNum;
-				var trackNum = trackData.trackNum;
-				var genre = trackData.genre;
-				var length = trackData.length;
-				var filePath = trackData.filePath;
-				var playCount = trackData.playCount;
-				var updatedAt = trackData.updatedAt;
-				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
-				return track;
-			})
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	/**
-	 * Loads and returns a random track in one of the genres related to the provided one
-	 * @param String genre
-	 * @param Number degree
-	 */
-	loadRelatedByGenre(genre, degree)
-	{
-		return this.http.get('http://bwilbur.com/tracks/related?genre=' + genre + '&degree=' + degree)
-			.map((response: Response) => {
-				const trackData = response.json().track;
-				var id = trackData._id;
-				var name = trackData.name;
-				var nameKey = trackData.nameKey;
-				var album = trackData.album;
-				var discNum = trackData.discNum;
-				var trackNum = trackData.trackNum;
-				var genre = trackData.genre;
-				var length = trackData.length;
-				var filePath = trackData.filePath;
-				var playCount = trackData.playCount;
-				var updatedAt = trackData.updatedAt;
-				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
-				return track;
-			})
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	/**
-	 * Loads and returns a random track
-	 */
-	loadRandom()
-	{
-		return this.http.get('http://bwilbur.com/tracks/random')
-			.map((response: Response) => {
-				const trackData = response.json().track;
-
-				var id = trackData._id;
-				var name = trackData.name;
-				var nameKey = trackData.nameKey;
-				var album = trackData.album;
-				var discNum = trackData.discNum;
-				var trackNum = trackData.trackNum;
-				var genre = trackData.genre;
-				var length = trackData.length;
-				var filePath = trackData.filePath;
-				var playCount = trackData.playCount;
-				var updatedAt = trackData.updatedAt;
-				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
-				return track;
-			})
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	/**
-	 * Loads and returns a list of tracks for the given album
-	 */
-	loadForAlbum(albumId)
-	{
-		const body = JSON.stringify({albumId: albumId});
-		const headers = new Headers({'Content-Type': 'application/json'});
-
-		return this.http.post('http://bwilbur.com/tracks/album', body, {headers: headers})
-			.map((response: Response) => {
-				const data = response.json().tracks;
-
-				let tracks: Track[] = [];
-				for (let trackData of data)
-				{
-					var id = trackData._id;
-					var name = trackData.name;
-					var nameKey = trackData.nameKey;
-					var album = trackData.album;
-					var discNum = trackData.discNum;
-					var trackNum = trackData.trackNum;
-					var genre = trackData.genre;
-					var length = trackData.length;
-					var filePath = trackData.filePath;
-					var playCount = trackData.playCount;
-					var updatedAt = trackData.updatedAt;
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
-					tracks.push(track);
-				}
-
-				return tracks;
-			})
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	/**
-	 * Loads and returns a shuffled list of all tracks for the given artist
-	 */
-	loadForArtist(artistId)
-	{
-		return this.http.get('http://bwilbur.com/tracks/artist?artistId=' + artistId)
-			.map((response: Response) => this.mapTrackData)
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	/**
-	 * Returns a list of recently-played tracks
-	 */
-	loadRecentlyPlayed()
-	{
-		return this.http.get('http://bwilbur.com/tracks/recent')
-			.map((response: Response) => {
-				const data = response.json().tracks;
-
-				let tracks: Track[] = [];
-				for (let trackData of data)
-				{
-					var id = trackData._id;
-					var name = trackData.name;
-					var nameKey = trackData.nameKey;
-					var album = trackData.album;
-					var discNum = trackData.discNum;
-					var trackNum = trackData.trackNum;
-					var genre = trackData.genre;
-					var length = trackData.length;
-					var filePath = trackData.filePath;
-					var playCount = trackData.playCount;
-					var updatedAt = trackData.updatedAt;
-					var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
-					tracks.push(track);
-				}
-				this.tracks = tracks;
-				return tracks;
-			})
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	/**
 	 * Returns the complete genre map
 	 */
 	loadGenres()
@@ -250,35 +150,30 @@ export class TrackService
 	}
 
 	/**
-	 * Loads a random song in the given genre
-	 * @param String genre
+	 * Maps a response to a single track
 	 * @return Track
 	 */
-	loadByGenre(genre)
+	mapSingleTrackData(response)
 	{
-		return this.http.get('http://bwilbur.com/tracks/random-genre?genre=' + genre)
-			.map((response: Response) => {
-				const trackData = response.json().track;
-
-				var id = trackData._id;
-				var name = trackData.name;
-				var nameKey = trackData.nameKey;
-				var album = trackData.album;
-				var discNum = trackData.discNum;
-				var trackNum = trackData.trackNum;
-				var genre = trackData.genre;
-				var length = trackData.length;
-				var filePath = trackData.filePath;
-				var playCount = trackData.playCount;
-				var updatedAt = trackData.updatedAt;
-				var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
-				return track;
-			})
-			.catch((error: Response) => Observable.throw(error.json()));
+		const trackData = response.json().track;
+		var id = trackData._id;
+		var name = trackData.name;
+		var nameKey = trackData.nameKey;
+		var album = trackData.album;
+		var discNum = trackData.discNum;
+		var trackNum = trackData.trackNum;
+		var genre = trackData.genre;
+		var length = trackData.length;
+		var filePath = trackData.filePath;
+		var playCount = trackData.playCount;
+		var updatedAt = trackData.updatedAt;
+		var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
+		return track;
 	}
 
 	/**
-	 * Because I have written the same block of code about 8 times now
+	 * Maps a response to an array of tracks
+	 * @return Track[]
 	 */
 	mapTrackData(response)
 	{
