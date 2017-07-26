@@ -65,19 +65,6 @@ export class RadioComponent implements OnInit
 		}
 	}
 
-	/**
-	 * Starts radio playback
-	 */
-	startRadio()
-	{
-		if (this.selectedGenre)
-		{
-			var player = this.playerService.player;
-			player.homeGenre = this.selectedGenre;
-			player.playTrackInGenre(player.homeGenre);
-		}
-	}
-
 	onDegreeChange(event)
 	{
 		this.setDegree(event.value);

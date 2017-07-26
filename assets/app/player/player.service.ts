@@ -55,6 +55,14 @@ export class PlayerService
 	}
 
 	/**
+	 * Skips the currently-playing track
+	 */
+	skipTrack()
+	{
+		this.player.playTrackInGenre(this.player.homeGenre);
+	}
+
+	/**
 	 * Replaces the queue with the given album
 	 */
 	playAlbum(album)
