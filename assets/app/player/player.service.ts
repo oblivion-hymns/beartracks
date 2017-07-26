@@ -109,6 +109,25 @@ export class PlayerService
 	}
 
 	/**
+	 * Enqueues the given album but continues playing the given track in the scope of the album
+	 * @param Album album
+	 */
+	enqueueSmart(album)
+	{
+		this.trackService.loadForAlbum(album._id).subscribe(
+			(tracks: Track[]) => {
+				var allTracks = [];
+				for (let i = 0; i < tracks.length; i++)
+				{
+					allTracks.push(tracks[i]);
+				}
+
+				this.player.enqueueSmart(allTracks);
+			}
+		)
+	}
+
+	/**
 	 * Plays a mix containing all tracks from a given artist
 	 */
 	playArtist(artist)

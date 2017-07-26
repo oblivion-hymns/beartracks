@@ -250,6 +250,41 @@ export class Player implements OnInit
 		}
 	}
 
+	/**
+	 * Replaces the queue with the given tracks, but continues playing the current track
+	 * in the scope of the enqueued tracks. Used for "the smart queue" album feature
+	 */
+	enqueueSmart(tracks)
+	{
+		this.isRadio = false;
+		if (!this.currentTrack)
+		{
+			//If somehow you got here without a track player, just enqueue the album
+			this.enqueueMany(tracks);
+		}
+		else
+		{
+			this.queue = [];
+
+			//Keep only the currently-playing track intact & enqueue the rest of the album around it
+			for (let i = 0; i < tracks.length; i++)
+			{
+				var track = tracks[i];
+				if (track._id == this.currentTrack._id)
+				{
+					//Push the exact instance of the track that is already playing
+					this.queue.push(this.currentTrack);
+					this.queuePosition = i;
+				}
+				else
+				{
+					//Push the new track
+					this.queue.push(track);
+				}
+			}
+		}
+	}
+
 
 
 	/**
@@ -363,7 +398,7 @@ export class Player implements OnInit
 			this.elapsedPercent = 0;
 		}
 
-		if (this.elapsedPercent >= 100)
+		if (this.elapsedPercent > 100)
 		{
 			this.elapsedPercent = 0;
 			this.elapsed = '0:00';

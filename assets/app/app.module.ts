@@ -16,6 +16,7 @@ import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIco
 		MdMenuModule, MdProgressBarModule, MdSidenavModule, MdTabsModule } from '@angular/material';
 
 //Plugins
+import { AutofocusModule } from 'angular-autofocus-fix';
 import { LightboxModule } from 'angular2-lightbox';
 
 //App-specific
@@ -53,6 +54,8 @@ import { UserService } from './user/user.service';
 		ReactiveFormsModule,
 		routing,
 		HttpModule,
+
+		AutofocusModule,
 		LightboxModule,
 
 		MaterialModule,
