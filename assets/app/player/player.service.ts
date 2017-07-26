@@ -59,7 +59,17 @@ export class PlayerService
 	 */
 	skipTrack()
 	{
-		this.player.playTrackInGenre(this.player.homeGenre);
+		if (this.player.currentTrack)
+		{
+			if (this.player.isRadio)
+			{
+				this.player.playTrackInGenre(this.player.homeGenre);
+			}
+			else
+			{
+				this.player.playPosition(this.player.queuePosition + 1);
+			}
+		}
 	}
 
 	/**
