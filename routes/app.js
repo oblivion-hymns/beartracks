@@ -400,7 +400,6 @@ function sync(req, res)
 		}
 		else
 		{
-			//console.log('Skipped ' + file);
 			percentageFileCount++;
 		}
 

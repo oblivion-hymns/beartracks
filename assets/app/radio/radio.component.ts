@@ -54,7 +54,7 @@ export class RadioComponent implements OnInit
 
 	ngOnInit()
 	{
-		this.trackService.loadGenres().subscribe(genres => {this.genres = genres; console.log(this.genres)});
+		this.trackService.loadGenres().subscribe(genres => {this.genres = genres;});
 
 		var player = this.playerService.player;
 		var currentTrack = player.currentTrack;

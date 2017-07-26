@@ -213,7 +213,7 @@ export class Player implements OnInit
 		}
 		else
 		{
-			this.resetAudio();
+			this.pause();
 		}
 	}
 
