@@ -3,40 +3,20 @@
 	<!-- Now playing -->
 	<div fxLayout="row">
 		<div fxLayout="column" fxFlex="60%" fxFlexOffset="20%">
-
-			<!-- Mix in progress -->
 			<div class="text-center" *ngIf="this.playerService.player.homeGenre">
 				<md-icon class="error-icon">
 					radio
 				</md-icon><br />
-				<p class="text-primary" style="text-transform: lowercase;">
-					Radio mode is <strong>on</strong>. Tracks will pick the music for you
+				<p class="text-primary">
+					radio mode is <strong>on</strong>. Tracks will choose music for you
 				</p>
 			</div>
-
-			<!-- Mix not in progress -->
-			<div class="text-center" *ngIf="!this.playerService.player.homeGenre">
-				<md-icon class="error-icon">
-					radio
-				</md-icon><br />
-				<h3 class="error-text">
-					Start playing a song to start a mix
-				</h3>
-			</div>
-
 		</div>
 	</div>
 
 	<!-- Config -->
 	<div class="radio-row" fxLayout="row" *ngIf="this.playerService.player.homeGenre">
 		<div fxLayout="column" fxFlex="80%" fxFlexOffset="10%">
-
-			<!-- Genre -->
-			<!-- <md-select class="radio-container" placeholder="Genre" [(ngModel)]="setGenre">
-				<md-option *ngFor="let genre of genres" [value]="genre.name" ngSelected="isGenreSelected(genre.name)">
-					{{genre.name}}
-				</md-option>
-			</md-select> -->
 
 			<!-- Degree -->
 			<div class="radio-container">
@@ -56,11 +36,6 @@
 					You will hear: {{getMixGenres()}}
 				</p>
 			</div>
-
-			<!-- Start -->
-			<!-- <button md-raised-button class="radio-container" (click)="startRadio()" [disabled]="!this.selectedGenre">
-				start new {{selectedGenre}} mix
-			</button> -->
 		</div>
 	</div>
 </div>
