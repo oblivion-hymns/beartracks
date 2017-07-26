@@ -159,6 +159,9 @@ export class TrackService
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
+	/**
+	 * Loads and returns a list of tracks for the given album
+	 */
 	loadForAlbum(albumId)
 	{
 		const body = JSON.stringify({albumId: albumId});
@@ -191,6 +194,19 @@ export class TrackService
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
+	/**
+	 * Loads and returns a shuffled list of all tracks for the given artist
+	 */
+	loadForArtist(artistId)
+	{
+		return this.http.get('http://bwilbur.com/tracks/artist?artistId=' + artistId)
+			.map((response: Response) => this.mapTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Returns a list of recently-played tracks
+	 */
 	loadRecentlyPlayed()
 	{
 		return this.http.get('http://bwilbur.com/tracks/recent')
@@ -259,5 +275,33 @@ export class TrackService
 				return track;
 			})
 			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
+	 * Because I have written the same block of code about 8 times now
+	 */
+	mapTrackData(response)
+	{
+		const data = response.json().tracks;
+
+		let tracks: Track[] = [];
+		for (let trackData of data)
+		{
+			var id = trackData._id;
+			var name = trackData.name;
+			var nameKey = trackData.nameKey;
+			var album = trackData.album;
+			var discNum = trackData.discNum;
+			var trackNum = trackData.trackNum;
+			var genre = trackData.genre;
+			var length = trackData.length;
+			var filePath = trackData.filePath;
+			var playCount = trackData.playCount;
+			var updatedAt = trackData.updatedAt;
+			var track = new Track(id, name, nameKey, album, discNum, trackNum, genre, length, filePath, playCount, updatedAt);
+			tracks.push(track);
+		}
+		this.tracks = tracks;
+		return tracks;
 	}
 }

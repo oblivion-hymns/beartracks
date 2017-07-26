@@ -87,6 +87,15 @@ export class PlayerService
 		)
 	}
 
+	playArtist(artist)
+	{
+		this.trackService.loadForArtist(artist._id).subscribe(
+			(tracks: Track[]) => {
+				this.player.enqueueMany(tracks);
+			}
+		)
+	}
+
 	enableRadio()
 	{
 		this.player.isRadio = true;

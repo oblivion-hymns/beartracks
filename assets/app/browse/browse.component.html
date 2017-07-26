@@ -44,6 +44,10 @@
 							<md-icon>color_lens</md-icon>
 							<span>view artist photo</span>
 						</button>
+						<button md-menu-item (click)="playerService.playArtist(artist)">
+							<md-icon>recent_actors</md-icon>
+							<span>play artist mix</span>
+						</button>
 					</md-menu>
 					<button md-icon-button [mdMenuTriggerFor]="appMenu">
 						<md-icon>more_vert</md-icon>
