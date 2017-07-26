@@ -136,6 +136,12 @@ img.now-playing-art:hover
 	margin: 8px;
 }
 
+.queue-title
+{
+	display: inline-block;
+	width: 48px;
+}
+
 .queue-list
 {
 	padding: 8px;

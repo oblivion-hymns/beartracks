@@ -7,35 +7,31 @@
 				<md-icon class="error-icon">
 					radio
 				</md-icon><br />
-				<p class="text-primary">
+				<span class="error-text">
 					radio mode is <strong>on</strong>. Tracks will choose music for you
-				</p>
+				</span>
 			</div>
 		</div>
 	</div>
 
-	<!-- Config -->
+	<!-- Degree settings -->
 	<div class="radio-row" fxLayout="row" *ngIf="this.playerService.player.homeGenre">
 		<div fxLayout="column" fxFlex="80%" fxFlexOffset="10%">
+			<h3 class="sad-header">
+				What do you want to hear?
+			</h3>
 
-			<!-- Degree -->
-			<div class="radio-container">
-				<div class="degree-slider">
-					<md-slider min="0" max="5" step="1" value="0" tickInterval="1"
-						(input)="onDegreeChange($event);"
-						value="{{playerService.player.degree}}">
-					</md-slider>
-				</div>
-				<div class="degree-text">
-					{{degreeString}}
-				</div>
-			</div>
+			<md-slider min="0" max="5" step="1" value="0" tickInterval="1"
+				(input)="onDegreeChange($event);"
+				value="{{playerService.player.degree}}">
+			</md-slider>
 
-			<div class="radio-container">
-				<p class="text-hint" style="text-transform: lowercase;">
-					You will hear: {{getMixGenres()}}
-				</p>
-			</div>
+			<p class="text-hint" style="text-transform: lowercase;">
+				<strong>{{degreeString}}</strong><br />
+				<ng-container *ngIf="playerService.player.degree > 0">
+					{{getMixGenres()}}
+				</ng-container>
+			</p>
 		</div>
 	</div>
 </div>

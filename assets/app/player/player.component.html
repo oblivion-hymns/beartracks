@@ -133,12 +133,13 @@
 	</div>
 
 	<h3 class="sad-header">
-		<ng-container *ngIf="!playerService.player.isRadio">
+
+		<span class="queue-title" *ngIf="!playerService.player.isRadio">
 			Queue
-		</ng-container>
-		<ng-container *ngIf="playerService.player.isRadio">
+		</span>
+		<span class="queue-title" *ngIf="playerService.player.isRadio">
 			Radio
-		</ng-container>
+		</span>
 
 		<ng-container *ngIf="this.playerService.player.currentTrack">
 			<button md-icon-button

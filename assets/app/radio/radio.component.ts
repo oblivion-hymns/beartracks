@@ -13,11 +13,6 @@ import { UserService } from './../user/user.service';
 			width: 100%;
 		}
 
-		.degree-slider
-		{
-			float: left; width: 50%;
-		}
-
 		.degree-text
 		{
 			box-sizing: border-box;
