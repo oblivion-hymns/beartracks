@@ -107,10 +107,10 @@ export class RadioComponent implements OnInit
 				this.degreeString = 'Music sort of like ' + player.homeGenre;
 				break;
 			case 4:
-				this.degreeString = 'Music beyond ' + player.homeGenre;
+				this.degreeString = 'Expand my horizons';
 				break;
 			case 5:
-				this.degreeString = "Everything";
+				this.degreeString = "I want it all";
 				break;
 			default:
 				this.degreeString = 'Just ' + player.homeGenre;
