@@ -233,7 +233,7 @@ export class JukeboxService {
 				this.elapsedPercent = 0;
 			}
 
-			if (this.elapsedPercent > 100)
+			if (this.elapsedPercent >= 100)
 			{
 				this.elapsedPercent = 0;
 				this.elapsed = '0:00';

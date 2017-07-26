@@ -384,7 +384,7 @@ function sync(req, res)
 			{
 				var percentProgress = Math.floor((percentageFileCount/totalFileCount) * 100);
 				console.log('[' + percentProgress + '%] Parsing ' + filePath);
-				if (percentProgress > 100)
+				if (percentProgress >= 100)
 				{
 					complete = true;
 				}
