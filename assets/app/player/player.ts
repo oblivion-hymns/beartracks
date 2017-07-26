@@ -232,7 +232,14 @@ export class Player implements OnInit
 			this.queue.push(tracks[i]);
 		}
 
-		this.openQueue();
+		if (this.currentTrack)
+		{
+			this.playFromBeginning();
+		}
+		else
+		{
+			this.openQueue();
+		}
 	}
 
 
