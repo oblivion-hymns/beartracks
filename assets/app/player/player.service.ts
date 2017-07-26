@@ -22,19 +22,6 @@ export class PlayerService
 		this.player = new Player(this.http, this.trackService);
 	}
 
-	openLightboxArtist(artist: Artist)
-	{
-		var artists = [
-			{
-				caption: artist.name,
-				src: artist.imagePath,
-				thumb: artist.imagePath
-			}
-		];
-
-		this._lightbox.open(artists, 0);
-	}
-
 	/**
 	 * Opens a pretty lightbox with the given album's art inside it
 	 */
@@ -49,6 +36,22 @@ export class PlayerService
 		];
 
 		this._lightbox.open(albums, 0);
+	}
+
+	/**
+	 * Opens a lightbox displaying an artist's picture
+	 */
+	openLightboxArtist(artist: Artist)
+	{
+		var artists = [
+			{
+				caption: artist.name,
+				src: artist.imagePath,
+				thumb: artist.imagePath
+			}
+		];
+
+		this._lightbox.open(artists, 0);
 	}
 
 	/**
@@ -87,11 +90,14 @@ export class PlayerService
 		)
 	}
 
+	/**
+	 * Plays a mix containing all tracks from a given artist
+	 */
 	playArtist(artist)
 	{
 		this.trackService.loadForArtist(artist._id).subscribe(
 			(tracks: Track[]) => {
-				this.player.enqueueMany(tracks);
+				this.player.playMany(tracks);
 			}
 		)
 	}
