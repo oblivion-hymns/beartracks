@@ -95,6 +95,16 @@ export class TrackService
 	}
 
 	/**
+	 * Returns a list of recently-recommended tracks
+	 */
+	loadRecentlyRecommended()
+	{
+		return this.http.get('http://bwilbur.com/tracks/recommended')
+			.map(this.mapTrackData)
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
 	 * Finds tracks based on the given query
 	 */
 	find(query)

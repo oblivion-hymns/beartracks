@@ -20,8 +20,10 @@ export class DashboardComponent implements OnInit
 {
 	albums: Album[] = [];
 	recentTracks: Track[] = [];
+	recommendedTracks: Track[] = [];
 	loadingAlbums: boolean = true;
 	loadingRecent: boolean = true;
+	loadingRecs: boolean = true;
 
 	constructor(private playerService: PlayerService,
 				private artistService: ArtistService,
@@ -39,6 +41,11 @@ export class DashboardComponent implements OnInit
 		this.trackService.loadRecentlyPlayed().subscribe((tracks: Track[]) => {
 			this.recentTracks = tracks;
 			this.loadingRecent = false;
+		});
+
+		this.trackService.loadRecentlyRecommended().subscribe((tracks: Track[]) => {
+			this.recommendedTracks = tracks;
+			this.loadingRecs = false;
 		});
 	}
 

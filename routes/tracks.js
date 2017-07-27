@@ -21,6 +21,7 @@ router.get('/recent', loadRecentlyPlayed);
 router.get('/genre-map', loadGenreMap);
 router.get('/random-genre', loadRandomGenre);
 router.post('/recommend', recommendSong);
+router.get('/recommended', loadRecentlyRecommended);
 
 function baseRoute(req, res)
 {
@@ -344,7 +345,6 @@ function incrementSong(req, res)
  */
 function recommendSong(req, res)
 {
-	console.log(req.query.trackId);
 	Track.findByIdAndUpdate(req.query.trackId, {$set: {lastRecommended: new Date()}}, function(error, data){
 		if (error)
 		{
@@ -355,6 +355,38 @@ function recommendSong(req, res)
 		}
 
 		return res.status(200).json({});
+	});
+}
+
+/**
+ * Returns a list of the most recently-recommended tracks
+ * @return Track[]
+ */
+function loadRecentlyRecommended(req, res)
+{
+	Track.find({lastRecommended: {$ne: null}})
+		.populate('album')
+		.populate({
+			path: 'album',
+			populate: {
+				path: 'artist',
+				model: 'Artist'
+			}
+		})
+		.sort('-lastRecommended')
+		.limit(15)
+		.exec(function(error, tracks){
+			if (error)
+			{
+				console.log(error);
+				return res.status(500).json({
+					message: 'An error occurred'
+				});
+			}
+
+			res.status(200).json({
+				tracks: tracks
+			});
 	});
 }
 

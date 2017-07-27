@@ -1,7 +1,7 @@
 <div fxLayout='row'>
 
 	<!-- New Albums -->
-	<div fxFlex="30%" fxFlexOffset="10%">
+	<div fxFlex="33%" fxFlexOffset="1%">
 		<h3 class="sad-header">Recently-uploaded Albums</h3>
 
 		<div *ngIf="loadingAlbums">
@@ -73,9 +73,8 @@
 		</md-list>
 	</div>
 
-
 	<!-- Recently played -->
-	<div fxFlex="30%" fxFlexOffset="10%">
+	<div fxFlex="33%">
 		<h3 class="sad-header">Recently-Played Tracks</h3>
 
 		<!-- List -->
@@ -88,6 +87,74 @@
 						<!-- <span class="text-divider" style="margin-left: 5px; font-style: normal;">
 							&ndash; {{this.translateDate(track.updatedAt)}}
 						</span> -->
+					</em><br />
+					<div class="item-subtitle">
+						<div class="text-secondary">
+							{{track.album.artist.name}} &ndash; {{track.genre}}
+						</div>
+					</div>
+				</span>
+
+				<div class="item-menu" *ngIf="userService.isLoggedIn()">
+					<md-menu #appMenu="mdMenu">
+						<button md-menu-item (click)="playerService.player.playOne(track)">
+							<md-icon>play_arrow</md-icon>
+							<span>play</span>
+						</button>
+						<button md-menu-item (click)="playerService.player.enqueueOne(track)">
+							<md-icon>queue_music</md-icon>
+							<span>add to queue</span>
+						</button>
+						<button md-menu-item (click)="playerService.openLightbox(track.album)">
+							<md-icon>color_lens</md-icon>
+							<span>view album art</span>
+						</button>
+						<button md-menu-item (click)="trackService.download(track)">
+							<md-icon>file_download</md-icon>
+							<span>download</span>
+						</button>
+					</md-menu>
+					<button md-icon-button [mdMenuTriggerFor]="appMenu">
+						<md-icon>more_vert</md-icon>
+					</button>
+				</div>
+
+				<div class="item-menu" *ngIf="!userService.isLoggedIn()">
+					<md-menu #appMenu="mdMenu">
+						<button md-menu-item (click)="playerService.player.playOne(track)">
+							<md-icon>play_arrow</md-icon>
+							<span>play</span>
+						</button>
+						<button md-menu-item (click)="playerService.player.enqueueOne(track)">
+							<md-icon>queue_music</md-icon>
+							<span>add to queue</span>
+						</button>
+						<button md-menu-item (click)="playerService.openLightbox(track.album)">
+							<md-icon>color_lens</md-icon>
+							<span>view album art</span>
+						</button>
+					</md-menu>
+					<button md-icon-button [mdMenuTriggerFor]="appMenu">
+						<md-icon>more_vert</md-icon>
+					</button>
+				</div>
+			</md-list-item>
+		</md-list>
+	</div>
+
+	<!-- Recommendations -->
+	<div fxFlex="33%">
+		<h3 class="sad-header">
+			Recently Recommended <md-icon class="tiny-icon">favorite</md-icon>
+		</h3>
+
+		<!-- List -->
+		<md-list *ngIf="!loadingRecent">
+			<md-list-item class="item-line-image" *ngFor="let track of recommendedTracks">
+				<span md-line class="item-body" (click)="playerService.player.playOne(track)">
+					<img src="{{track.album.imagePath}}"/>
+					<em class="item-title text-primary">
+						{{track.name}}
 					</em><br />
 					<div class="item-subtitle">
 						<div class="text-secondary">
