@@ -73,6 +73,15 @@ export class PlayerService
 	}
 
 	/**
+	 * Recommends the given track
+	 * @var Track track
+	 */
+	recommendTrack(track)
+	{
+		this.trackService.recommendTrack(track).subscribe();
+	}
+
+	/**
 	 * Replaces the queue with the given album
 	 */
 	playAlbum(album)

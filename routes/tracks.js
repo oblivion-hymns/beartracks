@@ -20,6 +20,7 @@ router.get('/increment-song', incrementSong);
 router.get('/recent', loadRecentlyPlayed);
 router.get('/genre-map', loadGenreMap);
 router.get('/random-genre', loadRandomGenre);
+router.post('/recommend', recommendSong);
 
 function baseRoute(req, res)
 {
@@ -326,6 +327,25 @@ function loadArtist(req, res)
 function incrementSong(req, res)
 {
 	Track.findByIdAndUpdate(req.query.trackId, {$inc: {playCount: 1}}, function(error, data){
+		if (error)
+		{
+			console.error(error);
+			return res.status(500).json({
+				message: 'An error occurred'
+			});
+		}
+
+		return res.status(200).json({});
+	});
+}
+
+/**
+ * Marks a song as recently recommended
+ */
+function recommendSong(req, res)
+{
+	console.log(req.query.trackId);
+	Track.findByIdAndUpdate(req.query.trackId, {$set: {lastRecommended: new Date()}}, function(error, data){
 		if (error)
 		{
 			console.error(error);

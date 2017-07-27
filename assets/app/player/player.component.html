@@ -47,6 +47,10 @@
 						<md-icon>color_lens</md-icon>
 						<span>view artist photo</span>
 					</button>
+					<button md-menu-item (click)="playerService.recommendTrack(getCurrentTrack())">
+						<md-icon>favorite</md-icon>
+						<span>recommend track</span>
+					</button>
 				</md-menu>
 				<button md-icon-button class="tiny-icon" [mdMenuTriggerFor]="nowPlayingMenu">
 					<md-icon>more_vert</md-icon>

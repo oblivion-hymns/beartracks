@@ -150,6 +150,20 @@ export class TrackService
 	}
 
 	/**
+	 * Recommends the given track
+	 * @param Track track
+	 */
+	recommendTrack(track)
+	{
+		return this.http.post('http://bwilbur.com/tracks/recommend?trackId=' + track._id, {})
+			.map((response: Response) => {
+				const genres = response.json().genres;
+				return genres;
+			})
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	/**
 	 * Maps a response to a single track
 	 * @return Track
 	 */

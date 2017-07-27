@@ -11,7 +11,8 @@ var schema = new Schema({
 	genre: {type: String, required: true},
 	filePath: {type: String, required: true},
 	length: {type: String},
-	playCount: {type: Number, required: true, default: 0}
+	playCount: {type: Number, required: true, default: 0},
+	lastRecommended: {type: Date}
 });
 schema.index({"name": "text"});
 schema.plugin(mongooseTimestamps);
