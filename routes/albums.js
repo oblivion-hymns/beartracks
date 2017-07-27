@@ -24,13 +24,11 @@ function find(req, res)
 	var query = req.query.query.trim();
 	if (query.length > 2)
 	{
-		console.log(query);
 		var filterQuery = {$text: {$search: query}};
 		var scoreQuery =  {score: {$meta: 'textScore'}};
 		var sortQuery = {score: {$meta: 'textScore'}};
 
 		Album.find(filterQuery, scoreQuery).sort(sortQuery).populate('artist').exec(function(error, albums){
-			console.log(albums);
 			if (error)
 			{
 				console.log(error);

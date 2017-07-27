@@ -29,7 +29,7 @@ function determineLengths(req, res)
 {
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-	var musicRoot = '/media/brian/The/My Stuff/Music';
+	var musicRoot = '/media/Secondary/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 
 	var cachePath = musicRoot + '/.bearcache-durations.json';
@@ -342,7 +342,7 @@ function sync(req, res)
 
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music/A Winged Victory for the Sullen';
 	//var musicRoot = '/mnt/4432CB4E32CB4420/My Stuff/Music';
-	var musicRoot = '/media/brian/The/My Stuff/Music';
+	var musicRoot = '/media/Secondary/My Stuff/Music';
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
