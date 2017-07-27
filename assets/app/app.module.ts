@@ -18,6 +18,7 @@ import { MdButtonModule, MdCardModule, MdCheckboxModule, MdGridListModule, MdIco
 //Plugins
 import { AutofocusModule } from 'angular-autofocus-fix';
 import { LightboxModule } from 'angular2-lightbox';
+import { PushNotificationsModule } from 'angular2-notifications';
 
 //App-specific
 import { BrowseComponent } from './browse/browse.component';
@@ -57,6 +58,7 @@ import { UserService } from './user/user.service';
 
 		AutofocusModule,
 		LightboxModule,
+		PushNotificationsModule,
 
 		MaterialModule,
 		BrowserAnimationsModule,

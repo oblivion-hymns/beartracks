@@ -1,6 +1,7 @@
 import { Http, Response, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Lightbox } from 'angular2-lightbox';
+import { PushNotificationsService } from 'angular2-notifications';
 
 import 'rxjs/Rx';
 import { Observable } from 'rxjs';
@@ -17,9 +18,13 @@ export class PlayerService
 	public isPlaying: boolean;
 	public player: Player;
 
-	constructor(private trackService: TrackService, private http: Http, private _lightbox: Lightbox)
+	constructor(private trackService: TrackService,
+				private http: Http,
+				private _lightbox: Lightbox,
+				private _pushNotifications: PushNotificationsService)
 	{
-		this.player = new Player(this.http, this.trackService);
+		this.player = new Player(this.http, this.trackService, this._pushNotifications);
+		this._pushNotifications.requestPermission();
 	}
 
 	/**

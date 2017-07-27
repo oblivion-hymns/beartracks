@@ -1,5 +1,6 @@
 import { Http, Response, Headers } from '@angular/http';
 import { OnInit } from '@angular/core';
+import { PushNotificationsService } from 'angular2-notifications';
 
 import { Album } from '../albums/album';
 import { Artist } from '../artists/artist';
@@ -31,11 +32,13 @@ export class Player implements OnInit
 
 	private http: Http;
 	private trackService: TrackService;
+	private pushNotifications: PushNotificationsService;
 
-	constructor(http: Http, trackService: TrackService)
+	constructor(http: Http, trackService: TrackService, pushNotifications: PushNotificationsService)
 	{
 		this.http = http;
 		this.trackService = trackService;
+		this.pushNotifications = pushNotifications;
 	}
 
 	ngOnInit()
@@ -189,6 +192,14 @@ export class Player implements OnInit
 		this.audio.oncanplay = () => {this.isLoading = false};
 		this.audio.volume = this.volume;
 		this.checkTimeInterval();
+
+		var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
+		body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')\n';
+
+		this.pushNotifications.create('Now Playing', {
+			body: body,
+			icon: this.currentTrack.album.imagePath
+		}).subscribe();
 	}
 
 	/**

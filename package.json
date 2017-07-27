@@ -25,6 +25,7 @@
     "@angular/upgrade": "^4.0.0",
     "angular-autofocus-fix": "^0.1.0",
     "angular2-lightbox": "^1.1.5",
+    "angular2-notifications": "^0.7.4",
     "babel-core": "^6.25.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "~1.15.2",
