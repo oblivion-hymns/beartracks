@@ -388,10 +388,10 @@ export class Player implements OnInit
 	{
 		if (this.currentTrack)
 		{
-			var currentAudioTime = Math.floor(this.audio.currentTime);
-			var currentTrackLength = Math.floor(parseInt(this.currentTrack.length));
+			var currentAudioTime = Math.ceil(this.audio.currentTime);
+			var currentTrackLength = Math.ceil(parseInt(this.currentTrack.length));
 
-			this.elapsedPercent = Math.floor(currentAudioTime / currentTrackLength * 100);
+			this.elapsedPercent = Math.ceil(currentAudioTime / currentTrackLength * 100);
 		}
 		else
 		{

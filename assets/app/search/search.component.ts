@@ -13,10 +13,17 @@ import { UserService } from './../user/user.service';
 	providers: [ArtistService, AlbumService, TrackService],
 	selector: 'bt-search',
 	styles: [`
-		.sad-header md-icon.tiny-icon:hover
+		.item-column
 		{
-			color: rgba(255, 255, 255, 0.54);
-			cursor: pointer;
+			 padding: 16px;
+			 width: 33%;
+		}
+
+		.item-column-body
+		{
+			height: calc(100% - 73px);
+			max-height: 100%;
+			overflow-y: auto;
 		}
 	`],
 	templateUrl: './search.component.html'
@@ -43,7 +50,6 @@ export class SearchComponent implements OnInit {
 
 	set filterString(value)
 	{
-		var self = this;
 		var key = value.trim();
 
 		if (key.length > 2)
@@ -52,19 +58,19 @@ export class SearchComponent implements OnInit {
 			this.albumsLoading = true;
 			this.tracksLoading = true;
 
-			this.artistService.find(key).subscribe(function(artists){
-				self.artists = artists;
-				self.artistsLoading = false;
+			this.artistService.find(key).subscribe(artists => {
+				this.artists = artists;
+				this.artistsLoading = false;
 			});
 
-			this.albumService.find(key).subscribe(function(albums){
-				self.albums = albums;
-				self.albumsLoading = false;
+			this.albumService.find(key).subscribe(albums => {
+				this.albums = albums;
+				this.albumsLoading = false;
 			});
 
-			this.trackService.find(key).subscribe(function(tracks){
-				self.tracks = tracks;
-				self.tracksLoading = false;
+			this.trackService.find(key).subscribe(tracks => {
+				this.tracks = tracks;
+				this.tracksLoading = false;
 			});
 		}
 

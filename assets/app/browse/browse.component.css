@@ -10,10 +10,3 @@
 	max-height: 100%;
 	overflow-y: auto;
 }
-
-.item-column-body-image
-{
-	display: inline-block;
-	float: left;
-	object-fit: cover;
-}
