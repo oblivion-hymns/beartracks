@@ -6,5 +6,6 @@ var schema = new Schema({
 	nameKey: {type: String, required: true, unique: true},
 	imagePath: {type: String}
 });
+schema.index({"name": "text"});
 
 module.exports = mongoose.model('Artist', schema);

@@ -24,10 +24,16 @@ function find(req, res)
 	var query = req.query.query.trim();
 	if (query.length > 2)
 	{
-		var regex = new RegExp(query, 'i');
-		Album.find({name: regex}).sort('nameKey').populate('artist').exec(function(err, albums){
-			if (err)
+		console.log(query);
+		var filterQuery = {$text: {$search: query}};
+		var scoreQuery =  {score: {$meta: 'textScore'}};
+		var sortQuery = {score: {$meta: 'textScore'}};
+
+		Album.find(filterQuery, scoreQuery).sort(sortQuery).populate('artist').exec(function(error, albums){
+			console.log(albums);
+			if (error)
 			{
+				console.log(error);
 				return res.status(500).json({
 					title: 'An error occurred',
 					error: err
@@ -46,7 +52,7 @@ function find(req, res)
 				return aDistance - bDistance;
 			});
 
-			albums = albums.slice(0, 10);
+			albums = albums.slice(0, 15);
 
 			res.status(200).json({
 				message: 'Success',

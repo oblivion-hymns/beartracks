@@ -8,5 +8,6 @@ var schema = new Schema({
 	artist: {type: Schema.Types.ObjectId, ref: 'Artist', required: true},
 	imagePath: {type: String}
 });
+schema.index({"name": "text"});
 
 module.exports = mongoose.model('Album', schema);

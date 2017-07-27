@@ -13,6 +13,7 @@ var schema = new Schema({
 	length: {type: String},
 	playCount: {type: Number, required: true, default: 0}
 });
+schema.index({"name": "text"});
 schema.plugin(mongooseTimestamps);
 
 module.exports = mongoose.model('Track', schema);
