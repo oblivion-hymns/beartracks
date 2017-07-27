@@ -194,7 +194,7 @@ export class Player implements OnInit
 		this.checkTimeInterval();
 
 		var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
-		body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')\n';
+		body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')';
 
 		this.pushNotifications.create('Now Playing', {
 			body: body,
