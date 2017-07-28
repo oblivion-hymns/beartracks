@@ -1,10 +1,8 @@
-var bodyParser = require('body-parser');
 var express = require('express');
 var Levenshtein = require('levenshtein');
 var mongoose = require('mongoose');
 var shuffleArray = require('shuffle-array');
 
-var Artist = require('../models/artist');
 var Album = require('../models/album');
 var Track = require('../models/track');
 var genreMap = require('../genres');
@@ -123,7 +121,7 @@ function loadRelated(req, res)
 					res.status(200).json({
 						track: track
 					});
-			});
+				});
 		});
 	}
 	else
@@ -168,7 +166,7 @@ function loadRelated(req, res)
 						res.status(200).json({
 							track: track
 						});
-				});
+					});
 			});
 		});
 	}
@@ -202,7 +200,7 @@ function loadRecentlyPlayed(req, res)
 			res.status(200).json({
 				tracks: tracks
 			});
-	});
+		});
 }
 
 /**
@@ -235,7 +233,7 @@ function loadRandom(req, res)
 				res.status(200).json({
 					track: track
 				});
-		});
+			});
 	});
 }
 
@@ -280,7 +278,7 @@ function loadAlbum(req, res)
 			res.status(200).json({
 				tracks: tracks
 			});
-	});
+		});
 }
 
 /**
@@ -327,7 +325,7 @@ function loadArtist(req, res)
  */
 function incrementSong(req, res)
 {
-	Track.findByIdAndUpdate(req.query.trackId, {$inc: {playCount: 1}}, function(error, data){
+	Track.findByIdAndUpdate(req.query.trackId, {$inc: {playCount: 1}}, function(error){
 		if (error)
 		{
 			console.error(error);
@@ -345,7 +343,7 @@ function incrementSong(req, res)
  */
 function recommendSong(req, res)
 {
-	Track.findByIdAndUpdate(req.query.trackId, {$set: {lastRecommended: new Date()}}, function(error, data){
+	Track.findByIdAndUpdate(req.query.trackId, {$set: {lastRecommended: new Date()}}, function(error){
 		if (error)
 		{
 			console.error(error);
@@ -387,7 +385,7 @@ function loadRecentlyRecommended(req, res)
 			res.status(200).json({
 				tracks: tracks
 			});
-	});
+		});
 }
 
 /**
@@ -448,7 +446,7 @@ function loadRandomGenre(req, res)
 				return res.status(200).json({
 					track: track
 				});
-		});
+			});
 	});
 }
 

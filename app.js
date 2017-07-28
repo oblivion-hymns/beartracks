@@ -1,8 +1,6 @@
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var express = require('express');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
 var mongoose = require('mongoose');
 var path = require('path');
 var timeout = require('connect-timeout');
@@ -33,7 +31,6 @@ var io = require('socket.io')(server);
 //Listening port for socket.io. Server still accessed through 3000
 server.listen(4000);
 
-var usernames = [];
 io.sockets.on('connection', function(client){
 
 	//Client joins rooms
@@ -46,7 +43,7 @@ io.sockets.on('connection', function(client){
 		lookup.save({});
 
 		var botUsername = 'Jukebot';
-		var bodyText = username + ' has joined the chat'
+		var bodyText = username + ' has joined the chat';
 		var message = new Message({
 			text: bodyText,
 			username: botUsername,
@@ -60,7 +57,6 @@ io.sockets.on('connection', function(client){
 		var allClients = Object.keys(io.sockets.sockets);
 		if (allClients.length > 1)
 		{
-			var chosenClient = '';
 			for (var i in allClients)
 			{
 				var clientId = allClients[i];
@@ -74,12 +70,11 @@ io.sockets.on('connection', function(client){
 		io.emit('updateChatMembers', allClients.length);
 	});
 
-	client.on('getCurrentQueueState', function(data){
+	client.on('getCurrentQueueState', function(){
 		//If there's someone else in the room, try to get the current state of the queue
 		var allClients = Object.keys(io.sockets.sockets);
 		if (allClients.length > 1)
 		{
-			var chosenClient = '';
 			for (var i in allClients)
 			{
 				var clientId = allClients[i];
@@ -95,14 +90,10 @@ io.sockets.on('connection', function(client){
 
 	client.on('sendCurrentQueueState', function(data){
 		var queue = data.queue;
-		var elapsed = data.elapsed; //Just to give it a bit of buffer
+		var elapsed = data.elapsed;
 		var socketId = data.socketId;
-
-		var data = {
-			queue: queue,
-			elapsed: elapsed
-		};
-		io.to(socketId).emit('initializeQueue', data);
+		var returnData = {queue: queue, elapsed: elapsed};
+		io.to(socketId).emit('initializeQueue', returnData);
 	});
 
 	//Client queues a track
@@ -148,7 +139,7 @@ io.sockets.on('connection', function(client){
 			{
 				var botUsername = 'Jukebot';
 				var username = docs[0].username;
-				var bodyText = username + ' has left the chat'
+				var bodyText = username + ' has left the chat';
 				var message = new Message({
 					text: bodyText,
 					username: botUsername,
@@ -202,7 +193,7 @@ app.use('/tracks', trackRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (req, res) {
 	return res.render('index');
 });
 

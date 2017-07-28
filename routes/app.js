@@ -1,7 +1,6 @@
 var express = require('express');
 var fs = require('fs');
 var id3 = require('node-id3');
-var id3js = require('id3js');
 var mp3Duration = require('mp3-duration');
 var path = require('path');
 var recursiveReaddirSync = require('recursive-readdir-sync');
@@ -33,14 +32,13 @@ function determineLengths(req, res)
 	var cachePath = musicRoot + '/.bearcache-durations.json';
 	if (!fs.existsSync(cachePath))
 	{
-		jsonFile.writeFileSync(cachePath, {"files": []});
+		jsonFile.writeFileSync(cachePath, {'files': []});
 	}
 
 	//jsonFile.writeFileSync(cachePath, {"files": []});
 
 	var cache = jsonFile.readFileSync(cachePath);
 	var totalFileCount = files.length;
-	var runFilesParsed = 0;
 	var currentFileCount = 0;
 	var percentFileCount = 0;
 	var filesToParse = 100;
@@ -82,15 +80,13 @@ function determineLengths(req, res)
 			console.log(progressString + 'Skipping cached file.');
 		}
 
-		runFilesParsed++;
-
 		if (currentFileCount >= filesToParse)
 		{
 			break;
 		}
 	}
 
-	Promise.all(promises).then(function(results){
+	Promise.all(promises).then(function(){
 		if (currentFileCount >= filesToParse)
 		{
 			console.log('Syncing again...');
@@ -117,9 +113,7 @@ function assignTagLength(filePath, percentProgress, cache, cachePath, encodedFil
 		return;
 	}
 
-	var percentProgressString = '[' + percentProgress + '%] ';
-
-	lengthPromise = getDuration(filePath, readTags, cachePath, cache, encodedFilePath);
+	var lengthPromise = getDuration(filePath, readTags, cachePath, cache, encodedFilePath);
 	return lengthPromise;
 }
 
@@ -150,12 +144,12 @@ function getDuration(filePath, readTags, cachePath, cache, encodedFilePath)
 /**
  * Parse ID3 tags for a given file
  */
-function parseTags(filePath, allData, cache, cachePath)
+function parseTags(filePath, allData, cache)
 {
 	var tags = id3.read(filePath);
 	if (!tags.artist || tags.artist == '')
 	{
-		console.error("Artist tag not found: " + filePath);
+		console.error('Artist tag not found: ' + filePath);
 		return false;
 	}
 	else if (!tags.trackNumber)
@@ -170,12 +164,12 @@ function parseTags(filePath, allData, cache, cachePath)
 	}
 	else if (!tags.partOfSet || tags.partOfSet == 0)
 	{
-		console.error("Discnum tag not found: " + filePath);
+		console.error('Discnum tag not found: ' + filePath);
 		return false;
 	}
 	else if (!tags.year || tags.year == '0000' || tags.year == '')
 	{
-		console.error("Year tag not found: " + filePath);
+		console.error('Year tag not found: ' + filePath);
 		return false;
 	}
 	else if (!tags.length)
@@ -193,25 +187,6 @@ function parseTags(filePath, allData, cache, cachePath)
 	cache.files.push(fileKey);
 
 	return true;
-}
-
-/**
- * Gets the duration of the given track
- */
-function getTrackDuration(track, tags)
-{
-	return musicMetadata.parseFile(track, {duration: true}).then(function(metadata) {
-		if (metadata.format.duration)
-		{
-			tags.length = parseInt(metadata.format.duration);
-		}
-		else
-		{
-			console.error('Could not find track length for ' + track.originalPath);
-		}
-	}).catch(function(error) {
-		console.error(error.message);
-	});
 }
 
 /**
@@ -313,7 +288,7 @@ function saveArtist(artist, artistKey, artistData, music)
 			trackPromises.push(trackPromise);
 		}
 
-		return Promise.all(trackPromises).then(results => {
+		return Promise.all(trackPromises).then(() => {
 			console.log('Done saving tracks for ' + artistData.name);
 		}).catch(function(reason){
 			console.error(reason);
@@ -324,7 +299,7 @@ function saveArtist(artist, artistKey, artistData, music)
 	});
 
 	//Done!
-	return Promise.all([artistPromise, albumPromise, trackPromise]).then(results => {
+	return Promise.all([artistPromise, albumPromise, trackPromise]).then(() => {
 		console.log('Done saving all data for ' + artistData.name);
 	}).catch(function(reason){
 		console.error(reason);
@@ -342,15 +317,13 @@ function sync(req, res)
 	var files = recursiveReaddirSync(musicRoot);
 	var allData = [];
 
-	var complete = false;
 	var cachePath = musicRoot + '/.bearcache.json';
 	if (!fs.existsSync(cachePath))
 	{
-		jsonFile.writeFileSync(cachePath, {"files": []});
+		jsonFile.writeFileSync(cachePath, {'files': []});
 	}
 
 	//Manage artists
-	var pathLookup = {};
 	var promises = [];
 
 	var cache = null;
@@ -370,21 +343,11 @@ function sync(req, res)
 		var cached = cache.files.indexOf(fileKey) != -1;
 		if (!cached)
 		{
-			var isAlbumArt = false;
-			var isArtistArt = false;
-			var isSong = false;
 			var filePath = file;
-			var tags = null;
-
 			if (fileType == '.mp3')
 			{
 				var percentProgress = Math.floor((percentageFileCount/totalFileCount) * 100);
 				console.log('[' + percentProgress + '%] Parsing ' + filePath);
-				if (percentProgress >= 100)
-				{
-					complete = true;
-				}
-
 				var parseSuccess = parseTags(filePath, allData, cache, cachePath);
 				if (parseSuccess)
 				{
@@ -405,7 +368,7 @@ function sync(req, res)
 		}
 	}
 
-	Promise.all(promises).then(values => {
+	Promise.all(promises).then(() => {
 
 		console.log('Organizing data to save...');
 
@@ -440,10 +403,10 @@ function sync(req, res)
 			{
 				//Find artist image, if one exists
 				var imagePath = null;
-				var checkPath = path.dirname(data.path);
+				let checkPath = path.dirname(data.path);
 
 				//Attempt to find artist image
-				for (var i = 0; i < 3; i++)
+				for (let i = 0; i < 3; i++)
 				{
 					var potentialImagePath = checkPath + '/artist.png';
 					if (fs.existsSync(potentialImagePath))
@@ -472,23 +435,23 @@ function sync(req, res)
 			if (!music[artistNameKey].albums[albumNameKey])
 			{
 				var albumImagePath = null;
-				var checkPath = path.dirname(data.path);
+				let checkPath = path.dirname(data.path);
 
 				//Attempt to find artist image
-				for (var i = 0; i < 3; i++)
+				for (let i = 0; i < 3; i++)
 				{
-					var potentialImagePath = checkPath + '/folder.png';
+					let potentialImagePath = checkPath + '/folder.png';
 					var potentialImagePath2 = checkPath + '/folder.jpg';
 					if (fs.existsSync(potentialImagePath))
 					{
-						var writePath = 'public/img/albums/' + albumNameKey + '.png';
+						let writePath = 'public/img/albums/' + albumNameKey + '.png';
 						albumImagePath = '/img/albums/' + albumNameKey + '.png';
 						fs.createReadStream(potentialImagePath).pipe(fs.createWriteStream(writePath));
 						break;
 					}
 					else if (fs.existsSync(potentialImagePath2))
 					{
-						var writePath = 'public/img/albums/' + albumNameKey + '.jpg';
+						let writePath = 'public/img/albums/' + albumNameKey + '.jpg';
 						albumImagePath = '/img/albums/' + albumNameKey + '.jpg';
 						fs.createReadStream(potentialImagePath2).pipe(fs.createWriteStream(writePath));
 						break;
@@ -503,7 +466,7 @@ function sync(req, res)
 					nameKey: albumNameKey,
 					year: year,
 					tracks: []
-				}
+				};
 			}
 
 			var trackName = tags.title.replace(/\0/g, '');
@@ -521,7 +484,7 @@ function sync(req, res)
 			var trackNameKey = artistNameKey + albumNameKey + trackNameStripped + discNum + trackNum;
 			trackNameKey = trackNameKey.substring(0, 200);
 
-			var writePath = 'public/data/music/' + trackNameKey + '.mp3';
+			writePath = 'public/data/music/' + trackNameKey + '.mp3';
 			var trackPath = '/data/music/' + trackNameKey + '.mp3';
 
 			fs.createReadStream(data.path).pipe(fs.createWriteStream(writePath));
@@ -542,9 +505,7 @@ function sync(req, res)
 		console.log('Saving data');
 		for (var artistKey in music)
 		{
-			var artistData = music[artistKey];null
-			var artistId = null;
-
+			var artistData = music[artistKey];
 			var artist = {
 				name: artistData.name,
 				nameKey: artistData.nameKey,
@@ -554,11 +515,11 @@ function sync(req, res)
 			savePromises.push(saveArtist(artist, artistKey, artistData, music));
 		}
 
-		Promise.all(savePromises).then(values => {
+		Promise.all(savePromises).then(() => {
 			console.log('Done saving all data');
 
 			console.log('Writing to cache');
-			jsonFile.writeFile(cachePath, cache, function(error, data){
+			jsonFile.writeFile(cachePath, cache, function(error){
 				if (error)
 				{
 					console.error(error);

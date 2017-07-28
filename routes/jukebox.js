@@ -1,6 +1,4 @@
 var express = require('express');
-var Levenshtein = require('levenshtein');
-
 var Message = require('./../models/message');
 
 var router = express.Router();
@@ -69,7 +67,7 @@ function sendMessage(req, res)
 	message.username = username;
 	message.system = false;
 
-	message.save(function(error, response){});
+	message.save(function(){});
 
 	return res.status(200).json({
 		success: true

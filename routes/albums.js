@@ -2,7 +2,6 @@ var express = require('express');
 var Levenshtein = require('levenshtein');
 var ObjectId = require('mongoose').Types.ObjectId;
 
-var Artist = require('../models/artist');
 var Album = require('../models/album');
 
 var router = express.Router();
@@ -33,8 +32,7 @@ function find(req, res)
 			{
 				console.log(error);
 				return res.status(500).json({
-					title: 'An error occurred',
-					error: err
+					title: 'An error occurred'
 				});
 			}
 
