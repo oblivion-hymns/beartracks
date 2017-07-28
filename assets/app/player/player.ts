@@ -435,6 +435,9 @@ export class Player implements OnInit
 				}
 				else
 				{
+					this.currentTrack = null;
+					this.elapsed = '0:00';
+					this.elapsedPercent = 0;
 					this.pause();
 				}
 			}
