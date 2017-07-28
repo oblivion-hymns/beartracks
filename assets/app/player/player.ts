@@ -224,6 +224,9 @@ export class Player implements OnInit
 		}
 		else
 		{
+			this.currentTrack = null;
+			this.elapsed = '0:00';
+			this.elapsedPercent = 0;
 			this.pause();
 		}
 	}
@@ -416,7 +419,7 @@ export class Player implements OnInit
 
 			//Increment play count
 			var finishedTrack = this.currentTrack;
-			this.http.get('http://bwilbur.com:3000/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
+			this.http.get('localhost:3000/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
 
 			if (this.isRadio)
 			{
