@@ -419,7 +419,7 @@ export class Player implements OnInit
 
 			//Increment play count
 			var finishedTrack = this.currentTrack;
-			this.http.get('localhost:3000/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
+			this.http.get('http://localhost:3000/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
 
 			if (this.isRadio)
 			{

@@ -22,7 +22,7 @@ export class TrackService
 	loadRelated(track, degree)
 	{
 		var id = track._id;
-		return this.http.get('localhost:3000/tracks/related?trackId=' + id + '&degree=' + degree)
+		return this.http.get('http://localhost:3000/tracks/related?trackId=' + id + '&degree=' + degree)
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -34,7 +34,7 @@ export class TrackService
 	 */
 	loadRelatedByGenre(genre, degree)
 	{
-		return this.http.get('localhost:3000/tracks/related?genre=' + genre + '&degree=' + degree)
+		return this.http.get('http://localhost:3000/tracks/related?genre=' + genre + '&degree=' + degree)
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -46,7 +46,7 @@ export class TrackService
 	 */
 	loadByGenre(genre)
 	{
-		return this.http.get('localhost:3000/tracks/random-genre?genre=' + genre)
+		return this.http.get('http://localhost:3000/tracks/random-genre?genre=' + genre)
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -56,7 +56,7 @@ export class TrackService
 	 */
 	loadRandom()
 	{
-		return this.http.get('localhost:3000/tracks/random')
+		return this.http.get('http://localhost:3000/tracks/random')
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -69,7 +69,7 @@ export class TrackService
 		const body = JSON.stringify({albumId: albumId});
 		const headers = new Headers({'Content-Type': 'application/json'});
 
-		return this.http.post('localhost:3000/tracks/album', body, {headers: headers})
+		return this.http.post('http://localhost:3000/tracks/album', body, {headers: headers})
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -79,7 +79,7 @@ export class TrackService
 	 */
 	loadForArtist(artistId)
 	{
-		return this.http.get('localhost:3000/tracks/artist?artistId=' + artistId)
+		return this.http.get('http://localhost:3000/tracks/artist?artistId=' + artistId)
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -89,7 +89,7 @@ export class TrackService
 	 */
 	loadRecentlyPlayed()
 	{
-		return this.http.get('localhost:3000/tracks/recent')
+		return this.http.get('http://localhost:3000/tracks/recent')
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -99,7 +99,7 @@ export class TrackService
 	 */
 	loadRecentlyRecommended()
 	{
-		return this.http.get('localhost:3000/tracks/recommended')
+		return this.http.get('http://localhost:3000/tracks/recommended')
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -109,7 +109,7 @@ export class TrackService
 	 */
 	find(query)
 	{
-		var getUrl = 'localhost:3000/tracks/find?query=' + query;
+		var getUrl = 'http://localhost:3000/tracks/find?query=' + query;
 		return this.http.get(getUrl)
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
@@ -121,7 +121,7 @@ export class TrackService
 	 */
 	download(track)
 	{
-		return this.http.get('localhost:3000' + track.filePath, {
+		return this.http.get('http://localhost:3000' + track.filePath, {
 			responseType: ResponseContentType.Blob
 		}).map((res) => {
 			return new Blob([res.blob()], { type: 'audio/mpeg' });
@@ -151,7 +151,7 @@ export class TrackService
 	 */
 	loadGenres()
 	{
-		return this.http.get('localhost:3000/tracks/genre-map')
+		return this.http.get('http://localhost:3000/tracks/genre-map')
 			.map((response: Response) => {
 				const genres = response.json().genres;
 				return genres;
@@ -165,7 +165,7 @@ export class TrackService
 	 */
 	recommendTrack(track)
 	{
-		return this.http.post('localhost:3000/tracks/recommend?trackId=' + track._id, {})
+		return this.http.post('http://localhost:3000/tracks/recommend?trackId=' + track._id, {})
 			.map((response: Response) => {
 				const genres = response.json().genres;
 				return genres;

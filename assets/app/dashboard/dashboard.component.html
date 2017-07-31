@@ -1,14 +1,14 @@
-<div fxLayout='row'>
+<div class="container" fxLayout='row'>
 
 	<!-- New Albums -->
-	<div fxFlex="33%" fxFlexOffset="1%">
+	<div class="item-column">
 		<h3 class="sad-header">Recently-uploaded Albums</h3>
 
 		<div *ngIf="loadingAlbums">
 			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
 		</div>
 
-		<md-list *ngIf="albums.length > 0">
+		<md-list class="item-column-body" *ngIf="albums.length > 0">
 			<md-list-item class="item-line-image" *ngFor="let album of albums">
 				<span md-line class="item-body" (click)="playerService.playAlbum(album)">
 					<img src="{{album.imagePath}}"/>
@@ -74,11 +74,11 @@
 	</div>
 
 	<!-- Recently played -->
-	<div fxFlex="33%">
+	<div class="item-column">
 		<h3 class="sad-header">Recently-Played Tracks</h3>
 
 		<!-- List -->
-		<md-list *ngIf="!loadingRecent">
+		<md-list class="item-column-body" *ngIf="!loadingRecent">
 			<md-list-item class="item-line-image" *ngFor="let track of recentTracks">
 				<span md-line class="item-body" (click)="playerService.player.playOne(track)">
 					<img src="{{track.album.imagePath}}"/>
@@ -147,13 +147,13 @@
 	</div>
 
 	<!-- Recommendations -->
-	<div fxFlex="33%">
+	<div class="item-column">
 		<h3 class="sad-header">
 			Recently Recommended <md-icon class="tiny-icon">favorite</md-icon>
 		</h3>
 
 		<!-- List -->
-		<md-list *ngIf="!loadingRecent">
+		<md-list class="item-column-body" *ngIf="!loadingRecent">
 			<md-list-item class="item-line-image" *ngFor="let track of recommendedTracks">
 				<span md-line class="item-body" (click)="playerService.player.playOne(track)">
 					<img src="{{track.album.imagePath}}"/>

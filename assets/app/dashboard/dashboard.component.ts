@@ -14,6 +14,20 @@ import * as dateformat from 'dateformat';
 @Component({
 	providers: [ArtistService, AlbumService, TrackService, UserService],
 	selector: 'bt-dashboard',
+	styles: [`
+		.item-column
+		{
+			 padding: 16px;
+			 width: 33%;
+		}
+
+		.item-column-body
+		{
+			height: calc(100% - 73px);
+			max-height: 100%;
+			overflow-y: auto;
+		}
+	`],
 	templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit

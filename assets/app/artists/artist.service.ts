@@ -15,7 +15,7 @@ export class ArtistService {
 
 	find(query)
 	{
-		var getUrl = 'localhost:3000/artists/find?query=' + query;
+		var getUrl = 'http://localhost:3000/artists/find?query=' + query;
 		return this.http.get(getUrl)
 			.map((response: Response) => {
 				const data = response.json().artists;
@@ -34,7 +34,7 @@ export class ArtistService {
 
 	loadAll()
 	{
-		return this.http.get('localhost:3000/artists/all')
+		return this.http.get('http://localhost:3000/artists/all')
 			.map((response: Response) => {
 				const data = response.json().artists;
 

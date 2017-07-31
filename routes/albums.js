@@ -93,7 +93,7 @@ function loadForArtist(req, res)
  */
 function loadRecent(req, res)
 {
-	Album.find({}).sort({_id: -1}).limit(15).populate('artist').exec(function(error, albums){
+	Album.find({}).sort({_id: -1}).limit(25).populate('artist').exec(function(error, albums){
 		if (error)
 		{
 			console.log(error);

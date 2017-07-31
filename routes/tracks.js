@@ -187,7 +187,7 @@ function loadRecentlyPlayed(req, res)
 			}
 		})
 		.sort('-updatedAt')
-		.limit(15)
+		.limit(25)
 		.exec(function(error, tracks){
 			if (error)
 			{
@@ -372,7 +372,7 @@ function loadRecentlyRecommended(req, res)
 			}
 		})
 		.sort('-lastRecommended')
-		.limit(15)
+		.limit(25)
 		.exec(function(error, tracks){
 			if (error)
 			{
