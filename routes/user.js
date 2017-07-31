@@ -1,8 +1,6 @@
 var bcrypt = require('bcryptjs');
 var express = require('express');
 var jwt = require('jsonwebtoken');
-
-var ObjectId = require('mongoose').Types.ObjectId;
 var User = require('../models/user');
 
 var router = express.Router();
@@ -140,7 +138,7 @@ function login(req, res)
 	});
 }
 
-function loadUser(req, res, next)
+function loadUser(req, res)
 {
 	var userId = req.body.userId;
 	User.findById(userId, function(error, user){
@@ -167,7 +165,7 @@ function loadUser(req, res, next)
 	});
 }
 
-function changePassword(req, res, next)
+function changePassword(req, res)
 {
 	var userId = req.body.userId;
 	var password = req.body.currentPassword;
@@ -217,7 +215,7 @@ function changePassword(req, res, next)
 		}
 
 		var newPassword = bcrypt.hashSync(newPass, 10);
-		User.update({_id: userId}, { $set: {password: newPassword } }, function(error, data){
+		User.update({_id: userId}, { $set: {password: newPassword } }, function(error){
 			if (error)
 			{
 				return res.status(500).json({
@@ -229,7 +227,7 @@ function changePassword(req, res, next)
 			return res.status(200).json({
 				message: 'Password changed successfully'
 			});
-		})
+		});
 	});
 }
 

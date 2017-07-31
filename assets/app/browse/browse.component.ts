@@ -17,10 +17,10 @@ import { UserService } from './../user/user.service';
 })
 export class BrowseComponent implements OnInit
 {
-	album: Album[] = [];
+	album: Album;
 	albumSelected: boolean = false;
 	albums: Album[] = [];
-	artist: Artist[] = [];
+	artist: Artist;
 	artistSelected: boolean = false;
 	artists: Artist[] = [];
 	displayArtists: Artist[] = [];

@@ -14,7 +14,7 @@ var schema = new Schema({
 	playCount: {type: Number, required: true, default: 0},
 	lastRecommended: {type: Date}
 });
-schema.index({"name": "text"});
+schema.index({'name': 'text'});
 schema.plugin(mongooseTimestamps);
 
 module.exports = mongoose.model('Track', schema);

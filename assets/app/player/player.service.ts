@@ -6,9 +6,9 @@ import { PushNotificationsService } from 'angular2-notifications';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs';
 
-import { Player } from './player';
-import { Artist } from '../artists/artist';
 import { Album } from '../albums/album';
+import { Artist } from '../artists/artist';
+import { Player } from './player';
 import { Track } from '../tracks/track';
 import { TrackService } from '../tracks/track.service';
 

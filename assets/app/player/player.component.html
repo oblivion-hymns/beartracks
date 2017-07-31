@@ -166,7 +166,7 @@
 			Radio
 		</span>
 
-		<ng-container *ngIf="this.getPlayer()">
+		<ng-container *ngIf="this.getPlayer().currentTrack">
 			<button md-icon-button
 				class="text-hint tiny-icon"
 				mdTooltip="Enable Radio Mode"
