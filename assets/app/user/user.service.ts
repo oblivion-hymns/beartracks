@@ -14,7 +14,7 @@ export class UserService
 	{
 		const body = JSON.stringify(user);
 		const headers = new Headers({'Content-Type': 'application/json'});
-		return this.http.post('http://localhost:3000/user/create', body, {headers: headers})
+		return this.http.post('http://bwilbur.com/user/create', body, {headers: headers})
 						.map((response: Response) => response.json())
 						.catch((error: Response) => {return Observable.throw(error)});
 	}
@@ -23,7 +23,7 @@ export class UserService
 	{
 		const body = JSON.stringify(user);
 		const headers = new Headers({'Content-Type': 'application/json'});
-		return this.http.post('http://localhost:3000/user/login', body, {headers: headers})
+		return this.http.post('http://bwilbur.com/user/login', body, {headers: headers})
 						.map((response: Response) => response.json())
 						.catch((error: Response) => {return Observable.throw(error)});
 	}
@@ -37,7 +37,7 @@ export class UserService
 			newPasswordVerify: newPassVerify
 		});
 		const headers = new Headers({'Content-Type': 'application/json'});
-		return this.http.post('http://localhost:3000/user/change-password', body, {headers: headers})
+		return this.http.post('http://bwilbur.com/user/change-password', body, {headers: headers})
 						.map((response: Response) => response.json())
 						.catch((error: Response) => {return Observable.throw(error)});
 	}
@@ -47,7 +47,7 @@ export class UserService
 		var userId = localStorage.getItem('userId');
 		var body = JSON.stringify({userId: userId});
 		const headers = new Headers({'Content-Type': 'application/json'});
-		return this.http.post('http://localhost:3000/user/load', body, {headers: headers})
+		return this.http.post('http://bwilbur.com/user/load', body, {headers: headers})
 						.map((response: Response) => response.json())
 						.catch((error: Response) => {return Observable.throw(error)});
 	}

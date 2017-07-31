@@ -42,7 +42,7 @@ export class JukeboxService {
 	initSockets()
 	{
 		var self = this;
-		this.socket = io('localhost:4000');
+		this.socket = io('http://bwilbur.com:4000');
 
 		//Get new chat messages emitted from server
 		this.socket.on('receiveMessage', function(receivedMessage){
@@ -271,7 +271,7 @@ export class JukeboxService {
 	 */
 	loadRecent()
 	{
-		var request = this.http.get('http://localhost:3000/jukebox/load-recent').map((response: Response) => {
+		var request = this.http.get('http://bwilbur.com/jukebox/load-recent').map((response: Response) => {
 			const data = response.json().messages;
 			let messages: Message[] = [];
 			for (let messageData of data)
@@ -293,7 +293,7 @@ export class JukeboxService {
 	 */
 	postMessage(msg: Message)
 	{
-		var url = 'http://localhost:3000/jukebox/send-message';
+		var url = 'http://bwilbur.com/jukebox/send-message';
 		var body = { message: msg.text, username: msg.username };
 		var headers = new Headers({'Content-Type': 'application/json'});
 		var options = new RequestOptions({headers: headers});
