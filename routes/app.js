@@ -72,14 +72,14 @@ function determineLengths(req, res)
 			}
 			else
 			{
-				console.log(progressString + 'Skipping non-audio file.');
+				//console.log(progressString + 'Skipping non-audio file.');
 				percentFileCount++;
 			}
 		}
 		else
 		{
 			percentFileCount++;
-			console.log(progressString + 'Skipping cached file.');
+			//console.log(progressString + 'Skipping cached file.');
 		}
 
 		runFilesParsed++;
