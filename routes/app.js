@@ -516,9 +516,7 @@ function sync(req, res)
 		}
 
 		Promise.all(savePromises).then(() => {
-			console.log('Done saving all data');
-
-			console.log('Writing to cache');
+			console.log('Done saving all data. Writing to cache...');
 			jsonFile.writeFile(cachePath, cache, function(error){
 				if (error)
 				{
@@ -526,7 +524,7 @@ function sync(req, res)
 					throw error;
 				}
 
-				console.log('Wrote cache');
+				console.log('Wrote to cache');
 
 				if (currentFileCount < numFilesToSync)
 				{
@@ -537,7 +535,7 @@ function sync(req, res)
 				}
 				else
 				{
-					console.log('Syncing again');
+					console.log('Syncing again...');
 					return sync(req, res);
 				}
 			});
