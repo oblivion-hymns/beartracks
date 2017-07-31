@@ -280,7 +280,6 @@ function saveArtist(artist, artistKey, artistData, music)
 			var track = tracks[i];
 			var trackPromise = Track.findOneAndUpdate({'nameKey': track.nameKey}, track, {new: true, upsert: true}).exec();
 			trackPromise.then(function(track){
-				console.log('Saved ' + artist.name + ' - "' + track.name + '"');
 			}).catch(function(reason){
 				console.error(reason);
 			});
@@ -289,7 +288,7 @@ function saveArtist(artist, artistKey, artistData, music)
 		}
 
 		return Promise.all(trackPromises).then(() => {
-			console.log('Done saving tracks for ' + artistData.name);
+
 		}).catch(function(reason){
 			console.error(reason);
 		});
@@ -300,7 +299,7 @@ function saveArtist(artist, artistKey, artistData, music)
 
 	//Done!
 	return Promise.all([artistPromise, albumPromise, trackPromise]).then(() => {
-		console.log('Done saving all data for ' + artistData.name);
+
 	}).catch(function(reason){
 		console.error(reason);
 	});
@@ -516,7 +515,7 @@ function sync(req, res)
 		}
 
 		Promise.all(savePromises).then(() => {
-			console.log('Done saving all data. Writing to cache...');
+			console.log('Done saving. Writing to cache...');
 			jsonFile.writeFile(cachePath, cache, function(error){
 				if (error)
 				{
