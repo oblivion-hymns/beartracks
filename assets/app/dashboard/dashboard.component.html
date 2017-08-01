@@ -4,11 +4,11 @@
 	<div class="item-column">
 		<h3 class="sad-header">Recently-uploaded Albums</h3>
 
-		<div *ngIf="loadingAlbums">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		<div class="text-center" *ngIf="loadingAlbums">
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
 		</div>
 
-		<md-list class="item-column-body" *ngIf="albums.length > 0">
+		<md-list class="item-column-body" *ngIf="!loadingAlbums && albums.length > 0">
 			<md-list-item class="item-line-image" *ngFor="let album of albums">
 				<span md-line class="item-body" (click)="playerService.playAlbum(album)">
 					<img src="{{album.imagePath}}"/>
@@ -76,6 +76,10 @@
 	<!-- Recently played -->
 	<div class="item-column">
 		<h3 class="sad-header">Recently-Played Tracks</h3>
+
+		<div class="text-center" *ngIf="loadingRecent">
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
+		</div>
 
 		<!-- List -->
 		<md-list class="item-column-body" *ngIf="!loadingRecent">
@@ -152,8 +156,12 @@
 			Recently Recommended <md-icon class="tiny-icon">favorite</md-icon>
 		</h3>
 
+		<div class="text-center" *ngIf="loadingRecs">
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
+		</div>
+
 		<!-- List -->
-		<md-list class="item-column-body" *ngIf="!loadingRecent">
+		<md-list class="item-column-body" *ngIf="!loadingRecs">
 			<md-list-item class="item-line-image" *ngFor="let track of recommendedTracks">
 				<span md-line class="item-body" (click)="playerService.player.playOne(track)">
 					<img src="{{track.album.imagePath}}"/>

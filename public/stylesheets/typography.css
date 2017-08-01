@@ -49,6 +49,11 @@ h3.sad-header
 	width: 100%;
 }
 
+.spinner-center
+{
+	display: inline-block !important;
+}
+
 /**
  * Pseudo-character md-icon
  */

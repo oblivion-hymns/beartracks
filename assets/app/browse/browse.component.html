@@ -13,11 +13,11 @@
 
 		<!-- Loading -->
 		<div class="text-center" *ngIf="loadingArtists">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- None found -->
-		<div class="text-center" *ngIf="artists.length == 0">
+		<div class="text-center" *ngIf="!loadingArtists && artists.length == 0">
 			<md-icon class="error-icon">
 				error_outline
 			</md-icon><br />
@@ -27,7 +27,7 @@
 		</div>
 
 		<!-- List -->
-		<md-list class="item-column-body" *ngIf="artists.length > 0">
+		<md-list class="item-column-body" *ngIf="!loadingArtists && artists.length > 0">
 			<md-list-item class="item-line-single" *ngFor="let artist of displayArtists">
 
 				<span md-line class="item-body" (click)="loadAlbums(artist)">
@@ -64,7 +64,7 @@
 
 		<!-- Loading -->
 		<div *ngIf="loadingAlbums" style="text-align: center;">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- Display when there are no albums -->
@@ -135,7 +135,7 @@
 
 		<!-- Loading -->
 		<div class="text-center" *ngIf="loadingTracks">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- Display when there are no tracks -->
