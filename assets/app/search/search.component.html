@@ -17,8 +17,8 @@
 
 	<div class="item-column" *ngIf='filterQuery.length > 2'>
 		<!-- Loading -->
-		<div *ngIf="loadingArtists" style="text-align: center;">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		<div class="text-center" *ngIf="loadingArtists">
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- Done loading -->
@@ -72,8 +72,8 @@
 	<!-- Albums -->
 	<div class="item-column" *ngIf='filterQuery.length > 2'>
 		<!-- Loading -->
-		<div *ngIf="loadingAlbums" style="text-align: center;">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		<div class="text-center" *ngIf="loadingAlbums">
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- Done loading -->
@@ -142,8 +142,8 @@
 	<!-- Tracks -->
 	<div class="item-column" *ngIf='filterQuery.length > 2'>
 		<!-- Loading -->
-		<div *ngIf="loadingTracks" style="text-align: center;">
-			<md-progress-spinner mode="indeterminate"></md-progress-spinner>
+		<div class="text-center" *ngIf="loadingTracks">
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
 		</div>
 
 		<!-- Done loading -->
