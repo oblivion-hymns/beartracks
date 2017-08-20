@@ -167,12 +167,6 @@ export class Player implements OnInit
 	{
 		this.resetPlayer();
 
-		//Journey mode
-		/*this.trackService.loadRelated(track, degree).subscribe(track => {
-			this.queue.push(track);
-			this.playFromBeginning();
-		});*/
-
 		this.trackService.loadRelatedByGenre(this.homeGenre, this.degree).subscribe(track => {
 			this.queue.push(track);
 			this.playFromBeginning();
@@ -253,7 +247,7 @@ export class Player implements OnInit
 			this.queue.push(tracks[i]);
 		}
 
-		if (this.currentTrack)
+		if (!this.currentTrack)
 		{
 			this.playFromBeginning();
 			this.openQueue();
@@ -412,7 +406,7 @@ export class Player implements OnInit
 			this.elapsedPercent = 0;
 		}
 
-		if (this.elapsedPercent >= 100)
+		if (this.elapsedPercent > 100)
 		{
 			this.elapsedPercent = 0;
 			this.elapsed = '0:00';

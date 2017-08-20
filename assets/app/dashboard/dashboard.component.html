@@ -2,7 +2,7 @@
 
 	<!-- New Albums -->
 	<div class="item-column">
-		<h3 class="sad-header">Recently-uploaded Albums</h3>
+		<h3 class="sad-header">New Albums</h3>
 
 		<div class="text-center" *ngIf="loadingAlbums">
 			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
@@ -75,7 +75,7 @@
 
 	<!-- Recently played -->
 	<div class="item-column">
-		<h3 class="sad-header">Recently-Played Tracks</h3>
+		<h3 class="sad-header">Recently played</h3>
 
 		<div class="text-center" *ngIf="loadingRecent">
 			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
@@ -88,9 +88,6 @@
 					<img src="{{track.album.imagePath}}"/>
 					<em class="item-title text-primary">
 						{{track.name}}
-						<!-- <span class="text-divider" style="margin-left: 5px; font-style: normal;">
-							&ndash; {{this.translateDate(track.updatedAt)}}
-						</span> -->
 					</em><br />
 					<div class="item-subtitle">
 						<div class="text-secondary">
@@ -153,7 +150,7 @@
 	<!-- Recommendations -->
 	<div class="item-column">
 		<h3 class="sad-header">
-			Recently Recommended <md-icon class="tiny-icon">favorite</md-icon>
+			Recommendations <md-icon class="tiny-icon">favorite</md-icon>
 		</h3>
 
 		<div class="text-center" *ngIf="loadingRecs">
