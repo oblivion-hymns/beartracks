@@ -192,20 +192,11 @@
 
 			<button md-icon-button
 				class="text-hint tiny-icon"
-				mdTooltip="Surprise me!"
-				mdTooltipPosition="below"
-				(click)="surpriseMe()"
-				style="margin-left: 8px;"
-				*ngIf="!getPlayer().isRadio">
-				<md-icon>casino</md-icon>
-			</button>
-
-			<button md-icon-button
-				class="text-hint tiny-icon"
 				mdTooltip="Theater Mode"
 				mdTooltipPosition="below"
 				(click)="enableTheater()"
-				style="margin-left: 8px;">
+				style="margin-left: 8px;"
+				*ngIf="getPlayer().currentTrack">
 				<md-icon>tv</md-icon>
 			</button>
 		</h3>
