@@ -42,6 +42,12 @@ export class GenresComponent
 	 */
 	playMix(genre: string)
 	{
-		//
+		var playerService = this.playerService;
+		var player = playerService.player;
+		player.homeGenre = genre;
+		player.isRadio = true;
+		player.degree = 1;
+		player.playTrackInGenre(genre);
+		player.openQueue();
 	}
 }

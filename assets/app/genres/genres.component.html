@@ -24,18 +24,54 @@
 			<md-list class="item-column-body" *ngIf="genres.length > 0">
 				<md-list-item class="item-line-image" *ngFor="let genre of genres">
 
-					<span md-line class="item-body" (click)="playMix({{genre.name}})">
+					<!-- Body -->
+					<span md-line class="item-body" (click)="playMix(genre.name, 1)">
 						<em class="item-title text-primary">
 							{{genre.name}}
 						</em><br />
 						<div class="item-subtitle">
-							<div class="text-secondary">
-								Includes {{genre.related.join(', ')}}
+							<div class="text-hint">
+								{{genre.related.join(', ')}}
 							</div>
 						</div>
 					</span>
+
+					<!-- Menu -->
+					<div class="item-menu">
+						<md-menu #appMenu="mdMenu">
+							<button md-menu-item (click)="playMix(genre.name, 0)">
+								<md-icon>play_arrow</md-icon>
+								<span>play {{genre.name.toLowerCase()}} mix</span>
+							</button>
+							<button md-menu-item (click)="playMix(genre.name, 1)">
+								<md-icon>play_arrow</md-icon>
+								<span>play basic mix</span>
+							</button>
+							<button md-menu-item (click)="playMix(genre.name, 2)">
+								<md-icon>play_arrow</md-icon>
+								<span>play related mix</span>
+							</button>
+							<button md-menu-item (click)="playMix(genre.name, 3)">
+								<md-icon>play_arrow</md-icon>
+								<span>play similar mix</span>
+							</button>
+							<button md-menu-item (click)="playMix(genre.name, 4)">
+								<md-icon>play_arrow</md-icon>
+								<span>play diverse mix</span>
+							</button>
+							<button md-menu-item (click)="playMix(genre.name, 5)">
+								<md-icon>play_arrow</md-icon>
+								<span>play eclectic mix</span>
+							</button>
+						</md-menu>
+						<button md-icon-button [mdMenuTriggerFor]="appMenu">
+							<md-icon>more_vert</md-icon>
+						</button>
+					</div>
+
 				</md-list-item>
 			</md-list>
 		</div>
+
 	</div>
 </div>

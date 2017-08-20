@@ -56,6 +56,10 @@ export class RadioComponent implements OnInit
 		if (currentTrack)
 		{
 			player.homeGenre = currentTrack.genre;
+		}
+
+		if (player.degree)
+		{
 			this.setDegree(player.degree);
 		}
 	}
