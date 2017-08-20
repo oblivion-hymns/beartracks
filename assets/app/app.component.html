@@ -35,18 +35,16 @@
 	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active">
 		<h3>What's new</h3>
 	</button>
-	<button md-button [routerLink]="['/jukebox']" routerLinkActive="active">
-		<h3>Chat</h3>
+	<button md-button [routerLink]="['/genres']" routerLinkActive="active">
+		<h3>Genres</h3>
 	</button>
-	<button md-button [routerLink]="['/profile']" routerLinkActive="active">
+	<button md-button [routerLink]="['/search']" routerLinkActive="active">
+		<h3>Search</h3>
+	</button>
+	<!-- <button md-button [routerLink]="['/profile']" routerLinkActive="active">
 		<h3 *ngIf="userService.isLoggedIn()">Profile</h3>
 		<h3 *ngIf="!userService.isLoggedIn()">Login</h3>
-	</button>
-
-	<!-- Search -->
-	<button md-button [routerLink]="['/search']" routerLinkActive="active" style="width: 4%">
-		<md-icon>search</md-icon>
-	</button>
+	</button> -->
 </md-toolbar>
 
 <div id="Container">

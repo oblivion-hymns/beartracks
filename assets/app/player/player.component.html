@@ -3,6 +3,12 @@
 	<div id="Theater" style="display: table;">
 		<div id="TheaterInner">
 			<div id="TheaterContent">
+
+				<md-icon class="player-control" mdTooltip="Close" mdTooltipPosition="below"
+					(click)="disableTheater()" style="position: absolute; right: 16px; top: 16px;">
+					close
+				</md-icon>
+
 				<div *ngIf="getCurrentTrack()">
 					<img class="now-playing-art" src="{{getCurrentTrack().album.imagePath}}"
 						(click)="playerService.openLightbox(getCurrentTrack().album)"
@@ -100,10 +106,10 @@
 					</md-progress-bar>
 				</div>
 				<div *ngIf="!getCurrentTrack()" style="text-align: center;">
-					<md-icon class="error-icon" style="font-size: 6vw;">
+					<md-icon class="error-icon" style="font-size: 8vw; width: 8vw; height: 8vw;">
 						queue_music
 					</md-icon><br />
-					<div class="error-text" style="font-size: 6vw;">
+					<div class="error-text" style="font-size: 4vw;">
 						No music queued
 					</div>
 				</div>

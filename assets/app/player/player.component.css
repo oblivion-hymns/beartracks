@@ -222,6 +222,8 @@ img.now-playing-art:hover
 	float: left;
 	height: 25%;
 	margin-right: 16px;
+	max-height: 25%;
+	min-height: 25%;
 	width: 25%;
 }
 
@@ -241,4 +243,6 @@ img.now-playing-art:hover
 {
 	font-size: 2vw;
 	margin-right: 16px;
+	width: 2vw;
+	height: 2vw;
 }
