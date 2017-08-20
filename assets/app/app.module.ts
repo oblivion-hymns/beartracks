@@ -24,7 +24,6 @@ import { PushNotificationsModule } from 'angular2-notifications';
 import { BrowseComponent } from './browse/browse.component';
 import { GenresComponent } from './genres/genres.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { JukeboxComponent } from './jukebox/jukebox.component';
 import { PlayerComponent } from './player/player.component';
 import { ProfileComponent } from './user/profile.component';
 import { RadioComponent } from './radio/radio.component';
@@ -43,7 +42,6 @@ import { UserService } from './user/user.service';
 		BrowseComponent,
 		DashboardComponent,
 		GenresComponent,
-		JukeboxComponent,
 		PlayerComponent,
 		ProfileComponent,
 		RadioComponent,

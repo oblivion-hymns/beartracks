@@ -8,7 +8,6 @@ var timeout = require('connect-timeout');
 var albumRoutes = require('./routes/albums');
 var appRoutes = require('./routes/app');
 var artistRoutes = require('./routes/artists');
-var jukeboxRoutes = require('./routes/jukebox');
 var trackRoutes = require('./routes/tracks');
 var userRoutes = require('./routes/user');
 
@@ -187,7 +186,6 @@ app.use(function (req, res, next) {
 app.use('/user', userRoutes);
 app.use('/albums', albumRoutes);
 app.use('/artists', artistRoutes);
-app.use('/jukebox', jukeboxRoutes);
 app.use('/tracks', trackRoutes);
 app.use('/', appRoutes);
 
