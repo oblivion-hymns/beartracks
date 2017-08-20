@@ -13,6 +13,8 @@ import { TrackService } from '../tracks/track.service';
 })
 export class PlayerComponent
 {
+	private theaterMode: boolean = false;
+
 	constructor(private playerService: PlayerService, private trackService: TrackService){}
 
 	/**
@@ -31,6 +33,22 @@ export class PlayerComponent
 		this.trackService.loadRandom().subscribe((track: Track[]) => {
 			this.playerService.player.enqueueOne(track);
 		});
+	}
+
+	/**
+	 * Enables theater mode
+	 */
+	enableTheater()
+	{
+		this.theaterMode = true;
+	}
+
+	/**
+	 * Disables theater mode
+	 */
+	disableTheater()
+	{
+		this.theaterMode = false;
 	}
 
 	/**

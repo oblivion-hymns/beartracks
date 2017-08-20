@@ -1,257 +1,269 @@
-<div id="Queue"
-	class="queue-closed"
-	[ngClass]="{'queue-closed': getPlayer().queueOpen == false}"
-	*ngIf="getPlayer().visible">
+<ng-container *ngIf="theaterMode">
+	<div id="Theater">
 
-	<div style="display: block; box-sizing: border-box; height: 4%; min-height: 4%; max-height: 4%;">
-		<h3 class="sad-header">
-			Now Playing
-			<button md-icon-button id="CloseQueue" (click)="getPlayer().closeQueue()">
-				<md-icon>
-					close
-				</md-icon>
-			</button>
-		</h3>
 	</div>
+</ng-container>
+<ng-container *ngIf="!theaterMode">
+	<div id="Queue"
+		class="queue-closed"
+		[ngClass]="{'queue-closed': getPlayer().queueOpen == false}"
+		*ngIf="getPlayer().visible">
 
-	<div id="PlayerLoading" class="text-center" *ngIf="getPlayer().isLoading">
-		<div class="error-text text-center">
-			<md-progress-spinner class="spinner-center" mode="indeterminate" style="display: inline-block;">
-			</md-progress-spinner>
-		</div>
-	</div>
-
-	<!-- Player -->
-	<div id="Player" *ngIf="!getPlayer().isLoading">
-		<div *ngIf="getCurrentTrack()">
-			<img class="now-playing-art" src="{{getCurrentTrack().album.imagePath}}"
-				(click)="playerService.openLightbox(getCurrentTrack().album)"
-				style="float: left;"/>
-
-			<!-- Menu -->
-			<span style="float: right;">
-				<md-menu #nowPlayingMenu="mdMenu">
-					<!-- <button md-menu-item (click)="playerService.enqueueAlbum(getCurrentTrack().album)">
-						<md-icon>queue_music</md-icon>
-						<span>add album to queue</span>
-					</button> -->
-					<button md-menu-item (click)="playerService.enqueueSmart(getCurrentTrack().album)">
-						<md-icon>play_arrow</md-icon>
-						<span>play album from here</span>
-					</button>
-					<button md-menu-item (click)="playerService.playArtist(getCurrentTrack().album.artist)">
-						<md-icon>play_arrow</md-icon>
-						<span>play artist mix</span>
-					</button>
-					<button md-menu-item (click)="playerService.openLightboxArtist(getCurrentTrack().album.artist)">
-						<md-icon>color_lens</md-icon>
-						<span>view artist photo</span>
-					</button>
-					<button md-menu-item (click)="playerService.recommendTrack(getCurrentTrack())">
-						<md-icon>favorite</md-icon>
-						<span>recommend track</span>
-					</button>
-				</md-menu>
-				<button md-icon-button class="tiny-icon" [mdMenuTriggerFor]="nowPlayingMenu">
-					<md-icon>more_vert</md-icon>
+		<div style="display: block; box-sizing: border-box; height: 4%; min-height: 4%; max-height: 4%;">
+			<h3 class="sad-header">
+				Now Playing
+				<button md-icon-button id="CloseQueue" (click)="getPlayer().closeQueue()">
+					<md-icon>
+						close
+					</md-icon>
 				</button>
-			</span>
+			</h3>
+		</div>
 
-			<div class="now-playing" *ngIf="getCurrentTrack()">
-				<h3 class="now-playing-field text-primary">
-					{{getCurrentTrack().name}}
-				</h3>
-				<em class="now-playing-field text-secondary">
-					<md-icon class="tiny-icon">
-						album
-					</md-icon>
-					{{getCurrentTrack().album.name}} ({{getCurrentTrack().album.year}})
-				</em><br />
-				<span class="now-playing-field text-secondary">
-					<md-icon class="tiny-icon">
-						person
-					</md-icon>
-					{{getCurrentTrack().album.artist.name}}
-				</span><br />
-				<span class="now-playing-field text-secondary">
-					<md-icon class="tiny-icon">
-						receipt
-					</md-icon>
-					{{getCurrentTrack().genre}}
-				</span>
+		<div id="PlayerLoading" class="text-center" *ngIf="getPlayer().isLoading">
+			<div class="error-text text-center">
+				<md-progress-spinner class="spinner-center" mode="indeterminate" style="display: inline-block;">
+				</md-progress-spinner>
 			</div>
+		</div>
 
-			<div style="width: 100%;">
-				<div style="float: left; font-size: 46px;">
-					<md-icon
-						class="player-control player-pause"
-						*ngIf="!getPlayer().audio.paused"
-						(click)="getPlayer().pause()">
-						pause
-					</md-icon>
-					<md-icon
-						class="player-control player-play"
-						*ngIf="getPlayer().audio.paused"
-						(click)="getPlayer().resume()">
-						play_arrow
-					</md-icon>
+		<!-- Player -->
+		<div id="Player" *ngIf="!getPlayer().isLoading">
+			<div *ngIf="getCurrentTrack()">
+				<img class="now-playing-art" src="{{getCurrentTrack().album.imagePath}}"
+					(click)="playerService.openLightbox(getCurrentTrack().album)"
+					style="float: left;"/>
 
-					<!-- Skip -->
-					<md-icon class="player-control"
-						(click)="playerService.skipTrack()">
-						<md-icon>skip_next</md-icon>
-					</md-icon>
+				<!-- Menu -->
+				<span style="float: right;">
+					<md-menu #nowPlayingMenu="mdMenu">
+						<button md-menu-item (click)="playerService.enqueueSmart(getCurrentTrack().album)">
+							<md-icon>play_arrow</md-icon>
+							<span>play album from here</span>
+						</button>
+						<button md-menu-item (click)="playerService.playArtist(getCurrentTrack().album.artist)">
+							<md-icon>play_arrow</md-icon>
+							<span>play artist mix</span>
+						</button>
+						<button md-menu-item (click)="playerService.openLightboxArtist(getCurrentTrack().album.artist)">
+							<md-icon>color_lens</md-icon>
+							<span>view artist photo</span>
+						</button>
+						<button md-menu-item (click)="playerService.recommendTrack(getCurrentTrack())">
+							<md-icon>favorite</md-icon>
+							<span>recommend track</span>
+						</button>
+					</md-menu>
+					<button md-icon-button class="tiny-icon" [mdMenuTriggerFor]="nowPlayingMenu">
+						<md-icon>more_vert</md-icon>
+					</button>
+				</span>
 
-					<!-- Volume -->
-					<md-icon
-						class="player-control player-play"
-						*ngIf="getPlayer().volume >= 0.8"
-						(click)="getPlayer().mute()">
-						volume_up
-					</md-icon>
-					<md-icon
-						class="player-control player-play"
-						*ngIf="getPlayer().volume >= 0.4 && getPlayer().volume < 0.8"
-						(click)="getPlayer().mute()">
-						volume_down
-					</md-icon>
-					<md-icon
-						class="player-control player-play"
-						*ngIf="getPlayer().volume > 0 && getPlayer().volume < 0.4"
-						(click)="getPlayer().mute()">
-						volume_mute
-					</md-icon>
-					<md-icon
-						class="player-control player-play"
-						*ngIf="getPlayer().volume == 0"
-						(click)="getPlayer().unmute()">
-						volume_off
-					</md-icon>
-
-					<!-- Volume -->
-					<md-slider min="0.0" max="1.0" step="0.01" value="{{getPlayer().volume}}" tickInterval="50"
-						(input)="onVolumeChange($event);">
-					</md-slider>
+				<div class="now-playing" *ngIf="getCurrentTrack()">
+					<h3 class="now-playing-field text-primary">
+						{{getCurrentTrack().name}}
+					</h3>
+					<em class="now-playing-field text-secondary">
+						<md-icon class="tiny-icon">
+							album
+						</md-icon>
+						{{getCurrentTrack().album.name}} ({{getCurrentTrack().album.year}})
+					</em><br />
+					<span class="now-playing-field text-secondary">
+						<md-icon class="tiny-icon">
+							person
+						</md-icon>
+						{{getCurrentTrack().album.artist.name}}
+					</span><br />
+					<span class="now-playing-field text-secondary">
+						<md-icon class="tiny-icon">
+							receipt
+						</md-icon>
+						{{getCurrentTrack().genre}}
+					</span>
 				</div>
 
-				<div style="float: right;">
-					<div class="now-playing-elapsed" style="margin-top: 24px;">
-						{{getPlayer().elapsed}} / {{getCurrentTrack().lengthFormatted}}
+				<div style="width: 100%;">
+					<div style="float: left; font-size: 46px;">
+						<md-icon
+							class="player-control player-pause"
+							*ngIf="!getPlayer().audio.paused"
+							(click)="getPlayer().pause()">
+							pause
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().audio.paused"
+							(click)="getPlayer().resume()">
+							play_arrow
+						</md-icon>
+
+						<!-- Skip -->
+						<md-icon class="player-control"
+							(click)="playerService.skipTrack()">
+							<md-icon>skip_next</md-icon>
+						</md-icon>
+
+						<!-- Volume -->
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume >= 0.8"
+							(click)="getPlayer().mute()">
+							volume_up
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume >= 0.4 && getPlayer().volume < 0.8"
+							(click)="getPlayer().mute()">
+							volume_down
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume > 0 && getPlayer().volume < 0.4"
+							(click)="getPlayer().mute()">
+							volume_mute
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume == 0"
+							(click)="getPlayer().unmute()">
+							volume_off
+						</md-icon>
+
+						<!-- Volume -->
+						<md-slider min="0.0" max="1.0" step="0.01" value="{{getPlayer().volume}}" tickInterval="50"
+							(input)="onVolumeChange($event);">
+						</md-slider>
+					</div>
+
+					<div style="float: right;">
+						<div class="now-playing-elapsed" style="margin-top: 24px;">
+							{{getPlayer().elapsed}} / {{getCurrentTrack().lengthFormatted}}
+						</div>
 					</div>
 				</div>
+
+				<md-progress-bar
+					class="now-playing-progress"
+					[mode]="determinate"
+					[value]="getPlayer().elapsedPercent">
+				</md-progress-bar>
 			</div>
-
-			<md-progress-bar
-				class="now-playing-progress"
-				[mode]="determinate"
-				[value]="getPlayer().elapsedPercent">
-			</md-progress-bar>
-		</div>
-		<div class="text-center" *ngIf="!getCurrentTrack()">
-			<md-icon class="error-icon">
-				filter_none
-			</md-icon><br />
-			<div class="error-text">
-				Nothing is playing
+			<div class="text-center" *ngIf="!getCurrentTrack()">
+				<md-icon class="error-icon">
+					filter_none
+				</md-icon><br />
+				<div class="error-text">
+					Nothing is playing
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<h3 class="sad-header">
+		<h3 class="sad-header">
 
-		<span class="queue-title" *ngIf="!getPlayer().isRadio">
-			Queue
-		</span>
-		<span class="queue-title" *ngIf="getPlayer().isRadio">
-			Radio
-		</span>
+			<span class="queue-title" *ngIf="!getPlayer().isRadio">
+				Queue
+			</span>
+			<span class="queue-title" *ngIf="getPlayer().isRadio">
+				Radio
+			</span>
 
-		<ng-container *ngIf="this.getPlayer().currentTrack">
+			<ng-container *ngIf="this.getPlayer().currentTrack">
+				<button md-icon-button
+					class="text-hint tiny-icon"
+					mdTooltip="Enable Radio Mode"
+					mdTooltipPosition="below"
+					(click)="playerService.enableRadio()"
+					style="margin-left: 8px;"
+					*ngIf="!getPlayer().isRadio">
+					<md-icon>radio</md-icon>
+				</button>
+
+				<button md-icon-button
+					class="tiny-icon text-blue"
+					mdTooltip="Disable Radio Mode"
+					mdTooltipPosition="below"
+					(click)="playerService.disableRadio()"
+					style="margin-left: 8px;"
+					*ngIf="getPlayer().isRadio">
+					<md-icon>radio</md-icon>
+				</button>
+			</ng-container>
+
 			<button md-icon-button
 				class="text-hint tiny-icon"
-				mdTooltip="Enable Radio Mode"
+				mdTooltip="Surprise me!"
 				mdTooltipPosition="below"
-				(click)="playerService.enableRadio()"
+				(click)="surpriseMe()"
 				style="margin-left: 8px;"
 				*ngIf="!getPlayer().isRadio">
-				<md-icon>radio</md-icon>
+				<md-icon>casino</md-icon>
 			</button>
 
 			<button md-icon-button
-				class="tiny-icon text-blue"
-				mdTooltip="Disable Radio Mode"
+				class="text-hint tiny-icon"
+				mdTooltip="Theater Mode"
 				mdTooltipPosition="below"
-				(click)="playerService.disableRadio()"
-				style="margin-left: 8px;"
-				*ngIf="getPlayer().isRadio">
-				<md-icon>radio</md-icon>
+				(click)="enableTheater()"
+				style="margin-left: 8px;">
+				<md-icon>tv</md-icon>
 			</button>
-		</ng-container>
+		</h3>
 
-		<button md-icon-button
-			class="text-hint tiny-icon"
-			mdTooltip="Surprise me!"
-			mdTooltipPosition="below"
-			(click)="surpriseMe()"
-			style="margin-left: 8px;"
-			*ngIf="!getPlayer().isRadio">
-			<md-icon>casino</md-icon>
-		</button>
-	</h3>
+		<div *ngIf="!getPlayer().isRadio" style="height: 100%;">
+			<div class="queue-list" *ngIf="getPlayer().queue.length">
 
-	<div *ngIf="!getPlayer().isRadio" style="height: 100%;">
-		<div class="queue-list" *ngIf="getPlayer().queue.length">
+				<div
+					class="queue-item"
+					*ngFor="let track of getPlayer().queue; let i = index"
+					[style.backgroundColor]="getPlayer().queuePosition == i ? 'rgba(0, 0, 0, 0.13)' : null">
 
-			<div
-				class="queue-item"
-				*ngFor="let track of getPlayer().queue; let i = index"
-				[style.backgroundColor]="getPlayer().queuePosition == i ? 'rgba(0, 0, 0, 0.13)' : null">
-
-				<span style="float: left;" *ngIf="getPlayer().queuePosition == i">
-					<md-icon
-						class="player-control player-pause"
-						*ngIf="!getPlayer().audio.paused"
-						(click)="getPlayer().pause()">
-						pause
-					</md-icon>
-					<md-icon
-						class="player-control player-play"
-						*ngIf="getPlayer().audio.paused"
-						(click)="getPlayer().resume()" >
-						play_arrow
-					</md-icon>
-				</span>
-
-				<span style="float: left;" *ngIf="getPlayer().queuePosition != i">
-					<md-icon
-						class="player-control player-play"
-						(click)="getPlayer().playPosition(i)" >
-						play_arrow
-					</md-icon>
-				</span>
-
-				<span class="queue-item-field">
-					<span class="queue-item-field-text">
-						{{i+1}}. {{ track.name }}
+					<span style="float: left;" *ngIf="getPlayer().queuePosition == i">
+						<md-icon
+							class="player-control player-pause"
+							*ngIf="!getPlayer().audio.paused"
+							(click)="getPlayer().pause()">
+							pause
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().audio.paused"
+							(click)="getPlayer().resume()" >
+							play_arrow
+						</md-icon>
 					</span>
-					<span class="text-hint" style="float: right; padding-top: 1px;">
-						{{track.lengthFormatted}}
+
+					<span style="float: left;" *ngIf="getPlayer().queuePosition != i">
+						<md-icon
+							class="player-control player-play"
+							(click)="getPlayer().playPosition(i)" >
+							play_arrow
+						</md-icon>
 					</span>
-				</span>
+
+					<span class="queue-item-field">
+						<span class="queue-item-field-text">
+							{{i+1}}. {{ track.name }}
+						</span>
+						<span class="text-hint" style="float: right; padding-top: 1px;">
+							{{track.lengthFormatted}}
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="queue-list" *ngIf="getPlayer().queue.length == 0" style="text-align: center;">
+				<md-icon class="error-icon">
+					queue_music
+				</md-icon><br />
+				<div class="error-text">
+					No music queued
+				</div>
 			</div>
 		</div>
-		<div class="queue-list" *ngIf="getPlayer().queue.length == 0" style="text-align: center;">
-			<md-icon class="error-icon">
-				queue_music
-			</md-icon><br />
-			<div class="error-text">
-				No music queued
-			</div>
+
+		<div class="text-center" *ngIf="getPlayer().isRadio">
+			<bt-radio></bt-radio>
 		</div>
-	</div>
 
-	<div class="text-center" *ngIf="getPlayer().isRadio">
-		<bt-radio></bt-radio>
 	</div>
-
-</div>
+</ng-container>
