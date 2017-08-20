@@ -1,0 +1,41 @@
+<div class="container" fxLayout="row">
+	<!-- Albums -->
+	<div class="item-column">
+		<h3 class="sad-header">Select a mix</h3>
+
+		<!-- Loading -->
+		<div *ngIf="loading" style="text-align: center;">
+			<md-progress-spinner class="spinner-center" mode="indeterminate"></md-progress-spinner>
+		</div>
+
+		<div *ngIf="!loading">
+
+			<!-- None found -->
+			<div *ngIf="genres.length == 0" style="text-align: center;">
+				<md-icon class="error-icon">
+					error_outline
+				</md-icon><br />
+				<div class="error-text" *ngIf="artistSelected">
+					No genres found
+				</div>
+			</div>
+
+			<!-- List -->
+			<md-list class="item-column-body" *ngIf="genres.length > 0">
+				<md-list-item class="item-line-image" *ngFor="let genre of genres">
+
+					<span md-line class="item-body" (click)="playMix({{genre.name}})">
+						<em class="item-title text-primary">
+							{{genre.name}}
+						</em><br />
+						<div class="item-subtitle">
+							<div class="text-secondary">
+								Includes {{genre.related.join(', ')}}
+							</div>
+						</div>
+					</span>
+				</md-list-item>
+			</md-list>
+		</div>
+	</div>
+</div>

@@ -1,5 +1,4 @@
 import { Http, Response, Headers } from '@angular/http';
-import { OnInit } from '@angular/core';
 import { PushNotificationsService } from 'angular2-notifications';
 
 import { Album } from '../albums/album';
@@ -7,7 +6,7 @@ import { Artist } from '../artists/artist';
 import { Track } from '../tracks/track';
 import { TrackService } from '../tracks/track.service';
 
-export class Player implements OnInit
+export class Player
 {
 	private audio;
 	private interval;
@@ -39,11 +38,6 @@ export class Player implements OnInit
 		this.http = http;
 		this.trackService = trackService;
 		this.pushNotifications = pushNotifications;
-	}
-
-	ngOnInit()
-	{
-
 	}
 
 	/**
