@@ -39,14 +39,15 @@ export class GenresComponent
 	/**
 	 * Begins a mix using the given genre
 	 * @param string genre
+	 * @param number degree
 	 */
-	playMix(genre: string)
+	playMix(genre: string, degree: number)
 	{
 		var playerService = this.playerService;
 		var player = playerService.player;
 		player.homeGenre = genre;
 		player.isRadio = true;
-		player.degree = 1;
+		player.degree = degree;
 		player.playTrackInGenre(genre);
 		player.openQueue();
 	}
