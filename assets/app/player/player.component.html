@@ -34,7 +34,7 @@
 					</div>
 
 					<div style="width: 100%;">
-						<div style="float: left; font-size: 46px;">
+						<div style="float: left; font-size: 2vw; margin-top: 128px;">
 							<md-icon
 								class="player-control player-pause"
 								*ngIf="!getPlayer().audio.paused"
@@ -51,7 +51,7 @@
 							<!-- Skip -->
 							<md-icon class="player-control"
 								(click)="playerService.skipTrack()">
-								<md-icon>skip_next</md-icon>
+								skip_next
 							</md-icon>
 
 							<!-- Volume -->
@@ -82,12 +82,12 @@
 
 							<!-- Volume -->
 							<md-slider min="0.0" max="1.0" step="0.01" value="{{getPlayer().volume}}" tickInterval="50"
-								(input)="onVolumeChange($event);">
+								(input)="onVolumeChange($event);" style="height: 64px;">
 							</md-slider>
 						</div>
 
 						<div style="float: right;">
-							<div class="now-playing-elapsed" style="margin-top: 24px;">
+							<div class="now-playing-elapsed" style="margin-top: 128px;">
 								{{getPlayer().elapsed}} / {{getCurrentTrack().lengthFormatted}}
 							</div>
 						</div>
@@ -98,6 +98,14 @@
 						[mode]="determinate"
 						[value]="getPlayer().elapsedPercent">
 					</md-progress-bar>
+				</div>
+				<div *ngIf="!getCurrentTrack()" style="text-align: center;">
+					<md-icon class="error-icon" style="font-size: 6vw;">
+						queue_music
+					</md-icon><br />
+					<div class="error-text" style="font-size: 6vw;">
+						No music queued
+					</div>
 				</div>
 			</div>
 		</div>

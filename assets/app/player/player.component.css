@@ -60,7 +60,7 @@ img.now-playing-art:hover
 
 .now-playing-elapsed
 {
-	color:rgba(255, 255, 255, 0.54);
+	color: rgba(255, 255, 255, 0.54);
 	margin-bottom: 5px;
 }
 
@@ -235,4 +235,10 @@ img.now-playing-art:hover
 	display: inline-block;
 	height: 24px;
 	margin-top: 16px;
+}
+
+#Theater .player-control
+{
+	font-size: 2vw;
+	margin-right: 16px;
 }
