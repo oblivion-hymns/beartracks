@@ -10,22 +10,22 @@
 
 					<!-- Now playing -->
 					<div class="now-playing" *ngIf="getCurrentTrack()">
-						<h1 class="now-playing-field text-primary" style="font-size: 3vw;">
+						<h1 class="now-playing-field text-primary" style="font-size: 3vw; line-height: 4vw;">
 							{{getCurrentTrack().name}}
 						</h1>
-						<em class="now-playing-field text-secondary" style="font-size: 2vw;">
+						<em class="now-playing-field text-secondary" style="font-size: 2vw; line-height: 3vw;">
 							<md-icon>
 								album
 							</md-icon>
-							{{getCurrentTrack().album.name}} ({{getCurrentTrack().album.year}})
+							{{getCurrentTrack().album.name}}
 						</em><br />
-						<span class="now-playing-field text-secondary" style="font-size: 2vw;">
+						<span class="now-playing-field text-secondary" style="font-size: 2vw; line-height: 3vw;">
 							<md-icon>
 								person
 							</md-icon>
 							{{getCurrentTrack().album.artist.name}}
 						</span><br />
-						<span class="now-playing-field text-secondary" style="font-size: 2vw;">
+						<span class="now-playing-field text-secondary" style="font-size: 2vw; line-height: 3vw;">
 							<md-icon>
 								receipt
 							</md-icon>
@@ -172,7 +172,7 @@
 						<md-icon class="tiny-icon">
 							album
 						</md-icon>
-						{{getCurrentTrack().album.name}} ({{getCurrentTrack().album.year}})
+						{{getCurrentTrack().album.name}}
 					</em><br />
 					<span class="now-playing-field text-secondary">
 						<md-icon class="tiny-icon">
