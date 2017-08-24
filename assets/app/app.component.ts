@@ -13,6 +13,6 @@ import { UserService } from './user/user.service';
 export class AppComponent
 {
 	constructor(private userService: UserService,
-				private playerService: PlayerService,
+				public playerService: PlayerService,
 				private trackService: TrackService){}
 }

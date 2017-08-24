@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { routing } from './app.routing';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 //Material
 import 'hammerjs';

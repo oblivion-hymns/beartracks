@@ -25,8 +25,8 @@ import { TrackService } from './../tracks/track.service';
 })
 export class GenresComponent
 {
-	private loading: boolean = false;
-	private genres: string[] = [];
+	public loading: boolean = false;
+	public genres: string[] = [];
 
 	constructor(private playerService: PlayerService, private trackService: TrackService)
 	{

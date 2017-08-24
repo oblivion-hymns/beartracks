@@ -17,7 +17,9 @@
     "es5",
     "dom"
   ],
-  "angularCompilerOptions": {
+  "angularCompilerOptions":
+  {
+    "genDir": "aot",
     "skipMetadataEmit": true
   }
 }

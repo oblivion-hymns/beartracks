@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit
 	successMessage: string = '';
 	username: string = '';
 
-	constructor(private router: Router, private userService: UserService) {}
+	constructor(private router: Router, public userService: UserService) {}
 
 	ngOnInit()
 	{

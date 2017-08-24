@@ -13,7 +13,7 @@ import { TrackService } from '../tracks/track.service';
 })
 export class PlayerComponent
 {
-	private theaterMode: boolean = false;
+	public theaterMode: boolean = false;
 
 	constructor(private playerService: PlayerService, private trackService: TrackService){}
 

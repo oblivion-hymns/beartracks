@@ -43,9 +43,9 @@ export class RadioComponent implements OnInit
 	public genres: any[] = [];
 	public degreeString: string = "";
 
-	constructor(private userService: UserService,
-				private playerService: PlayerService,
-				private trackService: TrackService) {}
+	constructor(public userService: UserService,
+				public playerService: PlayerService,
+				public trackService: TrackService) {}
 
 	ngOnInit()
 	{
