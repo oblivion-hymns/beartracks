@@ -75,6 +75,7 @@ export class Player
 		if (this.audio)
 		{
 			this.audio.pause();
+			this.audio.src = '🤔';
 			this.audio.currentTime = 0;
 			this.audio = null;
 		}
@@ -206,7 +207,9 @@ export class Player
 			this.isLoading = true;
 			this.audio = new Audio(this.currentTrack.filePath);
 			this.audio.play();
-			this.audio.oncanplay = () => {this.isLoading = false};
+			this.audio.oncanplay = () => {
+				this.isLoading = false;
+			};
 			this.audio.volume = this.volume;
 			this.checkTimeInterval();
 		}
