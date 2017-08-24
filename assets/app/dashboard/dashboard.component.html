@@ -37,10 +37,6 @@
 							<md-icon>color_lens</md-icon>
 							<span>view album art</span>
 						</button>
-						<button md-menu-item (click)="trackService.downloadAlbum(album)">
-							<md-icon>file_download</md-icon>
-							<span>download all tracks</span>
-						</button>
 					</md-menu>
 
 					<button md-icon-button [mdMenuTriggerFor]="appMenu">
@@ -114,10 +110,6 @@
 							<md-icon>color_lens</md-icon>
 							<span>view album art</span>
 						</button>
-						<button md-menu-item (click)="trackService.download(track)">
-							<md-icon>file_download</md-icon>
-							<span>download</span>
-						</button>
 					</md-menu>
 					<button md-icon-button [mdMenuTriggerFor]="appMenu">
 						<md-icon>more_vert</md-icon>
@@ -189,10 +181,6 @@
 						<button md-menu-item (click)="playerService.openLightbox(track.album)">
 							<md-icon>color_lens</md-icon>
 							<span>view album art</span>
-						</button>
-						<button md-menu-item (click)="trackService.download(track)">
-							<md-icon>file_download</md-icon>
-							<span>download</span>
 						</button>
 					</md-menu>
 					<button md-icon-button [mdMenuTriggerFor]="appMenu">

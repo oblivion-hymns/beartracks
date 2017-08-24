@@ -116,37 +116,6 @@ export class TrackService
 	}
 
 	/**
-	 * Downloads the given track.
-	 * @param Track track
-	 */
-	download(track)
-	{
-		return this.http.get('http://bwilbur.com' + track.filePath, {
-			responseType: ResponseContentType.Blob
-		}).map((res) => {
-			return new Blob([res.blob()], { type: 'audio/mpeg' });
-		}).subscribe(res => {
-			//For now...
-			fileSaver.saveAs(res, track.nameKey + '.mp3');
-		});
-	}
-
-	/**
-	 * Downloads the tracks from the given album
-	 * @param Album album
-	 */
-	downloadAlbum(album)
-	{
-		this.loadForAlbum(album._id).subscribe(tracks => {
-			for (var i = 0; i < tracks.length; i++)
-			{
-				var track = tracks[i];
-				this.download(track);
-			}
-		});
-	}
-
-	/**
 	 * Returns the complete genre map
 	 */
 	loadGenres()
