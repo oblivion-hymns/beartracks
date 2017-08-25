@@ -29,16 +29,16 @@
 
 
 	<!-- Toolbar -->
-	<button md-button [routerLink]="['/browse']" routerLinkActive="active">
+	<button md-button [routerLink]="['/browse']" routerLinkActive="active" (click)="playerService.player.closeQueue()">
 		<h3>Library</h3>
 	</button>
-	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active">
+	<button md-button [routerLink]="['/dashboard']" routerLinkActive="active" (click)="playerService.player.closeQueue()">
 		<h3>What's new</h3>
 	</button>
-	<button md-button [routerLink]="['/genres']" routerLinkActive="active">
+	<button md-button [routerLink]="['/genres']" routerLinkActive="active" (click)="playerService.player.closeQueue()">
 		<h3>Genres</h3>
 	</button>
-	<button md-button [routerLink]="['/search']" routerLinkActive="active">
+	<button md-button [routerLink]="['/search']" routerLinkActive="active" (click)="playerService.player.closeQueue()">
 		<h3>Search</h3>
 	</button>
 	<!-- <button md-button [routerLink]="['/profile']" routerLinkActive="active">
