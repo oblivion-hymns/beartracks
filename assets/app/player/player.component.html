@@ -40,7 +40,7 @@
 					</div>
 
 					<div style="width: 100%;">
-						<div style="float: left; font-size: 2vw; margin-top: 128px;">
+						<div style="float: left; font-size: 2vw; margin-top: 128px;" *ngIf="getPlayer().audio">
 							<md-icon
 								class="player-control player-pause"
 								*ngIf="!getPlayer().audio.paused"
@@ -203,7 +203,7 @@
 				</div>
 
 				<div style="width: 100%;">
-					<div style="float: left; font-size: 46px;">
+					<div style="float: left; font-size: 46px;" *ngIf="getPlayer().audio">
 						<md-icon
 							class="player-control player-pause"
 							*ngIf="!getPlayer().audio.paused"
@@ -329,15 +329,18 @@
 					[style.backgroundColor]="getPlayer().queuePosition == i ? 'rgba(0, 0, 0, 0.13)' : null">
 
 					<span style="float: left;" *ngIf="getPlayer().queuePosition == i">
+						<md-icon class="player-control player-pause" *ngIf="!getPlayer().audio">
+							pause
+						</md-icon>
 						<md-icon
 							class="player-control player-pause"
-							*ngIf="!getPlayer().audio.paused"
+							*ngIf="getPlayer().audio && !getPlayer().audio.paused"
 							(click)="getPlayer().pause()">
 							pause
 						</md-icon>
 						<md-icon
 							class="player-control player-play"
-							*ngIf="getPlayer().audio.paused"
+							*ngIf="getPlayer().audio && getPlayer().audio.paused"
 							(click)="getPlayer().resume()" >
 							play_arrow
 						</md-icon>

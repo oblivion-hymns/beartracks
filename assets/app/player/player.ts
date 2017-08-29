@@ -361,7 +361,7 @@ export class Player
 	 */
 	getElapsed()
 	{
-		if (this.currentTrack)
+		if (this.currentTrack && this.audio)
 		{
 			var tempLength = parseInt(this.audio.currentTime);
 			var length_h = 0;
@@ -417,7 +417,7 @@ export class Player
 
 	getElapsedPercent()
 	{
-		if (this.currentTrack)
+		if (this.currentTrack && this.audio)
 		{
 			var currentAudioTime = Math.ceil(this.audio.currentTime);
 			var currentTrackLength = Math.ceil(parseInt(this.currentTrack.length));
