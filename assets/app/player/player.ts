@@ -187,20 +187,19 @@ export class Player
 			var blobPath = window.URL.createObjectURL(blob);
 			this.audio = new Audio(blobPath);
 			this.audio.preload = 'auto';
-			//this.audio.oncanplaythrough = () => {
-				this.isLoading = false;
-				this.audio.play();
-				this.audio.volume = this.volume;
-				this.checkTimeInterval();
+			this.audio.play();
+			this.audio.volume = this.volume;
+			this.checkTimeInterval();
 
-				var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
-				body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')';
+			var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
+			body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')';
 
-				this.pushNotifications.create('Now Playing', {
-					body: body,
-					icon: this.currentTrack.album.imagePath
-				}).subscribe();
-		//	};
+			this.isLoading = false;
+			this.pushNotifications.create('Now Playing', {
+				body: body,
+				icon: this.currentTrack.album.imagePath,
+				timeOut: 3
+			}).subscribe();
 		});
 	}
 
@@ -223,20 +222,18 @@ export class Player
 				var blobPath = window.URL.createObjectURL(blob);
 				this.audio = new Audio(blobPath);
 				this.audio.preload = 'auto';
+				this.audio.play();
+				this.audio.volume = this.volume;
+				this.checkTimeInterval();
 
-					this.isLoading = false;
-					this.audio.play();
-					this.audio.volume = this.volume;
-					this.checkTimeInterval();
+				var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
+				body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')';
 
-					var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
-					body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')';
-
-					this.pushNotifications.create('Now Playing', {
-						body: body,
-						icon: this.currentTrack.album.imagePath
-					}).subscribe();
-
+				this.isLoading = false;
+				this.pushNotifications.create('Now Playing', {
+					body: body,
+					icon: this.currentTrack.album.imagePath
+				}).subscribe();
 			});
 		}
 		else

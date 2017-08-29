@@ -9,7 +9,7 @@
 					close
 				</md-icon>
 
-				<div *ngIf="getCurrentTrack()">
+				<div class="clearfix" *ngIf="getCurrentTrack()" style="min-height: 25%;">
 					<img class="now-playing-art" src="{{getCurrentTrack().album.imagePath}}"
 						(click)="playerService.openLightbox(getCurrentTrack().album)"
 						style="float: left;"/>
@@ -38,73 +38,76 @@
 							{{getCurrentTrack().genre}}
 						</span>
 					</div>
+					<div class="clearfix"></div>
+				</div>
 
-					<div style="width: 100%;">
-						<div style="float: left; font-size: 2vw; margin-top: 128px;" *ngIf="getPlayer().audio">
-							<md-icon
-								class="player-control player-pause"
-								*ngIf="!getPlayer().audio.paused"
-								(click)="getPlayer().pause()">
-								pause
-							</md-icon>
-							<md-icon
-								class="player-control player-play"
-								*ngIf="getPlayer().audio.paused"
-								(click)="getPlayer().resume()">
-								play_arrow
-							</md-icon>
+				<div *ngIf="getCurrentTrack()" style="float: left; width: 100%;">
+					<div style="font-size: 2vw;" *ngIf="getPlayer().audio">
+						<md-icon
+							class="player-control player-pause"
+							*ngIf="!getPlayer().audio.paused"
+							(click)="getPlayer().pause()">
+							pause
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().audio.paused"
+							(click)="getPlayer().resume()">
+							play_arrow
+						</md-icon>
 
-							<!-- Skip -->
-							<md-icon class="player-control"
-								(click)="playerService.skipTrack()">
-								skip_next
-							</md-icon>
+						<!-- Skip -->
+						<md-icon class="player-control"
+							(click)="playerService.skipTrack()">
+							skip_next
+						</md-icon>
 
-							<!-- Volume -->
-							<md-icon
-								class="player-control player-play"
-								*ngIf="getPlayer().volume >= 0.8"
-								(click)="getPlayer().mute()">
-								volume_up
-							</md-icon>
-							<md-icon
-								class="player-control player-play"
-								*ngIf="getPlayer().volume >= 0.4 && getPlayer().volume < 0.8"
-								(click)="getPlayer().mute()">
-								volume_down
-							</md-icon>
-							<md-icon
-								class="player-control player-play"
-								*ngIf="getPlayer().volume > 0 && getPlayer().volume < 0.4"
-								(click)="getPlayer().mute()">
-								volume_mute
-							</md-icon>
-							<md-icon
-								class="player-control player-play"
-								*ngIf="getPlayer().volume == 0"
-								(click)="getPlayer().unmute()">
-								volume_off
-							</md-icon>
+						<!-- Volume -->
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume >= 0.8"
+							(click)="getPlayer().mute()">
+							volume_up
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume >= 0.4 && getPlayer().volume < 0.8"
+							(click)="getPlayer().mute()">
+							volume_down
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume > 0 && getPlayer().volume < 0.4"
+							(click)="getPlayer().mute()">
+							volume_mute
+						</md-icon>
+						<md-icon
+							class="player-control player-play"
+							*ngIf="getPlayer().volume == 0"
+							(click)="getPlayer().unmute()">
+							volume_off
+						</md-icon>
 
-							<!-- Volume -->
-							<md-slider min="0.0" max="1.0" step="0.01" value="{{getPlayer().volume}}" tickInterval="50"
-								(input)="onVolumeChange($event);" style="height: 64px;">
-							</md-slider>
-						</div>
+						<!-- Volume -->
+						<md-slider min="0.0" max="1.0" step="0.01" value="{{getPlayer().volume}}" tickInterval="50"
+							(input)="onVolumeChange($event);" style="height: 64px;">
+						</md-slider>
 
 						<div style="float: right;">
-							<div class="now-playing-elapsed" style="margin-top: 128px;">
+							<div class="now-playing-elapsed">
 								{{getPlayer().elapsed}} / {{getCurrentTrack().lengthFormatted}}
 							</div>
 						</div>
 					</div>
-
-					<md-progress-bar
-						class="now-playing-progress"
-						[mode]="determinate"
-						[value]="getPlayer().elapsedPercent">
-					</md-progress-bar>
 				</div>
+
+				<md-progress-bar
+					class="now-playing-progress"
+					[mode]="determinate"
+					[value]="getPlayer().elapsedPercent">
+				</md-progress-bar>
+
+
 				<div *ngIf="!getCurrentTrack()" style="text-align: center;">
 					<md-icon class="error-icon" style="font-size: 8vw; width: 8vw; height: 8vw;">
 						queue_music
