@@ -68,7 +68,7 @@
 		</div>
 
 		<!-- Display when there are no albums -->
-		<div *ngIf="albums.length == 0" style="text-align: center;">
+		<div *ngIf="!loadingAlbums && albums.length == 0" style="text-align: center;">
 			<md-icon class="error-icon">
 				error_outline
 			</md-icon><br />
@@ -135,7 +135,7 @@
 		</div>
 
 		<!-- Display when there are no tracks -->
-		<div class="text-center" *ngIf="tracks.length == 0">
+		<div class="text-center" *ngIf="!loadingTracks && tracks.length == 0">
 			<md-icon class="error-icon">
 				error_outline
 			</md-icon><br />

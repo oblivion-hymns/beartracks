@@ -187,8 +187,7 @@ export class Player
 			var blobPath = window.URL.createObjectURL(blob);
 			this.audio = new Audio(blobPath);
 			this.audio.preload = 'auto';
-			this.audio.load();
-			this.audio.oncanplaythrough = () => {
+			//this.audio.oncanplaythrough = () => {
 				this.isLoading = false;
 				this.audio.play();
 				this.audio.volume = this.volume;
@@ -201,7 +200,7 @@ export class Player
 					body: body,
 					icon: this.currentTrack.album.imagePath
 				}).subscribe();
-			};
+		//	};
 		});
 	}
 
@@ -224,8 +223,7 @@ export class Player
 				var blobPath = window.URL.createObjectURL(blob);
 				this.audio = new Audio(blobPath);
 				this.audio.preload = 'auto';
-				this.audio.load();
-				this.audio.oncanplaythrough = () => {
+
 					this.isLoading = false;
 					this.audio.play();
 					this.audio.volume = this.volume;
@@ -238,7 +236,7 @@ export class Player
 						body: body,
 						icon: this.currentTrack.album.imagePath
 					}).subscribe();
-				};
+
 			});
 		}
 		else
