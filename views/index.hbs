@@ -12,12 +12,26 @@
 
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+
+		<style type="text/css">
+			#LoadingContentText
+			{
+				/* color: rgba(80, 80, 80, 0.87); */
+				color: #444;
+				cursor: default;
+				display: inline-block;
+				font-size: 72px;
+				text-shadow: 0px 1px 1px #555;
+			}
+		</style>
 	</head>
 	<body>
 		<my-app>
 			<div style="height: 100%; width: 100%; padding: 0px; margin: 0px; display: table;">
 				<div style="height: 100%; width: 100%; display: table-cell; text-align: center; vertical-align: middle;">
-					Preparing Beartracks...
+					<span id="LoadingContentText">
+						beartracks
+					</span>
 				</div>
 			</div>
 		</my-app>

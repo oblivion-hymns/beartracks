@@ -17,6 +17,19 @@ export class TrackService
 	constructor(private http: Http) {}
 
 	/**
+	 * Returns a blob for the given track.
+	 * Used as a workaround because onCanPlayThrough() is shit. -_-
+	 * @param string track - Path to a track to blobbify
+	 */
+	loadTrack(track)
+	{
+		var options = {responseType: ResponseContentType.Blob};
+		return this.http.get('http://bwilbur.com:3000/' + track, options).map((response: Response) => {
+			return response.blob();
+		});
+	}
+
+	/**
 	 * Loads and returns a random track
 	 */
 	loadRelated(track, degree)

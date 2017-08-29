@@ -176,25 +176,37 @@ export class Player
 	 */
 	playFromBeginning()
 	{
+		this.resetAudio();
 		this.queuePosition = 0;
 		this.currentTrack = this.queue[this.queuePosition];
 		this.isLoading = true;
-		this.audio = new Audio(this.currentTrack.filePath);
-		this.audio.oncanplaythrough = () => {
-			console.log('on can play through');
-			this.isLoading = false;
-			this.audio.play();
-			this.audio.volume = this.volume;
-			this.checkTimeInterval();
 
-			var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
-			body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')';
+		this.audio = new Audio();
 
-			this.pushNotifications.create('Now Playing', {
-				body: body,
-				icon: this.currentTrack.album.imagePath
-			}).subscribe();
-		};
+		this.trackService.loadTrack(this.currentTrack.filePath).subscribe(blob => {
+			var blobPath = window.URL.createObjectURL(blob);
+			this.audio = new Audio(blobPath);
+			this.audio.preload = 'auto';
+			this.audio.load();
+			this.audio.oncanplaythrough = () => {
+				console.log('ready');
+				/*this.isLoading = false;
+				this.audio.play();
+				this.audio.volume = this.volume;
+				this.checkTimeInterval();
+
+				var body = this.currentTrack.album.artist.name + ' - "' + this.currentTrack.name + '"\n';
+				body += this.currentTrack.album.name + ' (' + this.currentTrack.album.year + ')';
+
+				this.pushNotifications.create('Now Playing', {
+					body: body,
+					icon: this.currentTrack.album.imagePath
+				}).subscribe();*/
+			};
+		});
+
+
+
 	}
 
 	/**
@@ -212,6 +224,7 @@ export class Player
 			this.homeGenre = this.currentTrack.genre;
 			this.isLoading = true;
 			this.audio = new Audio(this.currentTrack.filePath);
+			this.audio.load();
 			this.audio.oncanplaythrough = () => {
 				console.log('on can play through');
 				this.isLoading = false;
