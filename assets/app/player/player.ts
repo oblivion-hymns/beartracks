@@ -197,8 +197,7 @@ export class Player
 			this.isLoading = false;
 			this.pushNotifications.create('Now Playing', {
 				body: body,
-				icon: this.currentTrack.album.imagePath,
-				timeOut: 3
+				icon: this.currentTrack.album.imagePath
 			}).subscribe();
 		});
 	}
