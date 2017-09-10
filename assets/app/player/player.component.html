@@ -62,8 +62,62 @@
 						</div>
 
 						<!-- Controls -->
-						<div *ngIf="getCurrentTrack() && getPlayer().audio" style="position: absolute; bottom: 0; right: 0;">
-							<div class="now-playing-elapsed">
+						<div *ngIf="getCurrentTrack() && getPlayer().audio"
+							style="position: absolute; bottom: 0; right: 0;">
+
+							<div style="display: inline-block; position: relative; top: 16px;">
+								<md-icon
+									class="player-control player-pause"
+									*ngIf="!getPlayer().audio.paused"
+									(click)="getPlayer().pause()">
+									pause
+								</md-icon>
+								<md-icon
+									class="player-control player-play"
+									*ngIf="getPlayer().audio.paused"
+									(click)="getPlayer().resume()">
+									play_arrow
+								</md-icon>
+
+								<!-- Skip -->
+								<md-icon class="player-control"
+									(click)="playerService.skipTrack()">
+									skip_next
+								</md-icon>
+
+								<!-- Volume -->
+								<md-icon
+									class="player-control player-play"
+									*ngIf="getPlayer().volume >= 0.8"
+									(click)="getPlayer().mute()">
+									volume_up
+								</md-icon>
+								<md-icon
+									class="player-control player-play"
+									*ngIf="getPlayer().volume >= 0.4 && getPlayer().volume < 0.8"
+									(click)="getPlayer().mute()">
+									volume_down
+								</md-icon>
+								<md-icon
+									class="player-control player-play"
+									*ngIf="getPlayer().volume > 0 && getPlayer().volume < 0.4"
+									(click)="getPlayer().mute()">
+									volume_mute
+								</md-icon>
+								<md-icon
+									class="player-control player-play"
+									*ngIf="getPlayer().volume == 0"
+									(click)="getPlayer().unmute()">
+									volume_off
+								</md-icon>
+							</div>
+
+							<!-- Volume -->
+							<md-slider min="0.0" max="1.0" step="0.01" value="{{getPlayer().volume}}" tickInterval="50"
+								(input)="onVolumeChange($event);" style="height: 48px; margin-right: 8px;">
+							</md-slider>
+
+							<div class="now-playing-elapsed" style="float: right; display: inline-block; position: relative; top: 16px;">
 								{{getPlayer().elapsed}} / {{getCurrentTrack().lengthFormatted}}
 							</div>
 						</div>
@@ -72,55 +126,7 @@
 					</div>
 
 					<div *ngIf="getCurrentTrack() && getPlayer().audio" style="font-size: 2vw; position: absolute; bottom: 0;">
-						<md-icon
-							class="player-control player-pause"
-							*ngIf="!getPlayer().audio.paused"
-							(click)="getPlayer().pause()">
-							pause
-						</md-icon>
-						<md-icon
-							class="player-control player-play"
-							*ngIf="getPlayer().audio.paused"
-							(click)="getPlayer().resume()">
-							play_arrow
-						</md-icon>
 
-						<!-- Skip -->
-						<md-icon class="player-control"
-							(click)="playerService.skipTrack()">
-							skip_next
-						</md-icon>
-
-						<!-- Volume -->
-						<md-icon
-							class="player-control player-play"
-							*ngIf="getPlayer().volume >= 0.8"
-							(click)="getPlayer().mute()">
-							volume_up
-						</md-icon>
-						<md-icon
-							class="player-control player-play"
-							*ngIf="getPlayer().volume >= 0.4 && getPlayer().volume < 0.8"
-							(click)="getPlayer().mute()">
-							volume_down
-						</md-icon>
-						<md-icon
-							class="player-control player-play"
-							*ngIf="getPlayer().volume > 0 && getPlayer().volume < 0.4"
-							(click)="getPlayer().mute()">
-							volume_mute
-						</md-icon>
-						<md-icon
-							class="player-control player-play"
-							*ngIf="getPlayer().volume == 0"
-							(click)="getPlayer().unmute()">
-							volume_off
-						</md-icon>
-
-						<!-- Volume -->
-						<md-slider min="0.0" max="1.0" step="0.01" value="{{getPlayer().volume}}" tickInterval="50"
-							(input)="onVolumeChange($event);" style="height: 64px;">
-						</md-slider>
 					</div>
 
 					<md-progress-bar class="now-playing-progress" [mode]="determinate" [value]="getPlayer().elapsedPercent">
