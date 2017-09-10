@@ -4,17 +4,30 @@
 		<div id="TheaterInner">
 			<div id="TheaterContent">
 
+				<!-- Close button -->
 				<md-icon class="player-control" mdTooltip="Close" mdTooltipPosition="below"
 					(click)="disableTheater()" style="position: absolute; right: 16px; top: 16px;">
 					close
 				</md-icon>
 
+				<!-- No music queued -->
+				<ng-container *ngIf="!getCurrentTrack()">
+					<div style="text-align: center;">
+						<md-icon class="error-icon" style="font-size: 8vw; width: 8vw; height: 8vw;">
+							queue_music
+						</md-icon><br />
+						<div class="error-text" style="font-size: 4vw;">
+							No music queued
+						</div>
+					</div>
+				</ng-container>
+
+				<!-- Now playing -->
 				<div class="clearfix" *ngIf="getCurrentTrack()" style="min-height: 25%;">
 					<img class="now-playing-art" src="{{getCurrentTrack().album.imagePath}}"
 						(click)="playerService.openLightbox(getCurrentTrack().album)"
 						style="float: left;"/>
 
-					<!-- Now playing -->
 					<div class="now-playing" *ngIf="getCurrentTrack()">
 						<h1 class="now-playing-field text-primary" style="font-size: 3vw; line-height: 4vw;">
 							{{getCurrentTrack().name}}
@@ -41,6 +54,7 @@
 					<div class="clearfix"></div>
 				</div>
 
+				<!-- Controls -->
 				<div *ngIf="getCurrentTrack()" style="float: left; width: 100%;">
 					<div style="font-size: 2vw;" *ngIf="getPlayer().audio">
 						<md-icon
@@ -101,28 +115,12 @@
 					</div>
 				</div>
 
-				<md-progress-bar
-					class="now-playing-progress"
-					[mode]="determinate"
-					[value]="getPlayer().elapsedPercent">
+				<md-progress-bar class="now-playing-progress" [mode]="determinate" [value]="getPlayer().elapsedPercent">
 				</md-progress-bar>
-
-
-				<div *ngIf="!getCurrentTrack()" style="text-align: center;">
-					<md-icon class="error-icon" style="font-size: 8vw; width: 8vw; height: 8vw;">
-						queue_music
-					</md-icon><br />
-					<div class="error-text" style="font-size: 4vw;">
-						No music queued
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
 </ng-container>
-
-
-
 
 <!-- Regular Player -->
 <ng-container *ngIf="!theaterMode">
