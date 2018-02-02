@@ -24,7 +24,7 @@ export class TrackService
 	loadTrack(track)
 	{
 		var options = {responseType: ResponseContentType.Blob};
-		return this.http.get('http://bwilbur.com:3000/' + track, options).map((response: Response) => {
+		return this.http.get('http://69.113.11.164:3000/' + track, options).map((response: Response) => {
 			return response.blob();
 		});
 	}
@@ -35,7 +35,7 @@ export class TrackService
 	loadRelated(track, degree)
 	{
 		var id = track._id;
-		return this.http.get('http://bwilbur.com/tracks/related?trackId=' + id + '&degree=' + degree)
+		return this.http.get('http://69.113.11.164/tracks/related?trackId=' + id + '&degree=' + degree)
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -47,7 +47,7 @@ export class TrackService
 	 */
 	loadRelatedByGenre(genre, degree)
 	{
-		return this.http.get('http://bwilbur.com/tracks/related?genre=' + genre + '&degree=' + degree)
+		return this.http.get('http://69.113.11.164/tracks/related?genre=' + genre + '&degree=' + degree)
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -59,7 +59,7 @@ export class TrackService
 	 */
 	loadByGenre(genre)
 	{
-		return this.http.get('http://bwilbur.com/tracks/random-genre?genre=' + genre)
+		return this.http.get('http://69.113.11.164/tracks/random-genre?genre=' + genre)
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -69,7 +69,7 @@ export class TrackService
 	 */
 	loadRandom()
 	{
-		return this.http.get('http://bwilbur.com/tracks/random')
+		return this.http.get('http://69.113.11.164/tracks/random')
 			.map(this.mapSingleTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -82,7 +82,7 @@ export class TrackService
 		const body = JSON.stringify({albumId: albumId});
 		const headers = new Headers({'Content-Type': 'application/json'});
 
-		return this.http.post('http://bwilbur.com/tracks/album', body, {headers: headers})
+		return this.http.post('http://69.113.11.164/tracks/album', body, {headers: headers})
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -92,7 +92,7 @@ export class TrackService
 	 */
 	loadForArtist(artistId)
 	{
-		return this.http.get('http://bwilbur.com/tracks/artist?artistId=' + artistId)
+		return this.http.get('http://69.113.11.164/tracks/artist?artistId=' + artistId)
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -102,7 +102,7 @@ export class TrackService
 	 */
 	loadRecentlyPlayed()
 	{
-		return this.http.get('http://bwilbur.com/tracks/recent')
+		return this.http.get('http://69.113.11.164/tracks/recent')
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -112,7 +112,7 @@ export class TrackService
 	 */
 	loadRecentlyRecommended()
 	{
-		return this.http.get('http://bwilbur.com/tracks/recommended')
+		return this.http.get('http://69.113.11.164/tracks/recommended')
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
@@ -122,7 +122,7 @@ export class TrackService
 	 */
 	find(query)
 	{
-		var getUrl = 'http://bwilbur.com/tracks/find?query=' + query;
+		var getUrl = 'http://69.113.11.164/tracks/find?query=' + query;
 		return this.http.get(getUrl)
 			.map(this.mapTrackData)
 			.catch((error: Response) => Observable.throw(error.json()));
@@ -133,7 +133,7 @@ export class TrackService
 	 */
 	loadGenres()
 	{
-		return this.http.get('http://bwilbur.com/tracks/genre-map')
+		return this.http.get('http://69.113.11.164/tracks/genre-map')
 			.map((response: Response) => {
 				const genres = response.json().genres;
 				return genres;
@@ -147,7 +147,7 @@ export class TrackService
 	 */
 	recommendTrack(track)
 	{
-		return this.http.post('http://bwilbur.com/tracks/recommend?trackId=' + track._id, {})
+		return this.http.post('http://69.113.11.164/tracks/recommend?trackId=' + track._id, {})
 			.map((response: Response) => {
 				const genres = response.json().genres;
 				return genres;

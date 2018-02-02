@@ -16,7 +16,7 @@ export class AlbumService
 
 	find(query)
 	{
-		var getUrl = 'http://bwilbur.com/albums/find?query=' + query;
+		var getUrl = 'http://69.113.11.164/albums/find?query=' + query;
 		return this.http.get(getUrl)
 			.map((response: Response) => {
 				const data = response.json().albums;
@@ -43,7 +43,7 @@ export class AlbumService
 
 	loadForArtist(artist: Artist)
 	{
-		var url = 'http://bwilbur.com/albums/loadForArtist?artistId=' + artist._id;
+		var url = 'http://69.113.11.164/albums/loadForArtist?artistId=' + artist._id;
 
 		return this.http.get(url)
 			.map((response: Response) => {
@@ -71,7 +71,7 @@ export class AlbumService
 
 	loadRecent()
 	{
-		return this.http.get('http://bwilbur.com/albums/recent')
+		return this.http.get('http://69.113.11.164/albums/recent')
 			.map((response: Response) => {
 				const data = response.json().albums;
 

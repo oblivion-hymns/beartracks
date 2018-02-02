@@ -48,7 +48,7 @@
     "jsonfile": "^3.0.0",
     "jsonwebtoken": "^7.4.1",
     "levenshtein": "^1.0.5",
-    "mongoose": "^4.10.8",
+    "mongoose": "^4.13.10",
     "mongoose-timestamp": "^0.6.0",
     "mongoose-unique-validator": "^1.0.5",
     "morgan": "~1.6.1",

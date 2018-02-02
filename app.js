@@ -14,7 +14,14 @@ var userRoutes = require('./routes/user');
 var Message = require('./models/message');
 var UserLookupSchema = require('./models/userlookup');
 
-mongoose.connect('localhost:27017/beartracks');
+mongoose.connect('mongodb://localhost:27017/beartracks', {
+	'useMongoClient': true,
+	"auth": {
+		"authSource": "admin"
+	},
+	'user': 'brian',
+	'pass': 'turtlecup!'
+});
 
 var appPort = 3000;
 

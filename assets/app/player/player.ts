@@ -432,7 +432,7 @@ export class Player
 
 			//Increment play count
 			var finishedTrack = this.currentTrack;
-			this.http.get('http://bwilbur.com/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
+			this.http.get('http://69.113.11.164/tracks/increment-song?trackId=' + finishedTrack._id).subscribe();
 
 			if (this.isRadio)
 			{
